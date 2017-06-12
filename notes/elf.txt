@@ -9,7 +9,7 @@
   02 00       # e_type = ET_EXEC, executable file
   03 00       # e_machine = EM_386, x86-32
   01 00 00 00 # e_version = EV_CURRENT, ELF format version again
-  54 80 04 08 # e_entry = 0x8048054, program entry point
+  54 80 04 08 # e_entry = 0x08048054, program entry point
   34 00 00 00 # e_phoff, program header is immediately after ELF header
   00 00 00 00 # e_shoff, no section table
   00 00 00 00 # e_flags, irrelevant
@@ -20,10 +20,12 @@
   00 00       # e_shnum, the number of section entries
   00 00       # e_shstrndx = SHN_UNDEF, no section name table
 
+# Put the binary at page 0x08048000 because that's the usual address under linux.
+
 # Program header entry (32 = 0x20 bytes)
   01 00 00 00 # p_type = PT_LOAD, a loadable segment
   54 00 00 00 # p_offset = 0x54, contents immediately after this header
-  54 80 04 08 # p_vaddr = 0x8048054, where to put it in memory
+  54 80 04 08 # p_vaddr = 0x08048054, where to put it in memory
   00 00 00 00 # p_paddr, physical address, irrelevant
   xx xx xx xx # p_filesz, size of the segment in the file
   xx xx xx xx # p_memsz, size of the segment in memory
