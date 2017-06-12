@@ -1,5 +1,3 @@
-# https://refspecs.linuxfoundation.org/elf/elf.pdf
-
 # ELF header (52 = 0x34 bytes)
   7f 45 4c 46 # e_ident[0:4], file type identification "\x7fELF"
   01          # e_ident[4] = ELFCLASS32, 32-bit code
@@ -18,14 +16,21 @@
   01 00       # e_phnum, the number of program header entries
   28 00       # e_shentsize, section header entry size
   00 00       # e_shnum, the number of section entries
-  00 00       # e_shstrndx = SHN_UNDEF, no section name table
+  00 00       # e_shstrndx, no section name table
 
 # Program header entry (32 = 0x20 bytes)
   01 00 00 00 # p_type = PT_LOAD, a loadable segment
   54 00 00 00 # p_offset = 0x54, contents immediately after this header
   54 80 04 08 # p_vaddr = 0x8048054, where to put it in memory
   00 00 00 00 # p_paddr, physical address, irrelevant
-  xx xx xx xx # p_filesz, size of the segment in the file
-  xx xx xx xx # p_memsz, size of the segment in memory
-  07 00 00 00 # p_flags = execute (1) + write (2) + read (4)
+  0c 00 00 00 # p_filesz, size of the segment in the file; 12 bytes
+  0c 00 00 00 # p_memsz, size of the segment in memory; 12 bytes
+  05 00 00 00 # p_flags = execute (1) + read (4)
   00 10 00 00 # p_align = 0x1000, memory page size
+
+# Actual code
+
+# exit(7)
+  b8 01 00 00 00  # set eax 1
+  bb 07 00 00 00  # set ebx 7
+  cd 80           # int 0x80
