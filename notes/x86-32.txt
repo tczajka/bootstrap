@@ -1,0 +1,159 @@
+https://software.intel.com/sites/default/files/managed/a4/60/325383-sdm-vol-2abcd.pdf
+
+== Instruction format ==
+
+<prefixes> <opcode> <ModR/M> <SIB> <displacement> <immediate>
+
+== Register names ==
+
+0: eax
+1: ecx
+2: edx
+3: ebx
+4: esp
+5: ebp
+6: esi
+7: edi
+
+== ModR/M byte ==
+
+reg1/opcode : bits 3-5
+mod         : bits 6-7
+reg2/memory : bits 0-2
+
+Meaning of mod + reg2/memory in ModR/M:
+
+mod=0: [reg2]
+mod=1: [reg2 + 8-bit]
+mod=2: [reg2 + 32-bit]
+mod=3: reg2 (read/write to register)
+
+Exceptions:
+* What would be [ebp] means [32-bit] instead
+  * Use [ebp + 0] if you want [ebp]
+* What would be [esp], [esp + 8-bit], [esp + 32-bit] mean [SIB], [SIB + 8-bit], [SIB + 32-bit] instead
+  * Use SIB, [2^0 * none + esp + etc] if you want that
+
+== SIB byte ==
+
+scale: bits 6-7
+index_reg: bits 3-5
+offset_reg: bits 0-2
+
+[2^scale * index_reg + offset_reg + 0/8-bit/32-bit]
+
+Exceptions:
+* What would be [2^scale * esp + offset_reg + disp] really means [offset_reg + disp]. Can't scale esp.
+* What would be [2^scale * index_reg + ebp] really means [2^scale * index_reg + 32-bit]
+  * Use [2^scale * index_reg + ebp + 0] if that's what you want
+
+== Instructions ==
+
+add r/m32, r32: 01
+add r32, r/m32: 03
+add r/m32, imm32: 81/0
+add eax, imm32: 05
+
+and r/m32, r32: 21
+and r32, r/m32: 23
+and r/m32, imm32: 81/4
+and eax, imm32: 25
+
+call rel32: e8  (relative to next instruction)
+call r/m32: ff/2
+
+cmp r/m32, r32: 39
+cmp r32, r/m32: 3b
+cmp r/m32, imm32: 81/7
+cmp eax, imm32: 3d
+
+dec r32: 48+reg
+
+div r/m32: f7/6 (edx:eax / arg -> eax (quotient), edx (remainder))
+idiv r/m32: f7/7
+
+imul r/m32: f7/5 (edx:eax <- eax * reg)
+
+inc r32: 40+reg
+
+int imm8: cd
+
+jmp_if <condition> rel8: 70+cond
+jmp_if <condition> rel32: 0f 80+cond
+cond:
+  0: o, overflow
+  1: no, not overflow
+  2: c, unsigned < or carry
+  3: nc, unsigned >=
+  4: z: zero/equal
+  5: nz: nonzero/not equal
+  6: be, unsigned <=
+  7: a, unsigned >
+  8: s, sign
+  9: ns, not sign
+  a: p, parity
+  b: np, not parity
+  c: l, signed <
+  d: ge, signed >=
+  e: le, signed <=
+  f: g, signed >
+  
+jmp rel8: eb
+jmp rel32: e9
+jmp r/m32: ff/4
+
+lea reg1, r/m32: 8d
+
+mov r/m32, r32: 89
+mov r32, r/m32: 8b
+mov r32, imm32: B8+reg
+mov r/m32, imm32: c7/0
+
+mul r/m32: f7/4
+
+nop: 90
+
+not r/m32: f7/2
+
+or r/m32, imm3: 81/1
+or eax, imm32: 0d
+or r32, r/m32: 0b
+or r/m32, r32: 09
+
+pop r32: 58+reg
+
+push r32: 50+reg
+push imm32: 68
+
+rdtsc: 0f 31
+
+ret: c3
+ret imm16: c2 (pop imm16 bytes after return)
+
+shl r/m32, 1: d1/4
+shl r/m32, imm8: c1/4
+shl r/m32, cl: d3/4
+
+sar r/m32, 1: d1/7  (signed shift)
+sar r/m32, imm8: c1/7
+sar r/m32, cl: d3/7
+
+shr r/m32, 1: d1/5
+shr r/m32, imm8: c1/5
+shr r/m32, cl: d3/5
+
+set <condition> r/m8: 0f 90+cond
+
+sub eax, imm32: 2d
+sub r/m32, imm32: 81/5
+sub r/m32, r32: 29
+sub r32, r/m32: 2b
+
+test eax, imm32: a9  (logical and)
+test r/m32, imm32: f7/0
+test r/m32, r32: 85
+
+xor eax, imm32: 35
+xor r/m32, imm32: 81/6
+xor r/m32, r32: 31
+xor r32, r/m32: 33
