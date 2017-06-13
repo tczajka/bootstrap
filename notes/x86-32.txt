@@ -17,8 +17,8 @@ https://software.intel.com/sites/default/files/managed/a4/60/325383-sdm-vol-2abc
 
 == ModR/M byte ==
 
-reg1/opcode : bits 3-5
 mod         : bits 6-7
+reg1/opcode : bits 3-5
 reg2/memory : bits 0-2
 
 Meaning of mod + reg2/memory in ModR/M:
@@ -108,6 +108,7 @@ mov r/m32, r32: 89
 mov r32, r/m32: 8b
 mov r32, imm32: B8+reg
 mov r/m32, imm32: c7/0
+mov r8, r/m8: 8a
 
 mul r/m32: f7/4
 

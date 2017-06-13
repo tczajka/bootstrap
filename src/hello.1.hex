@@ -1,0 +1,59 @@
+# ELF header (52 = 0x34 bytes)
+  7f 45 4c 46 # e_ident[0:4], file type identification "\x7fELF"
+  01          # e_ident[4] = ELFCLASS32, 32-bit code
+  01          # e_ident[5] = ELFDATA2LSB, little-endian machine
+  01          # e_ident[6] = EV_CURRENT, ELF format version
+  00 00 00 00 00 00 00 00 00  # e_ident[7:16], padding
+  02 00       # e_type = ET_EXEC, executable file
+  03 00       # e_machine = EM_386, x86-32
+  01 00 00 00 # e_version = EV_CURRENT, ELF format version again
+  54 80 04 08 # e_entry = 0x08048054, program entry point
+  34 00 00 00 # e_phoff, program header is immediately after ELF header
+  00 00 00 00 # e_shoff, no section table
+  00 00 00 00 # e_flags, irrelevant
+  34 00       # e_ehsize, ELF header size
+  20 00       # e_phentsize, size of a program header entry
+  01 00       # e_phnum, the number of program header entries
+  28 00       # e_shentsize, section header entry size
+  00 00       # e_shnum, the number of section entries
+  00 00       # e_shstrndx, no section name table
+
+# Put the binary at 0x08048000 because that's the usual address under linux.
+
+# Program header entry (32 = 0x20 bytes)
+  01 00 00 00 # p_type = PT_LOAD, a loadable segment
+  54 00 00 00 # p_offset = 0x54, contents immediately after this header
+  54 80 04 08 # p_vaddr = 0x08048054, where to put it in memory
+  00 00 00 00 # p_paddr, physical address, irrelevant
+  40 00 00 00 # p_filesz, size of the segment in the file; 64 bytes
+  40 00 00 00 # p_memsz, size of the segment in memory; 64 bytes
+  05 00 00 00 # p_flags = execute (1) + read (4)
+  00 10 00 00 # p_align = 0x1000, memory page size
+
+# Actual code
+
+  be 86 80 04 08  # set esi hello_str, which is at 0x08048086
+
+# loop starts here
+  b8 00 00 00 00  # set eax 0          (mov eax, 0)
+  8a 06           # load_byte eax esi  (mov al, [esi])
+  23 c0           # and eax eax ; in order to see if it is 0
+  74 16           # jmp_if = exit  (jz exit); skip over 0x16 = 22 bytes
+# write 1 byte at esi to stdout
+  b8 04 00 00 00  # set eax 4, syscall "write"
+  bb 01 00 00 00  # set ebx 1, write to stdout
+  8b ce           # mov ecx, esi; write the byte at [esi]
+  ba 01 00 00 00  # set edx, 1, write 1 byte
+  cd 80           # int 0x80, system call
+  46              # inc esi
+  eb df           # jmp loop ; jump by -33 = 0xdf bytes
+
+# exit(0)
+  b8 01 00 00 00  # set eax 1 ; 1 is system call "exit"
+  bb 00 00 00 00  # set ebx 0 ; return code 0 to the operating system
+  cd 80           # int 0x80  ; system call
+
+# the string to write
+  48 65 6c 6c 6f 20  # "Hello "
+  57 6f 72 6c 64 21  # "World!"
+  0a 00              # new line, end of text marker
