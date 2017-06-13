@@ -37,6 +37,6 @@
 # Return 7 to the operating system to see that this works.
 
 # exit(7)
-  b8 01 00 00 00  # set eax 1 ; 1 is system call "exit"
-  bb 07 00 00 00  # set ebx 7 ; return code 7 to the operating system
-  cd 80           # int 0x80  ; system call
+  b8 01 00 00 00  # mov eax, 1 (1 is system call "exit")
+  bb 07 00 00 00  # mov ebx, 7 (return code 7 to the operating system)
+  cd 80           # int 0x80   (system call)
