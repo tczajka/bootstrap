@@ -1,0 +1,42 @@
+# ELF header (52 = 0o64 bytes)
+  177 105 114 106   # e_ident[0:4], file type identification "\x7fELF"
+  1                 # e_ident[4] = ELFCLASS32, 32-bit code
+  1                 # e_ident[5] = ELFDATA2LSB, little-endian machine
+  1                 # e_ident[6] = EV_CURRENT, ELF format version
+  0 0 0 0 0 0 0 0 0 # e_ident[7:16], padding
+  2 0               # e_type = ET_EXEC, executable file
+  3 0               # e_machine = EM_386, x86-32
+  1 0 0 0           # e_version = EV_CURRENT, ELF format version again
+  124 0 1 0         # e_entry = 0o200124 = 0x10054, program entry point
+  64 0 0 0          # e_phoff, program header is immediately after ELF header
+  0 0 0 0           # e_shoff, no section table
+  0 0 0 0           # e_flags, irrelevant
+  64 0              # e_ehsize, ELF header size
+  40 0              # e_phentsize, size of a program header entry
+  1 0               # e_phnum, the number of program header entries
+  50 0              # e_shentsize, section header entry size
+  0 0               # e_shnum, the number of section entries
+  0 0               # e_shstrndx = SHN_UNDEF, no section name table
+
+# Put the binary starting at 0x00010000.
+# Linux does not allow putting anything in the first 0x10000 bytes (64 KB)
+# to protect against pointer bugs.
+
+# Program header entry (32 = 0o40 bytes)
+  1 0 0 0      # p_type = PT_LOAD, a loadable segment
+  124 0 0 0    # p_offset = 0o124, contents immediately after this header
+  124 0 1 0    # p_vaddr = 0o200124, where to put it in memory
+  0 0 0 0      # p_paddr, physical address, irrelevant
+  14 0 0 0     # p_filesz, size of the segment in the file; 12 bytes
+  14 0 0 0     # p_memsz, size of the segment in memory; 12 bytes
+  5 0 0 0      # p_flags = execute (1) + read (4)
+  0 20 0 0     # p_align = 4 KB = 0x1000, memory page size
+
+# Actual code
+
+# Return 7 to the operating system to see that this works.
+
+# exit(7)
+  270 1 0 0 0     # mov eax, 1 (1 is system call "exit")
+  273 7 0 0 0     # mov ebx, 7 (return code 7 to the operating system)
+  315 200         # int 0x80   (system call)

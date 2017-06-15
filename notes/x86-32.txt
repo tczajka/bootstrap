@@ -6,80 +6,113 @@ https://software.intel.com/sites/default/files/managed/a4/60/325383-sdm-vol-2abc
 
 == Register names ==
 
-0: eax
-1: ecx
-2: edx
-3: ebx
-4: esp
-5: ebp
-6: esi
-7: edi
+0: eax or al
+1: ecx or cl
+2: edx or dl
+3: ebx or bl
+4: esp or ah
+5: ebp or ch
+6: esi or dh
+7: edi or bh
 
 == ModR/M byte ==
 
-mod         : bits 6-7
-reg1/opcode : bits 3-5
-reg2/memory : bits 0-2
+mAB
 
-Meaning of mod + reg2/memory in ModR/M:
+0.B:            [B]       (if B != esp, ebp)
+1.B i8:         [B + i8]  (if B != esp)
+2.B i32:        [B + i32] (if B != esp)
+3.B:            B
+0.5 i32         [i32]
+0.4 sB5 i32     [i32]
+0.4 sBC         [2^s * B + C]   (if C != ebp)
+1.4 sBC i8      [2^s * B + C + i8]
+2.4 sBC i32     [2^s * B + C + i32]
 
-mod=0: [reg2]
-mod=1: [reg2 + 8-bit]
-mod=2: [reg2 + 32-bit]
-mod=3: reg2 (read/write to register)
+== Arithmetic instructions ==
 
-Exceptions:
-* What would be [ebp] means [32-bit] instead
-  * Use [ebp + 0] if you want [ebp]
-* What would be [esp], [esp + 8-bit], [esp + 32-bit] mean [SIB], [SIB + 8-bit], [SIB + 32-bit] instead
-  * Use SIB, [2^0 * none + esp + etc] if you want that
+0X0 mAB         X.8 mB, A
+0X1 mAB         X   mB, A
+0X2 mAB         X.8 A, mB
+0X3 mAB         X   A, mB
+0X4 i8          X.8 al, i8
+0X5 i32         X eax, i32
+200 mXB i8      X mB, i8
+201 mXB i32     X mB, i32
+203 mXB i8      X.32 mB, sign-extend(i8)
 
-== SIB byte ==
+where:
+X=0: add
+X=1: or
+X=2: adc
+X=3: sbb
+X=4: and
+X=5: sub
+X=6: xor
+X=7: cmp
 
-scale: bits 6-7
-index_reg: bits 3-5
-offset_reg: bits 0-2
+301 m4B i8      shl mB, i8
+321 m4B         shl mB, 1
+323 m4B         shl mB, cl
 
-[2^scale * index_reg + offset_reg + 0/8-bit/32-bit]
+301 m7B i8      sar mB, i8 (signed shift right)
+321 m7B         sar mB, 1
+323 m7B         sar mB, cl
 
-Exceptions:
-* What would be [2^scale * esp + offset_reg + disp] really means [offset_reg + disp]. Can't scale esp.
-* What would be [2^scale * index_reg + ebp] really means [2^scale * index_reg + 32-bit]
-  * Use [2^scale * index_reg + ebp + 0] if that's what you want
+301 m5B i8      shr mB, i8 (unsigned shift right)
+321 m5B         shr mB, 1
+323 m5B         shr mB, cl
 
-== Instructions ==
+205 mAB         test mB, A
+251 i32         test eax, i32 (logical and)
+367 m0B i32     test mB, i32
 
-add r/m32, r32: 01
-add r32, r/m32: 03
-add r/m32, imm32: 81/0
-add eax, imm32: 05
+10A             inc A
+11A             dec A
+12A             push A
+13A             pop A
+150 i32         push i32
 
-and r/m32, r32: 21
-and r32, r/m32: 23
-and r/m32, imm32: 81/4
-and eax, imm32: 25
+== moves ==
 
-call rel32: e8  (relative to next instruction)
-call r/m32: ff/2
+210 mAB         mov.8 mB, A
+211 mAB         mov mB, A
+212 mAB         mov.8 A, mB
+213 mAB         mov A, mB
+27A i32         mov A, i32
+307 m0B i32     mov mB, i32
 
-cmp r/m32, r32: 39
-cmp r32, r/m32: 3b
-cmp r/m32, imm32: 81/7
-cmp eax, imm32: 3d
+== Other ==
 
-dec r32: 48+reg
+017 061         rdtsc
 
-div r/m32: f7/6 (edx:eax / arg -> eax (quotient), edx (remainder))
-idiv r/m32: f7/7
+215 mAB         lea A, mAB
 
-imul r/m32: f7/5 (edx:eax <- eax * reg)
+220             nop
 
-inc r32: 40+reg
+303             ret
+302 i16         ret i16
 
-int imm8: cd
+315 i8          int i8
+350 i32         call i32 (relative)
+377 m2B         call mB
+351 i32         jmp i32 (relative)
+353 i8          jmp i8 (relative)
 
-jmp_if <condition> rel8: 70+cond
-jmp_if <condition> rel32: 0f 80+cond
+367 m2B         not mB
+367 m4B         mul mB (edx:eax <- eax * mB)
+367 m5B         imul mB (signed)
+367 m6B         div mB (edx:eax / mB -> eax (quotient), edx (remainder))
+367 m7B         idiv mB (signed)
+
+377 m4B         jmp mB
+
+== conditionals
+
+16c/17c i8      jmp_if <condition> i8
+017 20c/21c i32 jmp_if <condition> i32
+017 22c/23c mAB set_if.8 <condition> rB
+
 cond:
   0: o, overflow
   1: no, not overflow
@@ -97,64 +130,5 @@ cond:
   d: ge, signed >=
   e: le, signed <=
   f: g, signed >
-  
-jmp rel8: eb
-jmp rel32: e9
-jmp r/m32: ff/4
 
-lea reg1, r/m32: 8d
-
-mov r/m32, r32: 89
-mov r32, r/m32: 8b
-mov r32, imm32: B8+reg
-mov r/m32, imm32: c7/0
-mov r8, r/m8: 8a
-
-mul r/m32: f7/4
-
-nop: 90
-
-not r/m32: f7/2
-
-or r/m32, imm3: 81/1
-or eax, imm32: 0d
-or r32, r/m32: 0b
-or r/m32, r32: 09
-
-pop r32: 58+reg
-
-push r32: 50+reg
-push imm32: 68
-
-rdtsc: 0f 31
-
-ret: c3
-ret imm16: c2 (pop imm16 bytes after return)
-
-shl r/m32, 1: d1/4
-shl r/m32, imm8: c1/4
-shl r/m32, cl: d3/4
-
-sar r/m32, 1: d1/7  (signed shift)
-sar r/m32, imm8: c1/7
-sar r/m32, cl: d3/7
-
-shr r/m32, 1: d1/5
-shr r/m32, imm8: c1/5
-shr r/m32, cl: d3/5
-
-set <condition> r/m8: 0f 90+cond
-
-sub eax, imm32: 2d
-sub r/m32, imm32: 81/5
-sub r/m32, r32: 29
-sub r32, r/m32: 2b
-
-test eax, imm32: a9  (logical and)
-test r/m32, imm32: f7/0
-test r/m32, r32: 85
-
-xor eax, imm32: 35
-xor r/m32, imm32: 81/6
-xor r/m32, r32: 31
-xor r32, r/m32: 33
+===
