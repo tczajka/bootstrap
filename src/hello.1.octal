@@ -41,8 +41,8 @@
   042 300         # and al, al      (in order to see if it is 0)
   164 26          # jz exit         (jump to exit if 0; exit is 22=0o26 bytes ahead)
 # write 1 byte at esi to stdout
-  270 4 0 0 0     # mov eax 4 (syscall "write")
-  273 1 0 0 0     # mov ebx 1 (standard output)
+  270 4 0 0 0     # mov eax, 4 (syscall "write")
+  273 1 0 0 0     # mov ebx, 1 (standard output)
   213 316         # mov ecx, esi (write buffer at esi)
   272 1 0 0 0     # mov edx, 1 (1 byte)
   315 200         # int 0x80 (system call)
