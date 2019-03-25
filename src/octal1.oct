@@ -27,8 +27,8 @@
   124 0 0 0    # p_offset = 0o124, contents immediately after this header
   124 0 1 0    # p_vaddr = 0o200124, where to put it in memory
   0 0 0 0      # p_paddr, physical address, irrelevant
-  236 0 0 0    # p_filesz, size of the segment in the file
-  236 0 0 0    # p_memsz, size of the segment in memory
+  222 0 0 0    # p_filesz, size of the segment in the file
+  222 0 0 0    # p_memsz, size of the segment in memory
   7 0 0 0      # p_flags = execute (1) + write (2) + read (4)
   0 20 0 0     # p_align = 4 KB = 0x1000, memory page size
 
@@ -41,7 +41,7 @@
 # 200131
 # have_next_char:
   040 300         # and al, al
-  164 174         # je exit_success (eof)
+  164 166         # je exit_success (eof)
   074 43          # cmp al, '#' ('#' = 35 = 0o43)
   164 10          # je comment
   054 60          # sub al, '0' ('0' = 48 = 0o60)
@@ -56,7 +56,7 @@
   074 12          # cmp al, '\n' ('\n' = 10 = 0o12)
   164 342         # je start
   040 300         # and al, al  (end of file?)
-  164 143         # je exit_success
+  164 135         # je exit_success
   353 361         # jmp comment
 
 # 200170
@@ -77,7 +77,7 @@
   004 60          # add al, '0'
   211 306         # mov esi, eax
   211 370         # mov eax, edi
-  350 45 0 0 0    # call write_char
+  350 42 0 0 0    # call write_char
   211 360         # mov eax, esi
   353 276         # jmp have_next_char
 
@@ -86,46 +86,46 @@
 # eax: character or 0 on EOF
 # nothing preserved
   270 3 0 0 0     # mov eax, 3 (syscall "read")
-  273 0 0 0 0     # mov ebx, 0 (standard input)
-  271 361 0 1 0   # mov ecx, buffer
+  061 333         # xor ebx, ebx (0, standard input)
+  271 345 0 1 0   # mov ecx, buffer
   272 1 0 0 0     # mov edx, 1 (1 byte)
   315 200         # system call
   040 300         # and al, al
   164 6           # je read_char_ret; end of file
   074 1           # cmp al, 1
-  165 54          # jne exit_error; 1 byte was not read
+  165 46          # jne exit_error; 1 byte was not read
   212 001         # mov al, [ecx]  # higher bytes in eax are already 0
-# 200273
+# 200270
 # read_char_ret
   303             # ret
   
-# 200274
+# 200271
 # write_char(eax)
 # nothing preserved
-  271 361 0 1 0   # mov ecx, buffer
+  271 345 0 1 0   # mov ecx, buffer
   210 001         # mov [ecx], al
   270 4 0 0 0     # mov eax, 4 (syscall "write")
   273 1 0 0 0     # mov ebx, 1 (standard output)
-  272 1 0 0 0     # mov edx, 1 (1 byte)
+  211 332         # mov edx, ebx (1 byte)
   315 200         # system call
   074 1           # cmp al, 1
-  165 15          # jne exit_error, 1 byte was not written
+  165 12          # jne exit_error, 1 byte was not written
   303             # ret
 
-# 200331
+# 200323
 # exit_success
   270 1 0 0 0     # mov eax, 1 (system call "exit")
-  273 0 0 0 0     # mov ebx, 0 (return code 0 to the operating system)
+  061 333         # xor ebx, ebx (0, standard input)
+  315 200         # int 0x80 (system call)
+
+# 200334
+# exit_error
+  270 1 0 0 0     # mov eax, 1 (system call "exit")
+  211 303         # mov ebx, eax (return code 1 to the operating system)
   315 200         # int 0x80 (system call)
 
 # 200345
-# exit_error
-  270 1 0 0 0     # mov eax, 1 (system call "exit")
-  273 1 0 0 0     # mov ebx, 1 (return code 1 to the operating system)
-  315 200         # int 0x80 (system call)
-
-# 200361
 # buffer
   0
 
-# 200362
+# 200346
