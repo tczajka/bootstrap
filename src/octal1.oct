@@ -27,87 +27,105 @@
   124 0 0 0    # p_offset = 0o124, contents immediately after this header
   124 0 1 0    # p_vaddr = 0o200124, where to put it in memory
   0 0 0 0      # p_paddr, physical address, irrelevant
-  xx xx 0 0     # p_filesz, size of the segment in the file; XX bytes
-  xx xx 0 0     # p_memsz, size of the segment in memory; XX bytes
+  236 0 0 0    # p_filesz, size of the segment in the file
+  236 0 0 0    # p_memsz, size of the segment in memory
   7 0 0 0      # p_flags = execute (1) + write (2) + read (4)
   0 20 0 0     # p_align = 4 KB = 0x1000, memory page size
 
 # Actual code
 
+# 200124
 # start
-  350 xx xx xx xx # call read_char; reads next character into esi
-  075 377 377 377 377 # cmp eax, -1
-  # je exit_success (eof)
-  # cmp eax, '#' ('#' = 35 = 0o43)
-  # je comment
-  # sub eax, '0' ('0' = 48 = 0o60)
-  # cmp eax, 8
-  # jc number
+  350 102 0 0 0   # call read_char
+
+# 200131
+# have_next_char:
+  040 300         # and al, al
+  164 174         # je exit_success (eof)
+  074 43          # cmp al, '#' ('#' = 35 = 0o43)
+  164 10          # je comment
+  054 60          # sub al, '0' ('0' = 48 = 0o60)
+  074 10          # cmp al, 8
+  162 21          # jc number
 # ignore any other character
-  # jmp start
+  353 353         # jmp start
 
+# 200151
 # comment; skip until end of line or end of file
-  # cmp eax, '\n' ('\n' = 10 = 0o12)
-  # je start
-  # cmp eax, -1  (end of file?)
-  # je exit_success
-  # call read_char
-  # jmp comment
+  350 55 0 0 0    # call read_char
+  074 12          # cmp al, '\n' ('\n' = 10 = 0o12)
+  164 342         # je start
+  040 300         # and al, al  (end of file?)
+  164 143         # je exit_success
+  353 361         # jmp comment
 
+# 200170
 # number: read an octal number and output a byte
   # we will collect the number in edi
-  # mov edi, 0
+  211 307         # mov edi, eax 
+# 200172
 # number_loop
-  # sub eax, '0' ('0' = 48 = 0o60)
-  # cmp eax, 8
-  # jc digit_ok
-  # mov eax, edi
-  # call write_char
-  # jmp start
-# digit_ok
-  # shl edi, 3
-  # add edi, eax
-  # call read_char
-  # jmp number_loop
+  350 34 0 0 0    # call read_char
+  054 60          # sub al, '0' ('0' = 48 = 0o60)
+  074 10          # cmp al, 8
+  163 7           # jnc not_digit
+  301 347 3       # shl edi, 3
+  001 307         # add edi, eax
+  353 356         # jmp number_loop
+# 200214
+# not_digit
+  004 60          # add al, '0'
+  211 306         # mov esi, eax
+  211 370         # mov eax, edi
+  350 45 0 0 0    # call write_char
+  211 360         # mov eax, esi
+  353 276         # jmp have_next_char
 
+# 200233
 # read_char
 # eax: character or 0 on EOF
 # nothing preserved
   270 3 0 0 0     # mov eax, 3 (syscall "read")
-  273 1 0 0 0     # mov ebx, 1 (standard input)
-  271 buffer      # mov ecx, buffer
+  273 0 0 0 0     # mov ebx, 0 (standard input)
+  271 361 0 1 0   # mov ecx, buffer
   272 1 0 0 0     # mov edx, 1 (1 byte)
   315 200         # system call
-  # cmp eax, 0
-  # je read_char_ret; end of file
-  # cmp eax, 1
-  # jne exit_error; 1 byte was not written
-  # TODO: Is ecx preserved in ABI?
-  # mov al, [ecx]  # higher bytes in eax are already 0
+  040 300         # and al, al
+  164 6           # je read_char_ret; end of file
+  074 1           # cmp al, 1
+  165 54          # jne exit_error; 1 byte was not read
+  212 001         # mov al, [ecx]  # higher bytes in eax are already 0
+# 200273
 # read_char_ret
-  # ret
+  303             # ret
   
+# 200274
 # write_char(eax)
 # nothing preserved
-  271 buffer      # mov ecx, buffer
-  ??              # mov [ecx], al
+  271 361 0 1 0   # mov ecx, buffer
+  210 001         # mov [ecx], al
   270 4 0 0 0     # mov eax, 4 (syscall "write")
   273 1 0 0 0     # mov ebx, 1 (standard output)
   272 1 0 0 0     # mov edx, 1 (1 byte)
   315 200         # system call
-  # cmp eax, 1
-  # jne exit_error     # 1 byte was not written
-  # ret
+  074 1           # cmp al, 1
+  165 15          # jne exit_error, 1 byte was not written
+  303             # ret
 
+# 200331
 # exit_success
   270 1 0 0 0     # mov eax, 1 (system call "exit")
   273 0 0 0 0     # mov ebx, 0 (return code 0 to the operating system)
   315 200         # int 0x80 (system call)
 
+# 200345
 # exit_error
   270 1 0 0 0     # mov eax, 1 (system call "exit")
   273 1 0 0 0     # mov ebx, 1 (return code 1 to the operating system)
   315 200         # int 0x80 (system call)
 
+# 200361
 # buffer
   0
+
+# 200362
