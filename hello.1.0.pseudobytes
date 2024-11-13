@@ -1,5 +1,5 @@
-ord #10000        ; virtual address
-elf_header:       ; #10000
+ord #100000       ; virtual address
+elf_header:       ; #100000
                   ; e_ident:
 $7f 'E 'L 'F      ;   magic number
 1 1 1 4 0         ;   ELFCLASS32 ELFDATA2LSB EV_CURRENT ELFOSABI_LINUX 0
@@ -7,7 +7,7 @@ $7f 'E 'L 'F      ;   magic number
 2 0               ; e_type = ET_EXEC
 3 0               ; e_machine = EM_386
 #1                ; e_version = EV_CURRENT
-text              ; e_entry = program entry point = #10054
+text              ; e_entry = program entry point = #100054
 program_header - elf_header   ; e_phoff = program header table offset = #34
 #0                ; e_shoff = section header table
 #0                ; e_flags
@@ -18,19 +18,19 @@ $20 0             ; e_phentsize = program header size = text - program_header
 0 0               ; e_shnum = the number of section headers
 0 0               ; e_shstrndx = section name string table index = SHN_UNDEF
 
-program_header:   ; #10034
+program_header:   ; #100034
 #1                ; ptype = PT_LOAD
 text - elf_header ; p_offset = #54
-text              ; p_vaddr = #10054
+text              ; p_vaddr = #100054
 #0                ; p_paddr
 end - elf_header  ; p_filesz = #60
 end - elf_header  ; p_memsz = #60
 #7                ; p_flags = PF_X + PF_W + PF_R
 #1000             ; p_align
 
-; text:           ; #10054
+; text:           ; #100054
 270 #1            ; mov eax, 1 (sys_exit)
-273 #45           ; mov ebx, #11 (exit code)
+273 #11           ; mov ebx, #11 (exit code)
 315 $80           ; int $80
 
-end:              ; #10060
+end:              ; #100060
