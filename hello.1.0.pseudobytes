@@ -1,5 +1,5 @@
-; ord #10000      ; virtual address
-; elf_header:     ; #10000
+ord #10000        ; virtual address
+elf_header:       ; #10000
                   ; e_ident:
 $7f 'E 'L 'F      ;   magic number
 1 1 1 4 0         ;   ELFCLASS32 ELFDATA2LSB EV_CURRENT ELFOSABI_LINUX 0
@@ -7,30 +7,30 @@ $7f 'E 'L 'F      ;   magic number
 2 0               ; e_type = ET_EXEC
 3 0               ; e_machine = EM_386
 #1                ; e_version = EV_CURRENT
-#10054            ; e_entry = program entry point = text
-#34               ; e_phoff = program header table offset = program_header - elf_header
+text              ; e_entry = program entry point = #10054
+program_header - elf_header   ; e_phoff = program header table offset = #34
 #0                ; e_shoff = section header table
 #0                ; e_flags
 $34 0             ; e_ehsize = ELF header size = program_header - elf_header
-$20 0             ; e_phentsize = program header size
+$20 0             ; e_phentsize = program header size = text - program_header
 1 0               ; e_phnum = number of program headers
 0 0               ; e_shentsize = section header size
 0 0               ; e_shnum = the number of section headers
 0 0               ; e_shstrndx = section name string table index = SHN_UNDEF
 
-; program_header: ; #10034
+program_header:   ; #10034
 #1                ; ptype = PT_LOAD
-#54               ; p_offset = text - elf_header
-#10054            ; p_vaddr = text
+text - elf_header ; p_offset = #54
+text              ; p_vaddr = #10054
 #0                ; p_paddr
-#60               ; p_filesz = end - elf_header
-#60               ; p_memsz = end - elf_header
+end - elf_header  ; p_filesz = #60
+end - elf_header  ; p_memsz = #60
 #7                ; p_flags = PF_X + PF_W + PF_R
 #1000             ; p_align
 
 ; text:           ; #10054
 270 #1            ; mov eax, 1 (sys_exit)
-273 #11           ; mov ebx, $11 (exit code)
+273 #45           ; mov ebx, #11 (exit code)
 315 $80           ; int $80
 
-; end:            ; #10060
+end:              ; #10060

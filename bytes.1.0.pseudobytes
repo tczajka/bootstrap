@@ -1,0 +1,77 @@
+ord #10000        ; virtual address
+elf_header:       ; #10000
+                  ; e_ident:
+$7F 'E 'L 'F      ;   magic number
+1 1 1 4 0         ;   ELFCLASS32 ELFDATA2LSB EV_CURRENT ELFOSABI_LINUX 0
+0 0 0 0 0 0 0     ;   padding
+2 0               ; e_type = ET_EXEC
+3 0               ; e_machine = EM_386
+#1                ; e_version = EV_CURRENT
+text              ; e_entry = program entry point = text = #10054
+program_header - elf_header   ; e_phoff = program header table offset = #34
+#0                ; e_shoff = section header table
+#0                ; e_flags
+$34 0             ; e_ehsize = ELF header size = program_header - elf_header
+$20 0             ; e_phentsize = program header size = text - program_header
+1 0               ; e_phnum = number of program headers
+0 0               ; e_shentsize = section header size
+0 0               ; e_shnum = the number of section headers
+0 0               ; e_shstrndx = section name string table index = SHN_UNDEF
+
+program_header:   ; #10034
+#1                ; ptype = PT_LOAD
+text - elf_header ; p_offset = text - elf_header = #54
+text              ; p_vaddr = #10054
+#0                ; p_paddr
+bss - elf_header  ; p_filesz = #97
+end - elf_header  ; p_memsz = #98
+#7                ; p_flags = PF_X + PF_W + PF_R
+#1000             ; p_align
+
+text:             ; #10054
+271 buffer        ; mov ecx, buffer = #10097
+272 #1            ; mov edx, #1 (read/write 1 byte)
+
+next_char:        ; #1005e
+; edi = next byte
+063 377           ; xor edi, edi
+
+; read_char:      ; #10060
+270 #3            ; mov eax, #3 (sys_read)
+063 333           ; xor ebx, ebx (stdin = 0)
+                  ; ecx = buffer, edx = 1
+315 $80           ; int $80
+
+; check EOF or error
+205 300           ; test eax, eax
+$7f $9            ; jg not_eof
+
+; end of file or error
+270 #1            ; mov eax, 1 (sys_exit)
+063 333           ; xor ebx, ebx
+315 $80           ; int $80
+
+not_eof:          ; #10076
+212 001           ; mov al, [ecx]
+054 '0            ; sub al, '0
+074 10            ; cmp al, 10
+$73 $7            ; jnc write_char
+
+; digit in al
+301 347 $3        ; shl edi, 3
+003 370           ; add edi, eax
+353 $db           ; jmp read_char
+
+write_char:       ; #10085
+213 307           ; mov eax, edi
+210 001           ; mov [ecx], al
+270 #4            ; mov eax, #4 (sys_write)
+273 #1            ; mov ebx, #1 (standard output)
+                  ; ecx = buffer, edx = 1
+315 $80           ; int $80
+353 $c7           ; jmp next_char
+
+bss:              ; #10097
+buffer:           ; #10097
+; 0 (not in file)
+end:              ; #10098

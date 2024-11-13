@@ -75,9 +75,9 @@ X=7: cmp
 
 == moves ==
 
-210 mAB         mov.8 mB, A
+210 mAB         movb mB, A
 211 mAB         mov mB, A
-212 mAB         mov.8 A, mB
+212 mAB         movbb A, mB
 213 mAB         mov A, mB
 27A i32         mov A, i32
 307 m0B i32     mov mB, i32
@@ -109,11 +109,11 @@ X=7: cmp
 
 == conditionals
 
-16c/17c i8      jmp_if <condition> i8
-017 20c/21c i32 jmp_if <condition> i32
-017 22c/23c mAB set_if.8 <condition> rB
+$7X i8          jmp_if <X> i8
+017 $8X i32     jmp_if <X> i32
+017 $9X mAB     set_if.8 <X> rB
 
-cond:
+cond X:
   0: o, overflow
   1: no, not overflow
   2: c, unsigned < or carry
