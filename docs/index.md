@@ -11,11 +11,10 @@ in the process.
 
 Where do we start? We assume we have a Linux terminal running `bash`:
 
-```console
+```bash
 $ echo 'hello'
 hello
 ```
-
 
 We will use basic Linux command line utilities such as `echo` and `cat` and a text editor
 such as `VI` or `emacs` or `gedit`.
@@ -28,16 +27,10 @@ The [`Makefile`](https://github.com/tczajka/bootstrap/blob/main/Makefile) has al
 So if you want to see a program in action rather than repeat the whole process yourself,
 you can build any step in the tutorial using `make`:
 
-```console
+```bash
 $ make hello.1.0.0.e
 [...]
 $ ./hello.1.0.0.e
 $ echo $?
 17
-```
-
-Test
-
-```c++
-int main() {}
 ```
