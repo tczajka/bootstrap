@@ -30,7 +30,7 @@ end - elf_header  ; p_memsz = #60
 
 ; text:           ; #100054
 270 #1            ; mov eax, 1 (sys_exit)
-273 #11           ; mov ebx, #11 (exit code)
+273 'H'           ; mov ebx, 'H' (exit code)
 315 $80           ; int $80
 
 end:              ; #100060

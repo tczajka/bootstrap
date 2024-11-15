@@ -46,5 +46,5 @@ $ make hello.2
 [...]
 $ ./hello.2
 $ echo $?
-17
+72
 ```

@@ -1,3 +1,4 @@
 *.swp
-*.e
+*.bootstrap
+/*.[0-9]
 /old/bin/
