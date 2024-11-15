@@ -9,6 +9,7 @@ remote_theme: sighingnow/jekyll-gitbook
 plugins:
   - jekyll-remote-theme
 markdown: kramdown
+highlighter: rouge
 kramdown:
   syntax_highligter: rouge
 
