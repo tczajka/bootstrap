@@ -8,3 +8,24 @@ description: Bootstrapping a compiler
 remote_theme: sighingnow/jekyll-gitbook
 plugins:
   - jekyll-remote-theme
+markdown: kramdown
+kramdown:
+  syntax_highlighter: coderay
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false
+collections:
+  steps:
+    output: true
+    order:
+      - first-program.md
+  reference:
+    output: true
+    order:
+      - elf.md
+      - x86.md
+      - syscalls.md
+
+ordered_collections:
+  - steps
+  - reference
