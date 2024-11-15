@@ -10,10 +10,8 @@ plugins:
   - jekyll-remote-theme
 markdown: kramdown
 kramdown:
-  syntax_highlighter: coderay
-  syntax_highlighter_opts:
-    block:
-      line_numbers: false
+  syntax_highligter: rouge
+
 collections:
   steps:
     output: true
