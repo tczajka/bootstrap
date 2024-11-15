@@ -6,7 +6,7 @@ all: hello.2 octal.2
 
 .PHONY: clean
 clean:
-	find . -type f -executable -exec rm '{}' \;
+	find . -type f -executable -delete
 
 hello.1:
 	echo -en "\
