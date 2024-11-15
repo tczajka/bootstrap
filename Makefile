@@ -32,3 +32,10 @@ hello.1.0.1.e: bytes.1.0.e hello.1.0.1.bytes hello.1.0.e
 	cmp hello.1.0.1.e hello.1.0.e
 	chmod u+x hello.1.0.1.e
 
+bytes.1.0.1.a.e bytes.1.0.1.e: bytes.1.0.e bytes.1.0.1.bytes
+	./bytes.1.0.e < bytes.1.0.1.bytes > bytes.1.0.1.a.e
+	cmp bytes.1.0.1.a.e bytes.1.0.e
+	./bytes.1.0.1.a.e < bytes.1.0.1.bytes > bytes.1.0.1.e
+	cmp bytes.1.0.1.e bytes.1.0.e
+
+
