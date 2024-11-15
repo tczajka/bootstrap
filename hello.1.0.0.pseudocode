@@ -2,7 +2,7 @@ ord #100000       ; virtual address
 elf_header:       ; #100000
                   ; e_ident:
 $7f 'E 'L 'F      ;   magic number
-1 1 1 4 0         ;   ELFCLASS32 ELFDATA2LSB EV_CURRENT ELFOSABI_LINUX 0
+1 1 1 0 0         ;   ELFCLASS32 ELFDATA2LSB EV_CURRENT ELFOSABI_SYSV 0
 0 0 0 0 0 0 0     ;   padding
 2 0               ; e_type = ET_EXEC
 3 0               ; e_machine = EM_386

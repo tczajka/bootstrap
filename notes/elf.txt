@@ -5,7 +5,8 @@
   01          # e_ident[4] = ELFCLASS32, 32-bit code
   01          # e_ident[5] = ELFDATA2LSB, little-endian machine
   01          # e_ident[6] = EV_CURRENT, ELF format version
-  00 00 00 00 00 00 00 00 00  # e_ident[7:16], padding
+  00 00       # e_ident[7:9] = ELFOSABI_SYSV 0
+  00 00 00 00 00 00 00 # e_ident[9:16], padding
   02 00       # e_type = ET_EXEC, executable file
   03 00       # e_machine = EM_386, x86-32
   01 00 00 00 # e_version = EV_CURRENT, ELF format version again
