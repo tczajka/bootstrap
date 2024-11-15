@@ -21,6 +21,7 @@ collections:
   reference:
     output: true
     order:
+      - ascii.md
       - elf.md
       - x86.md
       - syscalls.md
