@@ -77,7 +77,7 @@ X=7: cmp
 
 210 mAB         movb mB, A
 211 mAB         mov mB, A
-212 mAB         movbb A, mB
+212 mAB         movb A, mB
 213 mAB         mov A, mB
 27A i32         mov A, i32
 307 m0B i32     mov mB, i32
