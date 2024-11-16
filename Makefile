@@ -32,13 +32,8 @@ hello.2: octal.1 hello.2.octal hello.1
 	cmp hello.2 hello.1
 	chmod u+x hello.2
 
-octal.2.bootstrap: octal.1 octal.2.octal
-	./octal.1 < octal.2.octal > octal.2.bootstrap
-	cmp octal.2.bootstrap octal.1
-	chmod u+x octal.2.bootstrap
-
-octal.2: octal.2.bootstrap octal.2.octal
-	./octal.2.bootstrap < octal.2.octal > octal.2
-	cmp octal.2 octal.2.bootstrap
+octal.2: octal.1 octal.2.octal
+	./octal.1 < octal.2.octal > octal.2
+	cmp octal.2 octal.1
 	chmod u+x octal.2
 
