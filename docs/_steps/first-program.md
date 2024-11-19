@@ -3,7 +3,18 @@ layout: post
 title: Hello, world!
 ---
 
-Let's create our first executable program. Where do we start?
+Let's create our first executable program. It will print "Hello, world!" to the console.
+
+But where do we start? We assume that don't have a Python interpreter, a C++ compiler, or even an assembler
+available (or don't want to trust them!).
+
+## Outline
+
+## Assembly code
+
+Let start by writing the code in assembly:
+
+## File layout
 
 file offset | virtual address | bytes | assembly | comment
 ---: | ------: | :-------------- | :-------------- | :------
@@ -60,3 +71,5 @@ file offset | virtual address | bytes | assembly | comment
  #7a | #10007a | "Hello, world!" $a | `db "Hello, world!", $a`| the message with a new line
  #88 | #100088 |                 | `message\_end:` | end of message
  #88 | #100088 |                 | `text\_end:`    | end of executable code
+
+## Create the file!
