@@ -15,6 +15,7 @@ We *could* make do even without these tools and build our own operating system a
 editor from scratch. But we'll not tie our hands *that* much. Maybe some day.
 
 We will build our tools in phases:
+
 * We have to start somewhere. Our first programs will be built from the command line
   using `echo`.
 * **Octal**. This will let us write code as a sequence of numbers in
@@ -27,8 +28,8 @@ We will build our tools in phases:
 * **Brooklyn**. A programming language similar to C or Pascal.
 * **Tetris**. The game.
 
-All the code is available in the [`src` directory](https://github.com/tczajka/bootstrap/tree/main/src)
-of the [github repository](https://github.com/tczajka/bootstrap).
+All the code is available in the [`src`](https://github.com/tczajka/bootstrap/tree/main/src) directory
+of the [github](https://github.com/tczajka/bootstrap) repository.
 The [`Makefile`](https://github.com/tczajka/bootstrap/blob/main/Makefile) has all the build steps.
 So if you want to see a program in action rather than repeat the whole process yourself,
 you can build any step in the tutorial using `make`:

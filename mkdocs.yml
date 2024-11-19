@@ -4,7 +4,7 @@ site_author: Tomek Czajka
 nav:
   - Home: index.md
   - Steps:
-    - steps/first-program.md
+    - steps/hello-world.md
   - Reference:
     - reference/ascii.md
     - reference/elf.md

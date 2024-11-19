@@ -4,14 +4,14 @@ We write our code for Linux under 32-bit mode. Nowadays everybody has 64-bit com
 32-bit mode programs are supported under 64-bit Linuxes, so we use that.
 
 To call an operating system kernel service we use "system calls". Under 32-bit Linux these
-are entered via the `int $80` (interrupt 128, or 80 in hexadecimal) machine code instruction.
+are entered via the `int $80` (interrupt 128, or $80 in hexadecimal) machine code instruction.
 
 Parameters are put in registers (eax, ebx, ...), and the return value is returned in the eax register.
 
 The system calls we need are:
 
 | name | description | eax | ebx | ecx | edx | return value
-| ---- | ----------- | --- | --- | --- | --- | ------------
+| ---- | ----------- | --: | --- | --- | --- | ------------
 | exit | exit the program | 1 | program return code | | | none
 | read | read from a file | 3 | file descriptor | buffer address | buffer size | number of bytes read
 | write | write to a file | 4 | file descriptor | data address | data length | number of bytes written

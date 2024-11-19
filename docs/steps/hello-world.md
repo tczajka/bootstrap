@@ -1,4 +1,4 @@
-# First program
+# Hello, world!
 
 Let's create our first executable program. It will print "Hello, world!" to the console.
 
