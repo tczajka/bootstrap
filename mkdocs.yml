@@ -1,6 +1,7 @@
 site_name: Bootstrapping a compiler
 site_description: Bootstrap a compiler from nothing
 site_author: Tomek Czajka
+
 nav:
   - Home: index.md
   - Steps:
@@ -11,3 +12,6 @@ nav:
     - reference/x86.md
     - reference/syscalls.md
   - Code repository: https://github.com/tczajka/bootstrap
+
+extra_css:
+  - style.css
