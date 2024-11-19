@@ -7,6 +7,7 @@ nav:
   - Steps:
     - steps/hello-world.md
   - Reference:
+    - reference/numbers.md
     - reference/ascii.md
     - reference/elf.md
     - reference/x86.md

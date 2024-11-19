@@ -1,11 +1,13 @@
 # Hello, world!
 
-Let's create our first executable program. It will print "Hello, world!" to the console.
+Let's create our first executable program. It will print `Hello, world!` to the console.
 
 But where do we start? We assume that don't have a Python interpreter, a C++ compiler, or even an assembler
 available (or don't want to trust them!).
 
 ## Outline
+
+
 
 ## Assembly code
 
