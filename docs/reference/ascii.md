@@ -1,7 +1,5 @@
----
-layout: post
-title: ASCII
----
+# ASCII
+
 Each ASCII character corresponds to a byte in the range 0-127 (hex 0-7F).
 Rows correspond to the first hex digit, colums to the second hex digit.
 

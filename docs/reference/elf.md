@@ -1,7 +1,5 @@
----
-layout: post
-title: ELF file format
----
+# Linux executable files
+
 Executable files on Linux follow the ELF file format.
 
 The ELF format can store many different kinds

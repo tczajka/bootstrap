@@ -1,3 +1,4 @@
 *.swp
 *.bootstrap
+/site
 /*.[0-9]

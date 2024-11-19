@@ -1,7 +1,5 @@
----
-layout: post
-title: Linux system calls
----
+# Linux system calls
+
 We write our code for Linux under 32-bit mode. Nowadays everybody has 64-bit computers, but
 32-bit mode programs are supported under 64-bit Linuxes, so we use that.
 

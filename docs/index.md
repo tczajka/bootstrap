@@ -1,7 +1,5 @@
----
-layout: home
-title: Bootstrapping a compiler
----
+# Bootstrapping a compiler
+
 We are going to bootstrap a compiler for a high level programming language
 without using another programming language. Not even assembly. We are going to
 build our tools from scratch!

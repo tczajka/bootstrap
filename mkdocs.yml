@@ -1,0 +1,13 @@
+site_name: Bootstrapping a compiler
+site_description: Bootstrap a compiler from nothing
+site_author: Tomek Czajka
+nav:
+  - Home: index.md
+  - Steps:
+    - steps/first-program.md
+  - Reference:
+    - reference/ascii.md
+    - reference/elf.md
+    - reference/x86.md
+    - reference/syscalls.md
+  - Code repository: https://github.com/tczajka/bootstrap
