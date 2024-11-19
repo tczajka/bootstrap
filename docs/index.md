@@ -7,15 +7,8 @@ build our tools from scratch!
 Before we get there, it will take a lot of little steps. And we will learn a lot
 in the process.
 
-Where do we start? We assume we have a computer with a Linux operating system.
-We will be working in a terminal running `bash`:
-
-```bash
-$ echo 'hello'
-hello
-```
-
-We will use some basic Linux command line utilities such as `echo` and `cat` and a text
+Where do we start? We assume we have a computer with a Linux operating system and a terminal
+running `bash`. We will use some basic Linux command line utilities such as `echo` and `cat` and a text
 editor such as vi, emacs or gedit.
 
 We *could* make do even without these tools and build our own operating system and a text
@@ -34,15 +27,15 @@ We will build our tools in phases:
 * **Brooklyn**. A programming language similar to C or Pascal.
 * **Tetris**. The game.
 
-All the code is available in the [github repository](https://github.com/tczajka/bootstrap).
-The [`Makefile`](https://github.com/tczajka/bootstrap/blob/main/Makefile) has all the steps.
+All the code is available in the [`src` directory](https://github.com/tczajka/bootstrap/tree/main/src)
+of the [github repository](https://github.com/tczajka/bootstrap).
+The [`Makefile`](https://github.com/tczajka/bootstrap/blob/main/Makefile) has all the build steps.
 So if you want to see a program in action rather than repeat the whole process yourself,
 you can build any step in the tutorial using `make`:
 
 ```bash
-$ make hello.2
+$ make bin/hello.1
 [...]
-$ ./hello.2
-$ echo $?
-72
+$ bin/hello.1
+Hello, world!
 ```

@@ -1,6 +1,5 @@
   bits 32
 text:
-  org 0x100000
 start:
   mov ebx, 1        ; ebx = standard output
   mov ecx, message  ; ecx = message address
