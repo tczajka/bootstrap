@@ -2,13 +2,13 @@
 
 Let's create our first executable program. It will print `Hello, world!` to the console.
 
-But where do we start? We assume that don't have a Python interpreter, a C++ compiler, or even an assembler
-available (or don't want to trust them!).
+But where do we start? We are only going to use basic Linux command line tools.
+So we are not going to use a Python interpret, a C++ compiler, or even an assembler!
 
 ## Assembly code
 
 Despite the lack of an assembler, we start by writing code in assembly. We will then manually convert it
-to machine code.
+to [machine code](reference/x86.md).
 
 We want to call the `write` [system call](reference/syscalls.md) to print the message to the
 standard output of the process. The operating system automatically opens 3 files for each process:
@@ -174,24 +174,44 @@ expr      | value
 `exit - *` | `$8`
 `write_loop - *` | `-$11` = `$ef`
 
-## Create the file!
+## Create the file using `echo`
 
-Now that we know what `#8b` = 139 bytes we want to put in the file, let's put them in!
-We can use the bash `echo` command. `-e` enables escape codes:
-`\0ooo` is an octal escape code, `\xhh` is a hexadecimal escape code. `-n` means: don't add
-an extra new line at the end. We write the `!` character in the message as its
-[ASCII](reference/ascii.md) code `\x21` because `!` a special character in `bash` strings.
+`echo` is a Linux command that will print out the argument given to it:
+
+```bash
+$ echo 'ABC'
+ABC
+```
+
+Adding an `-e` flag enables escape codes for arbitrary bytes (including non-printable
+characters and non-ASCII bytes): `\0ooo` is an octal escape code, `\xhh` is a hexadecimal escape code.
+Here, we print ABC again by using [ASCII](reference/ascii.md) codes:
+
+```bash
+$ echo -e '\x41\x42\x43'
+ABC
+```
+
+We know what `#8b` = 139 bytes we want to have in our program. Let's put them in
+a single line in a text file in the format expected by `echo` in its argument:
+
+[`src/hello.1.echo`](https://github.com/tczajka/bootstrap/blob/main/src/hello.1.echo)
+
+```
+\x7fELF\x1\x1\x1\0\0\0\0\0\0\0\0\0\x2\0\x3\0\x1\0\0\0\x54\0\x10\0\x34\0\0\0\0\0\0\0\0\0\0\0\x34\0\x20\0\x1\0\0\0\0\0\0\0\x1\0\0\0\x54\0\0\0\x54\0\x10\0\0\0\0\0\x37\0\0\0\x37\0\0\0\x5\0\0\0\x0\x10\0\0\0273\x1\0\0\0\0271\x7d\0\x10\0\0272\xe\0\0\0\0270\x4\0\0\0\0315\x80\0205\0300\x7e\x8\03\0310\053\0320\x75\xef\063\0333\0270\x1\0\0\0\0315\x80Hello, world!\xa
+```
+
+We can redirect that file as the argument to `echo`. The `-n` flag says: don't print an extra
+new line character at the end.
 
 ```bash
 $ mkdir bin
-$ echo -en "\
-> \x7fELF\x1\x1\x1\0\0\0\0\0\0\0\0\0\x2\0\x3\0\x1\0\0\0\
-> \x54\0\x10\0\x34\0\0\0\0\0\0\0\0\0\0\0\x34\0\x20\0\x1\0\0\0\0\0\0\0\
-> \x1\0\0\0\x54\0\0\0\x54\0\x10\0\0\0\0\0\x37\0\0\0\x37\0\0\0\x5\0\0\0\x0\x10\0\0\
-> \0273\x1\0\0\0\0271\x7d\0\x10\0\0272\xe\0\0\0\
-> \0270\x4\0\0\0\\0315\x80\0205\0300\x7e\x8\03\0310\053\0320\x75\xef\
-> \063\0333\0270\x1\0\0\0\0315\x80Hello, world\x21\xa" > bin/hello.1
-$ wc -l bin/hello.1
+$ echo -en `cat src/hello.1.echo` > bin/hello.1
+```
+
+Make sure it has 139 bytes as expected, and mark it as an executable program!
+```bash
+$ wc -c bin/hello.1
 139 bin/hello.1
 $ chmod u+x bin/hello.1
 ```
@@ -203,4 +223,4 @@ $ bin/hello.1
 Hello, world!
 ```
 
-It works! We have created our first program from scratch.
+It works! We have created our first program from scratch, using nothing but command line tools.
