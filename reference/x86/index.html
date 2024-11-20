@@ -131,7 +131,7 @@
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-bs-level="2"><a href="#system-calls" class="nav-link">System calls</a>
+            <li class="nav-item" data-bs-level="2"><a href="#software-interrupts" class="nav-link">Software interrupts</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -158,43 +158,43 @@
 </thead>
 <tbody>
 <tr>
-<td style="text-align: right;">0</td>
-<td>eax</td>
+<td style="text-align: right;"><code>0</code></td>
+<td><code>eax</code></td>
 <td>some arithmetic instructions use it implicitly</td>
 </tr>
 <tr>
-<td style="text-align: right;">1</td>
-<td>ecx</td>
+<td style="text-align: right;"><code>1</code></td>
+<td><code>ecx</code></td>
 <td></td>
 </tr>
 <tr>
-<td style="text-align: right;">2</td>
-<td>edx</td>
+<td style="text-align: right;"><code>2</code></td>
+<td><code>edx</code></td>
 <td></td>
 </tr>
 <tr>
-<td style="text-align: right;">3</td>
-<td>ebx</td>
+<td style="text-align: right;"><code>3</code></td>
+<td><code>ebx</code></td>
 <td></td>
 </tr>
 <tr>
-<td style="text-align: right;">4</td>
-<td>esp</td>
+<td style="text-align: right;"><code>4</code></td>
+<td><code>esp</code></td>
 <td>stack pointer (stack grows down)</td>
 </tr>
 <tr>
-<td style="text-align: right;">5</td>
-<td>ebp</td>
+<td style="text-align: right;"><code>5</code></td>
+<td><code>ebp</code></td>
 <td></td>
 </tr>
 <tr>
-<td style="text-align: right;">6</td>
-<td>esi</td>
+<td style="text-align: right;"><code>6</code></td>
+<td><code>esi</code></td>
 <td></td>
 </tr>
 <tr>
-<td style="text-align: right;">7</td>
-<td>edi</td>
+<td style="text-align: right;"><code>7</code></td>
+<td><code>edi</code></td>
 <td></td>
 </tr>
 </tbody>
@@ -210,43 +210,43 @@
 </thead>
 <tbody>
 <tr>
-<td style="text-align: right;">0</td>
-<td>al</td>
+<td style="text-align: right;"><code>0</code></td>
+<td><code>al</code></td>
 <td>lowest byte of eax</td>
 </tr>
 <tr>
-<td style="text-align: right;">1</td>
-<td>cl</td>
+<td style="text-align: right;"><code>1</code></td>
+<td><code>cl</code></td>
 <td>lowest byte of ecx</td>
 </tr>
 <tr>
-<td style="text-align: right;">2</td>
-<td>dl</td>
+<td style="text-align: right;"><code>2</code></td>
+<td><code>dl</code></td>
 <td>lowest byte of edx</td>
 </tr>
 <tr>
-<td style="text-align: right;">3</td>
-<td>bl</td>
+<td style="text-align: right;"><code>3</code></td>
+<td><code>bl</code></td>
 <td>lowest byte of ebx</td>
 </tr>
 <tr>
-<td style="text-align: right;">4</td>
-<td>ah</td>
+<td style="text-align: right;"><code>4</code></td>
+<td><code>ah</code></td>
 <td>second-lowest byte of eax</td>
 </tr>
 <tr>
-<td style="text-align: right;">5</td>
-<td>ch</td>
+<td style="text-align: right;"><code>5</code></td>
+<td><code>ch</code></td>
 <td>second-lowest byte of ecx</td>
 </tr>
 <tr>
-<td style="text-align: right;">6</td>
-<td>dh</td>
+<td style="text-align: right;"><code>6</code></td>
+<td><code>dh</code></td>
 <td>second-lowest byte of edx</td>
 </tr>
 <tr>
-<td style="text-align: right;">7</td>
-<td>bh</td>
+<td style="text-align: right;"><code>7</code></td>
+<td><code>bh</code></td>
 <td>second-lowest byte of ebx</td>
 </tr>
 </tbody>
@@ -264,49 +264,116 @@
 </thead>
 <tbody>
 <tr>
-<td>%210 %0xy</td>
-<td><code>movb [y], x</code></td>
-<td>8-bit store in memory</td>
-</tr>
-<tr>
-<td>%211 %0xy</td>
-<td><code>mov [y], x</code></td>
-<td>32-bit store in memory</td>
-</tr>
-<tr>
-<td>%212 %0xy</td>
-<td><code>movb x, [y]</code></td>
-<td>8-bit load from memory</td>
-</tr>
-<tr>
-<td>%212 %3xy</td>
+<td><code>%212 %3xy</code></td>
 <td><code>movb x, y</code></td>
 <td>8-bit copy</td>
 </tr>
 <tr>
-<td>%213 %0xy</td>
-<td><code>mov x, [y]</code></td>
-<td>32-bit load from memory</td>
-</tr>
-<tr>
-<td>%213 %3xy</td>
+<td><code>%213 %3xy</code></td>
 <td><code>mov x, y</code></td>
 <td>32-bit copy</td>
 </tr>
 <tr>
-<td>%26x $y</td>
+<td><code>%212 %0xy</code></td>
+<td><code>movb x, [y]</code></td>
+<td>8-bit load from memory</td>
+</tr>
+<tr>
+<td><code>%213 %0xy</code></td>
+<td><code>mov x, [y]</code></td>
+<td>32-bit load from memory</td>
+</tr>
+<tr>
+<td><code>%210 %0xy</code></td>
+<td><code>movb [y], x</code></td>
+<td>8-bit store in memory</td>
+</tr>
+<tr>
+<td><code>%211 %0xy</code></td>
+<td><code>mov [y], x</code></td>
+<td>32-bit store in memory</td>
+</tr>
+<tr>
+<td><code>%26x $y</code></td>
 <td><code>movb x, $y</code></td>
 <td>8-bit load constant</td>
 </tr>
 <tr>
-<td>%27x #y</td>
+<td><code>%27x #y</code></td>
 <td><code>mov x, #y</code></td>
 <td>32-bit load constant</td>
 </tr>
 </tbody>
 </table>
 <h2 id="basic-arithmetic-and-logic">Basic arithmetic and logic</h2>
-<p>There are 8 basic arithmetic and logic operations:</p>
+<p>Basic arithmetic instructions are encoded similarly to moves:</p>
+<table>
+<thead>
+<tr>
+<th>machine code</th>
+<th>assembly</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>%0p2 %3xy</code></td>
+<td><code>opb x, y</code></td>
+<td>8-bit arithmetic</td>
+</tr>
+<tr>
+<td><code>%0p3 %3xy</code></td>
+<td><code>op x, y</code></td>
+<td>32-bit arithmetic</td>
+</tr>
+<tr>
+<td><code>%0p0 %0xy</code></td>
+<td><code>opb [y], x</code></td>
+<td>8-bit arithmetic to memory</td>
+</tr>
+<tr>
+<td><code>%0p1 %0xy</code></td>
+<td><code>op [y], x</code></td>
+<td>32-bit arithmetic to memory</td>
+</tr>
+<tr>
+<td><code>%0p2 %0xy</code></td>
+<td><code>opb x, [y]</code></td>
+<td>8-bit arithmetic from memory</td>
+</tr>
+<tr>
+<td><code>%0p3 %0xy</code></td>
+<td><code>opb x, [y]</code></td>
+<td>32-bit arithmetic from memory</td>
+</tr>
+<tr>
+<td><code>%0p4 $y</code></td>
+<td><code>opb al, $y</code></td>
+<td>8-bit arithmetic of <code>al</code> with a constant</td>
+</tr>
+<tr>
+<td><code>%0p5 #y</code></td>
+<td><code>op eax, #y</code></td>
+<td>32-bit arithmetic of <code>eax</code> with a constant</td>
+</tr>
+<tr>
+<td><code>%200 %3px $y</code></td>
+<td><code>opb x, $y</code></td>
+<td>8-bit arithmetic with a constant</td>
+</tr>
+<tr>
+<td><code>%201 %3px #y</code></td>
+<td><code>op x, #y</code></td>
+<td>32-bit arithmetic with a constant</td>
+</tr>
+<tr>
+<td><code>%203 %3px $y</code></td>
+<td><code>op x, $y</code></td>
+<td>32-bit arithmetic with a sign-extended 8-bit constant</td>
+</tr>
+</tbody>
+</table>
+<p>Where <code>p</code> is one of 8 basic arithmetic and logic operations:</p>
 <table>
 <thead>
 <tr>
@@ -355,73 +422,6 @@
 <td style="text-align: right;"><code>7</code></td>
 <td><code>cmp</code></td>
 <td>compare (<code>sub</code> without storing result)</td>
-</tr>
-</tbody>
-</table>
-<p>Basic arithmetic instructions are encoded similarly to moves:</p>
-<table>
-<thead>
-<tr>
-<th>machine code</th>
-<th>assembly</th>
-<th>description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>%0p0 %0xy</code></td>
-<td><code>opb [y], x</code></td>
-<td>8-bit arithmetic to memory</td>
-</tr>
-<tr>
-<td><code>%0p1 %0xy</code></td>
-<td><code>op [y], x</code></td>
-<td>32-bit arithmetic to memory</td>
-</tr>
-<tr>
-<td><code>%0p2 %0xy</code></td>
-<td><code>opb x, [y]</code></td>
-<td>8-bit arithmetic from memory</td>
-</tr>
-<tr>
-<td><code>%0p2 %3xy</code></td>
-<td><code>opb x, y</code></td>
-<td>8-bit arithmetic</td>
-</tr>
-<tr>
-<td><code>%0p3 %0xy</code></td>
-<td><code>opb x, [y]</code></td>
-<td>32-bit arithmetic from memory</td>
-</tr>
-<tr>
-<td><code>%0p3 %3xy</code></td>
-<td><code>op x, y</code></td>
-<td>32-bit arithmetic</td>
-</tr>
-<tr>
-<td><code>%0p4 $y</code></td>
-<td><code>opb al, $y</code></td>
-<td>8-bit arithmetic of al with a constant</td>
-</tr>
-<tr>
-<td><code>%0p5 #y</code></td>
-<td><code>op eax, #y</code></td>
-<td>32-bit arithmetic of eax with a constant</td>
-</tr>
-<tr>
-<td><code>%200 %3px $y</code></td>
-<td><code>opb x, $y</code></td>
-<td>8-bit arithmetic with a constant</td>
-</tr>
-<tr>
-<td><code>%201 %3px #y</code></td>
-<td><code>op x, #y</code></td>
-<td>32-bit arithmetic with a constant</td>
-</tr>
-<tr>
-<td><code>%203 %3px $y</code></td>
-<td><code>op x, $y</code></td>
-<td>32-bit arithmetic with a sign-extended 8-bit constant</td>
 </tr>
 </tbody>
 </table>
@@ -623,8 +623,8 @@ it off the stack.</p>
 </tr>
 </tbody>
 </table>
-<h2 id="system-calls">System calls</h2>
-<p>A <a href="../syscalls/">system call</a> is achieved using interrupt <code>$80</code>.</p>
+<h2 id="software-interrupts">Software interrupts</h2>
+<p>A <a href="../syscalls/">system call</a> is achieved by calling software interrupt <code>$80</code>.</p>
 <table>
 <thead>
 <tr>

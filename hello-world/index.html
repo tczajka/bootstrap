@@ -441,13 +441,13 @@ into <a href="../reference/x86/">x86 machine code</a>.</p>
 <tr>
 <td><code>#6e</code></td>
 <td><code>#10006e</code></td>
-<td><code>%001 %301</code></td>
+<td><code>%003 %310</code></td>
 <td><code>add ecx, eax</code></td>
 </tr>
 <tr>
 <td><code>#70</code></td>
 <td><code>#100070</code></td>
-<td><code>%051 %302</code></td>
+<td><code>%053 %320</code></td>
 <td><code>sub edx, eax</code></td>
 </tr>
 <tr>
@@ -465,7 +465,7 @@ into <a href="../reference/x86/">x86 machine code</a>.</p>
 <tr>
 <td><code>#76</code></td>
 <td><code>#100074</code></td>
-<td><code>%061 %333</code></td>
+<td><code>%063 %333</code></td>
 <td><code>xor ebx, ebx</code></td>
 </tr>
 <tr>
@@ -565,15 +565,17 @@ $ echo -en &quot;\
 &gt; \x54\0\x10\0\x34\0\0\0\0\0\0\0\0\0\0\0\x34\0\x20\0\x1\0\0\0\0\0\0\0\
 &gt; \x1\0\0\0\x54\0\0\0\x54\0\x10\0\0\0\0\0\x37\0\0\0\x37\0\0\0\x5\0\0\0\x0\x10\0\0\
 &gt; \0273\x1\0\0\0\0271\x7d\0\x10\0\0272\xe\0\0\0\
-&gt; \0270\x4\0\0\0\\0315\x80\0205\0300\x7e\x8\01\0301\051\0302\x75\xef\
-&gt; \061\0333\0270\x1\0\0\0\0315\x80Hello, world\x21\xa&quot; &gt; bin/hello.1
+&gt; \0270\x4\0\0\0\\0315\x80\0205\0300\x7e\x8\03\0310\053\0320\x75\xef\
+&gt; \063\0333\0270\x1\0\0\0\0315\x80Hello, world\x21\xa&quot; &gt; bin/hello.1
 $ wc -l bin/hello.1
 139 bin/hello.1
 $ chmod u+x bin/hello.1
-$ bin/hello.1
+</code></pre>
+<p>Let's try it!</p>
+<pre><code class="language-bash">$ bin/hello.1
 Hello, world!
 </code></pre>
-<p>It works! We have created our first executable.</p></div>
+<p>It works! We have created our first program from scratch.</p></div>
             </div>
         </div>
 
