@@ -4,7 +4,7 @@ Follow the full story on the [project page](https://tczajka.github.io/echo-to-te
 
 ## The goal
 
-We are going to build a clone of Tetris, the game, starting from nothing but a Linux terminal.
+We are going to build a clone of [Tetris](https://tetris.com/)  starting from nothing but a Linux terminal.
 We are not going to use existing compilers, not even an assembler.
 
 Before we get there, we will have to take us a lot of little steps. And we will learn a lot
