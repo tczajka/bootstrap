@@ -8,7 +8,7 @@
         <meta name="author" content="Tomek Czajka">
         
         <link rel="shortcut icon" href="../img/favicon.ico">
-        <title>Hello, world! - Bootstrapping a compiler</title>
+        <title>Hello, world! - Echo to Tetris</title>
         <link href="../css/bootstrap.min.css" rel="stylesheet">
         <link href="../css/fontawesome.min.css" rel="stylesheet">
         <link href="../css/brands.min.css" rel="stylesheet">
@@ -25,7 +25,7 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="..">Bootstrapping a compiler</a>
+                <a class="navbar-brand" href="..">Echo to Tetris</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -72,11 +72,6 @@
                         </ul>
 
                     <ul class="nav navbar-nav ms-md-auto">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
-                                <i class="fa fa-search"></i> Search
-                            </a>
-                        </li>
                             <li class="nav-item">
                                 <a rel="prev" href=".." class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
@@ -119,7 +114,7 @@
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-bs-level="2"><a href="#create-the-file" class="nav-link">Create the file!</a>
+            <li class="nav-item" data-bs-level="2"><a href="#create-the-file-using-echo" class="nav-link">Create the file using echo</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -132,11 +127,11 @@
 
 <h1 id="hello-world">Hello, world!</h1>
 <p>Let's create our first executable program. It will print <code>Hello, world!</code> to the console.</p>
-<p>But where do we start? We assume that don't have a Python interpreter, a C++ compiler, or even an assembler
-available (or don't want to trust them!).</p>
+<p>But where do we start? We are only going to use basic Linux command line tools.
+So we are not going to use a Python interpret, a C++ compiler, or even an assembler!</p>
 <h2 id="assembly-code">Assembly code</h2>
 <p>Despite the lack of an assembler, we start by writing code in assembly. We will then manually convert it
-to machine code.</p>
+to <a href="../reference/x86/">machine code</a>.</p>
 <p>We want to call the <code>write</code> <a href="../reference/syscalls/">system call</a> to print the message to the
 standard output of the process. The operating system automatically opens 3 files for each process:</p>
 <ul>
@@ -553,21 +548,29 @@ into <a href="../reference/x86/">x86 machine code</a>.</p>
 </tr>
 </tbody>
 </table>
-<h2 id="create-the-file">Create the file!</h2>
-<p>Now that we know what <code>#8b</code> = 139 bytes we want to put in the file, let's put them in!
-We can use the bash <code>echo</code> command. <code>-e</code> enables escape codes:
-<code>\0ooo</code> is an octal escape code, <code>\xhh</code> is a hexadecimal escape code. <code>-n</code> means: don't add
-an extra new line at the end. We write the <code>!</code> character in the message as its
-<a href="../reference/ascii/">ASCII</a> code <code>\x21</code> because <code>!</code> a special character in <code>bash</code> strings.</p>
+<h2 id="create-the-file-using-echo">Create the file using <code>echo</code></h2>
+<p><code>echo</code> is a Linux command that will print out the argument given to it:</p>
+<pre><code class="language-bash">$ echo 'ABC'
+ABC
+</code></pre>
+<p>Adding an <code>-e</code> flag enables escape codes for arbitrary bytes (including non-printable
+characters and non-ASCII bytes): <code>\0ooo</code> is an octal escape code, <code>\xhh</code> is a hexadecimal escape code.
+Here, we print ABC again by using <a href="../reference/ascii/">ASCII</a> codes:</p>
+<pre><code class="language-bash">$ echo -e '\x41\x42\x43'
+ABC
+</code></pre>
+<p>We know what <code>#8b</code> = 139 bytes we want to have in our program. Let's put them in
+a single line in a text file in the format expected by <code>echo</code> in its argument:</p>
+<p><a href="https://github.com/tczajka/echo-to-tetris/blob/main/src/hello.1.echo"><code>src/hello.1.echo</code></a></p>
+<pre><code>\x7fELF\x1\x1\x1\0\0\0\0\0\0\0\0\0\x2\0\x3\0\x1\0\0\0\x54\0\x10\0\x34\0\0\0\0\0\0\0\0\0\0\0\x34\0\x20\0\x1\0\0\0\0\0\0\0\x1\0\0\0\x54\0\0\0\x54\0\x10\0\0\0\0\0\x37\0\0\0\x37\0\0\0\x5\0\0\0\x0\x10\0\0\0273\x1\0\0\0\0271\x7d\0\x10\0\0272\xe\0\0\0\0270\x4\0\0\0\0315\x80\0205\0300\x7e\x8\03\0310\053\0320\x75\xef\063\0333\0270\x1\0\0\0\0315\x80Hello, world!\xa
+</code></pre>
+<p>We can redirect that file as the argument to <code>echo</code>. The <code>-n</code> flag says: don't print an extra
+new line character at the end.</p>
 <pre><code class="language-bash">$ mkdir bin
-$ echo -en &quot;\
-&gt; \x7fELF\x1\x1\x1\0\0\0\0\0\0\0\0\0\x2\0\x3\0\x1\0\0\0\
-&gt; \x54\0\x10\0\x34\0\0\0\0\0\0\0\0\0\0\0\x34\0\x20\0\x1\0\0\0\0\0\0\0\
-&gt; \x1\0\0\0\x54\0\0\0\x54\0\x10\0\0\0\0\0\x37\0\0\0\x37\0\0\0\x5\0\0\0\x0\x10\0\0\
-&gt; \0273\x1\0\0\0\0271\x7d\0\x10\0\0272\xe\0\0\0\
-&gt; \0270\x4\0\0\0\\0315\x80\0205\0300\x7e\x8\03\0310\053\0320\x75\xef\
-&gt; \063\0333\0270\x1\0\0\0\0315\x80Hello, world\x21\xa&quot; &gt; bin/hello.1
-$ wc -l bin/hello.1
+$ echo -en `cat src/hello.1.echo` &gt; bin/hello.1
+</code></pre>
+<p>Make sure it has 139 bytes as expected, and mark it as an executable program!</p>
+<pre><code class="language-bash">$ wc -c bin/hello.1
 139 bin/hello.1
 $ chmod u+x bin/hello.1
 </code></pre>
@@ -575,7 +578,7 @@ $ chmod u+x bin/hello.1
 <pre><code class="language-bash">$ bin/hello.1
 Hello, world!
 </code></pre>
-<p>It works! We have created our first program from scratch.</p></div>
+<p>It works! We have created our first program from scratch, using nothing but command line tools.</p></div>
             </div>
         </div>
 
@@ -589,29 +592,8 @@ Hello, world!
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
         </script>
         <script src="../js/base.js"></script>
-        <script src="../search/main.js"></script>
 
-        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="searchModalLabel">Search</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>From here you can search these documents. Enter your search terms below.</p>
-                <form>
-                    <div class="form-group">
-                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
-                    </div>
-                </form>
-                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
-    </div>
-</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+        <div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

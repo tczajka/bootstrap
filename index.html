@@ -4,11 +4,12 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Bootstrap a compiler from nothing">
+        <meta name="description" content="Bootstrap a compiler, and a Tetris game, using nothing but command line tools like echo.
+">
         <meta name="author" content="Tomek Czajka">
         
         <link rel="shortcut icon" href="img/favicon.ico">
-        <title>Bootstrapping a compiler</title>
+        <title>Echo to Tetris</title>
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/fontawesome.min.css" rel="stylesheet">
         <link href="css/brands.min.css" rel="stylesheet">
@@ -25,7 +26,7 @@
     <body class="homepage">
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href=".">Bootstrapping a compiler</a>
+                <a class="navbar-brand" href=".">Echo to Tetris</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -72,11 +73,6 @@
                         </ul>
 
                     <ul class="nav navbar-nav ms-md-auto">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
-                                <i class="fa fa-search"></i> Search
-                            </a>
-                        </li>
                             <li class="nav-item">
                                 <a rel="prev" class="nav-link disabled">
                                     <i class="fa fa-arrow-left"></i> Previous
@@ -105,8 +101,20 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#bootstrapping-a-compiler" class="nav-link">Bootstrapping a compiler</a>
+            <li class="nav-item" data-bs-level="1"><a href="#echo-to-tetris" class="nav-link">Echo to Tetris</a>
               <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#the-goal" class="nav-link">The goal</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#the-plan" class="nav-link">The plan</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#the-code" class="nav-link">The code</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
               </ul>
             </li>
         </ul>
@@ -114,34 +122,35 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="bootstrapping-a-compiler">Bootstrapping a compiler</h1>
-<p>We are going to bootstrap a compiler for a high level programming language
-without using another programming language. Not even assembly. We are going to
-build our tools from scratch!</p>
-<p>Before we get there, it will take a lot of little steps. And we will learn a lot
+<h1 id="echo-to-tetris">Echo to Tetris</h1>
+<p>Follow the full story on the <a href="https://tczajka.github.io/echo-to-tetris/">project page</a>.</p>
+<h2 id="the-goal">The goal</h2>
+<p>We are going to build a clone of Tetris, the game, starting from nothing but a Linux terminal.
+We are not going to use existing compilers, not even an assembler.</p>
+<p>Before we get there, we will have to take us a lot of little steps. And we will learn a lot
 in the process.</p>
-<p>Where do we start? We assume we have a computer with a Linux operating system and a terminal
-running <code>bash</code>. We will use some basic Linux command line utilities such as <code>echo</code> and <code>cat</code> and a text
-editor such as vi, emacs or gedit.</p>
-<p>We <em>could</em> make do even without these tools and build our own operating system and a text
-editor from scratch. But we'll not tie our hands <em>that</em> much. Maybe some day.</p>
+<p>Where do we start? We assume we have a computer with a Linux operating system and a command line terminal.
+We will use some basic Linux commands such as <code>echo</code> and <code>cat</code> and a plain text
+editor such as <code>vi</code>, <code>emacs</code> or <code>gedit</code>.</p>
+<p>We <em>could</em> make do without even these tools and build our own operating system and a text
+editor from scratch. Maybe some day.</p>
+<h2 id="the-plan">The plan</h2>
 <p>We will build our tools in phases:</p>
 <ul>
-<li>We have to start somewhere. Our first programs will be built from the command line
-  using <code>echo</code>.</li>
-<li><strong>Octal</strong>. This will let us write code as a sequence of numbers in
-  octal (base 8) in a text file and get them translated to a binary file.
-  Why base 8? It is simple to parse, and x86 machine
-  code opcodes are easiest to understand in base 8.</li>
-<li><strong>Bytes</strong>. This will make our lifes somewhat easier. It will allow us to use
-  octal and hexadecimal, comments, and refer to addresses by labels.</li>
-<li><strong>Stack</strong>. A stack-based programming language inspired by Forth.</li>
-<li><strong>Brooklyn</strong>. A programming language similar to C or Pascal.</li>
+<li>Our first programs will be built from the command line using <code>echo</code>.</li>
+<li><strong>Assembler</strong>. We will progressively develop a simple assembler.</li>
+<li><strong>Forth</strong>. A simple stack-based interpreted programming language.</li>
+<li><strong>Brooklyn</strong>. A higher level compiled programming language we will make up on the fly,
+  similar to C or Pascal.</li>
 <li><strong>Tetris</strong>. The game.</li>
 </ul>
-<p>All the code is available in the <a href="https://github.com/tczajka/bootstrap/tree/main/src"><code>src</code></a> directory
-of the <a href="https://github.com/tczajka/bootstrap">github</a> repository.
-The <a href="https://github.com/tczajka/bootstrap/blob/main/Makefile"><code>Makefile</code></a> has all the build steps.
+<p>As we develop our programming languages, we will <em>bootstrap</em> the compilers to use their own language!
+So the assembler will be written in assembly, Forth will be written in Forth, and Brooklyn will be written
+in Brooklyn.</p>
+<h2 id="the-code">The code</h2>
+<p>All the code is available in the <a href="https://github.com/tczajka/echo-to-tetris/tree/main/src"><code>src</code></a> directory
+of the <a href="https://github.com/tczajka/echo-to-tetris">github</a> repository.
+The <a href="https://github.com/tczajka/echo-to-tetris/blob/main/Makefile"><code>Makefile</code></a> has all the build steps.
 So if you want to see a program in action rather than repeat the whole process yourself,
 you can build any step in the tutorial using <code>make</code>:</p>
 <pre><code class="language-bash">$ make bin/hello.1
@@ -162,29 +171,8 @@ Hello, world!
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
         </script>
         <script src="js/base.js"></script>
-        <script src="search/main.js"></script>
 
-        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="searchModalLabel">Search</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>From here you can search these documents. Enter your search terms below.</p>
-                <form>
-                    <div class="form-group">
-                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
-                    </div>
-                </form>
-                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
-    </div>
-</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+        <div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -230,5 +218,5 @@ Hello, world!
 
 <!--
 MkDocs version : 1.6.1
-Build Date UTC : 2024-11-20 15:01:41.398786+00:00
+Build Date UTC : 2024-11-20 19:57:11.270031+00:00
 -->
