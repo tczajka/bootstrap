@@ -17,6 +17,7 @@
         <link href="../../css/base.css" rel="stylesheet">
         <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
         <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <link href="../../style.css" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
         <script>hljs.highlightAll();</script> 
     </head>
@@ -37,18 +38,16 @@
                             <li class="nav-item">
                                 <a href="../.." class="nav-link">Home</a>
                             </li>
-                            <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Steps</a>
-                                <ul class="dropdown-menu">
-                                    
-<li>
-    <a href="../../steps/first-program/" class="dropdown-item">First program</a>
-</li>
-                                </ul>
+                            <li class="nav-item">
+                                <a href="../../hello-world/" class="nav-link">Hello, world!</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Reference</a>
                                 <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../numbers/" class="dropdown-item">Number notation</a>
+</li>
                                     
 <li>
     <a href="../ascii/" class="dropdown-item">ASCII</a>
@@ -119,7 +118,7 @@
 <p>We write our code for Linux under 32-bit mode. Nowadays everybody has 64-bit computers, but
 32-bit mode programs are supported under 64-bit Linuxes, so we use that.</p>
 <p>To call an operating system kernel service we use "system calls". Under 32-bit Linux these
-are entered via the <code>int $80</code> (interrupt 128, or 80 in hexadecimal) machine code instruction.</p>
+are entered via the <code>int $80</code> (interrupt 128, or $80 in hexadecimal) machine code instruction.</p>
 <p>Parameters are put in registers (eax, ebx, ...), and the return value is returned in the eax register.</p>
 <p>The system calls we need are:</p>
 <table>
@@ -127,7 +126,7 @@ are entered via the <code>int $80</code> (interrupt 128, or 80 in hexadecimal) m
 <tr>
 <th>name</th>
 <th>description</th>
-<th>eax</th>
+<th style="text-align: right;">eax</th>
 <th>ebx</th>
 <th>ecx</th>
 <th>edx</th>
@@ -138,7 +137,7 @@ are entered via the <code>int $80</code> (interrupt 128, or 80 in hexadecimal) m
 <tr>
 <td>exit</td>
 <td>exit the program</td>
-<td>1</td>
+<td style="text-align: right;">1</td>
 <td>program return code</td>
 <td></td>
 <td></td>
@@ -147,7 +146,7 @@ are entered via the <code>int $80</code> (interrupt 128, or 80 in hexadecimal) m
 <tr>
 <td>read</td>
 <td>read from a file</td>
-<td>3</td>
+<td style="text-align: right;">3</td>
 <td>file descriptor</td>
 <td>buffer address</td>
 <td>buffer size</td>
@@ -156,7 +155,7 @@ are entered via the <code>int $80</code> (interrupt 128, or 80 in hexadecimal) m
 <tr>
 <td>write</td>
 <td>write to a file</td>
-<td>4</td>
+<td style="text-align: right;">4</td>
 <td>file descriptor</td>
 <td>data address</td>
 <td>data length</td>
@@ -165,7 +164,7 @@ are entered via the <code>int $80</code> (interrupt 128, or 80 in hexadecimal) m
 <tr>
 <td>brk</td>
 <td>allocate memory</td>
-<td>45</td>
+<td style="text-align: right;">45</td>
 <td>memory limit request</td>
 <td></td>
 <td></td>

@@ -17,6 +17,7 @@
         <link href="../../css/base.css" rel="stylesheet">
         <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
         <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <link href="../../style.css" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
         <script>hljs.highlightAll();</script> 
     </head>
@@ -37,18 +38,16 @@
                             <li class="nav-item">
                                 <a href="../.." class="nav-link">Home</a>
                             </li>
-                            <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Steps</a>
-                                <ul class="dropdown-menu">
-                                    
-<li>
-    <a href="../../steps/first-program/" class="dropdown-item">First program</a>
-</li>
-                                </ul>
+                            <li class="nav-item">
+                                <a href="../../hello-world/" class="nav-link">Hello, world!</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Reference</a>
                                 <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../numbers/" class="dropdown-item">Number notation</a>
+</li>
                                     
 <li>
     <a href="../ascii/" class="dropdown-item">ASCII</a>
@@ -108,6 +107,34 @@
             
             <li class="nav-item" data-bs-level="1"><a href="#x86-machine-code" class="nav-link">x86 machine code</a>
               <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#registers" class="nav-link">Registers</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#moves" class="nav-link">Moves</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#basic-arithmetic-and-logic" class="nav-link">Basic arithmetic and logic</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#other-arithmetic" class="nav-link">Other arithmetic</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#stack-operations" class="nav-link">Stack operations</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#jumps" class="nav-link">Jumps</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#system-calls" class="nav-link">System calls</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
               </ul>
             </li>
         </ul>
@@ -116,7 +143,504 @@
                     <div class="col-md-9" role="main">
 
 <h1 id="x86-machine-code">x86 machine code</h1>
-<p>Hello x86</p></div>
+<p>We write all our code for x86 CPUs in 32-bit mode. This is the "protected mode" on
+32-bit operating systems or "compatibility mode" on 64-bit operating systems.</p>
+<p>We only describe some common instructions that may be useful to us.</p>
+<h2 id="registers">Registers</h2>
+<p>There are 8 general-purpose 32-bit registers:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">ID</th>
+<th>name</th>
+<th>special uses</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">0</td>
+<td>eax</td>
+<td>some arithmetic instructions use it implicitly</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td>ecx</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>edx</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>ebx</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>esp</td>
+<td>stack pointer (stack grows down)</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>ebp</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: right;">6</td>
+<td>esi</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: right;">7</td>
+<td>edi</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>8-bit instructions use 8-bit fragments of these registers</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">ID</th>
+<th>name</th>
+<th>which byte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">0</td>
+<td>al</td>
+<td>lowest byte of eax</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td>cl</td>
+<td>lowest byte of ecx</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>dl</td>
+<td>lowest byte of edx</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>bl</td>
+<td>lowest byte of ebx</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>ah</td>
+<td>second-lowest byte of eax</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>ch</td>
+<td>second-lowest byte of ecx</td>
+</tr>
+<tr>
+<td style="text-align: right;">6</td>
+<td>dh</td>
+<td>second-lowest byte of edx</td>
+</tr>
+<tr>
+<td style="text-align: right;">7</td>
+<td>bh</td>
+<td>second-lowest byte of ebx</td>
+</tr>
+</tbody>
+</table>
+<h2 id="moves">Moves</h2>
+<p>Move instructions copy data between registers and/or memory.</p>
+<p>Note that we use %, $, # to indicate <a href="../numbers/">octal and hexadecimal numbers</a>.</p>
+<table>
+<thead>
+<tr>
+<th>machine code</th>
+<th>assembly</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>%210 %0xy</td>
+<td><code>movb [y], x</code></td>
+<td>8-bit store in memory</td>
+</tr>
+<tr>
+<td>%211 %0xy</td>
+<td><code>mov [y], x</code></td>
+<td>32-bit store in memory</td>
+</tr>
+<tr>
+<td>%212 %0xy</td>
+<td><code>movb x, [y]</code></td>
+<td>8-bit load from memory</td>
+</tr>
+<tr>
+<td>%212 %3xy</td>
+<td><code>movb x, y</code></td>
+<td>8-bit copy</td>
+</tr>
+<tr>
+<td>%213 %0xy</td>
+<td><code>mov x, [y]</code></td>
+<td>32-bit load from memory</td>
+</tr>
+<tr>
+<td>%213 %3xy</td>
+<td><code>mov x, y</code></td>
+<td>32-bit copy</td>
+</tr>
+<tr>
+<td>%26x $y</td>
+<td><code>movb x, $y</code></td>
+<td>8-bit load constant</td>
+</tr>
+<tr>
+<td>%27x #y</td>
+<td><code>mov x, #y</code></td>
+<td>32-bit load constant</td>
+</tr>
+</tbody>
+</table>
+<h2 id="basic-arithmetic-and-logic">Basic arithmetic and logic</h2>
+<p>There are 8 basic arithmetic and logic operations:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">ID</th>
+<th>op</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;"><code>0</code></td>
+<td><code>add</code></td>
+<td>addition</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>1</code></td>
+<td><code>or</code></td>
+<td>bitwise or</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>2</code></td>
+<td><code>adc</code></td>
+<td>add with carry</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>3</code></td>
+<td><code>sbb</code></td>
+<td>subtract with borrow</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>4</code></td>
+<td><code>and</code></td>
+<td>bitwise and</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>5</code></td>
+<td><code>sub</code></td>
+<td>subtraction</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>6</code></td>
+<td><code>xor</code></td>
+<td>exclusive or</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>7</code></td>
+<td><code>cmp</code></td>
+<td>compare (<code>sub</code> without storing result)</td>
+</tr>
+</tbody>
+</table>
+<p>Basic arithmetic instructions are encoded similarly to moves:</p>
+<table>
+<thead>
+<tr>
+<th>machine code</th>
+<th>assembly</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>%0p0 %0xy</code></td>
+<td><code>opb [y], x</code></td>
+<td>8-bit arithmetic to memory</td>
+</tr>
+<tr>
+<td><code>%0p1 %0xy</code></td>
+<td><code>op [y], x</code></td>
+<td>32-bit arithmetic to memory</td>
+</tr>
+<tr>
+<td><code>%0p2 %0xy</code></td>
+<td><code>opb x, [y]</code></td>
+<td>8-bit arithmetic from memory</td>
+</tr>
+<tr>
+<td><code>%0p2 %3xy</code></td>
+<td><code>opb x, y</code></td>
+<td>8-bit arithmetic</td>
+</tr>
+<tr>
+<td><code>%0p3 %0xy</code></td>
+<td><code>opb x, [y]</code></td>
+<td>32-bit arithmetic from memory</td>
+</tr>
+<tr>
+<td><code>%0p3 %3xy</code></td>
+<td><code>op x, y</code></td>
+<td>32-bit arithmetic</td>
+</tr>
+<tr>
+<td><code>%0p4 $y</code></td>
+<td><code>opb al, $y</code></td>
+<td>8-bit arithmetic of al with a constant</td>
+</tr>
+<tr>
+<td><code>%0p5 #y</code></td>
+<td><code>op eax, #y</code></td>
+<td>32-bit arithmetic of eax with a constant</td>
+</tr>
+<tr>
+<td><code>%200 %3px $y</code></td>
+<td><code>opb x, $y</code></td>
+<td>8-bit arithmetic with a constant</td>
+</tr>
+<tr>
+<td><code>%201 %3px #y</code></td>
+<td><code>op x, #y</code></td>
+<td>32-bit arithmetic with a constant</td>
+</tr>
+<tr>
+<td><code>%203 %3px $y</code></td>
+<td><code>op x, $y</code></td>
+<td>32-bit arithmetic with a sign-extended 8-bit constant</td>
+</tr>
+</tbody>
+</table>
+<h2 id="other-arithmetic">Other arithmetic</h2>
+<table>
+<thead>
+<tr>
+<th>machine code</th>
+<th>assembly</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>%10x</code></td>
+<td><code>inc x</code></td>
+<td>increment by 1</td>
+</tr>
+<tr>
+<td><code>%11x</code></td>
+<td><code>dec x</code></td>
+<td>decrement by 1</td>
+</tr>
+<tr>
+<td><code>%205 %3xy</code></td>
+<td><code>test x, y</code></td>
+<td><code>and x, y</code> without storing the result</td>
+</tr>
+<tr>
+<td><code>%301 %34x $y</code></td>
+<td><code>shl x, $y</code></td>
+<td>shift <code>x</code> left by <code>y</code> bits</td>
+</tr>
+<tr>
+<td><code>%301 %35x $y</code></td>
+<td><code>shr x, $y</code></td>
+<td>signed shift <code>x</code> right by <code>y</code> bits</td>
+</tr>
+<tr>
+<td><code>%301 %37x $y</code></td>
+<td><code>sar x, $y</code></td>
+<td>unsigned shift <code>x</code> right by <code>y</code> bits</td>
+</tr>
+</tbody>
+</table>
+<h2 id="stack-operations">Stack operations</h2>
+<p>Pushing on the stack means decrementing esp by 4 and storing the value at <code>[esp]</code>.
+Popping off the stack is the opposite operation.</p>
+<p>Calling a function pushes the return address on the stack. Returning from the function pops
+it off the stack.</p>
+<table>
+<thead>
+<tr>
+<th>machine code</th>
+<th>assembly</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>%12x</code></td>
+<td><code>push x</code></td>
+<td>push on the stack</td>
+</tr>
+<tr>
+<td><code>%13x</code></td>
+<td><code>pop x</code></td>
+<td>pop off the stack</td>
+</tr>
+<tr>
+<td><code>%350 #rel</code></td>
+<td><code>call #rel</code></td>
+<td>call function, <code>rel</code>: 32-bit relative address</td>
+</tr>
+<tr>
+<td><code>%303</code></td>
+<td><code>ret</code></td>
+<td>return from a function</td>
+</tr>
+</tbody>
+</table>
+<h2 id="jumps">Jumps</h2>
+<table>
+<thead>
+<tr>
+<th>machine code</th>
+<th>assembly</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>%377 $rel</code></td>
+<td><code>jmp $rel</code></td>
+<td>jump, <code>rel</code>: 8-bit relative address</td>
+</tr>
+<tr>
+<td><code>%351 #rel</code></td>
+<td><code>jmp #rel</code></td>
+<td>jump, <code>rel</code>: 32-bit relative address</td>
+</tr>
+<tr>
+<td><code>$7q $rel</code></td>
+<td><code>jq $rel</code></td>
+<td>conditional jump, <code>q</code>: condition, <code>rel</code>: 8-bit relative address</td>
+</tr>
+</tbody>
+</table>
+<p>Conditional jumps are easiest to write in hexadecimal. <code>$7x</code> corresponds to <code>%16x</code> or <code>%17x</code> in octal.</p>
+<p>Possible conditions are as follows:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">ID</th>
+<th>condition</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;"><code>0</code></td>
+<td><code>o</code></td>
+<td>signed overflow</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>1</code></td>
+<td><code>no</code></td>
+<td>signed no overflow</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>2</code></td>
+<td><code>c</code> / <code>b</code></td>
+<td>unsigned carry or &lt;</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>3</code></td>
+<td><code>nc</code> / <code>ae</code></td>
+<td>unsigned no carry or &gt;=</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>4</code></td>
+<td><code>e</code> / <code>z</code></td>
+<td>equal or zero</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>5</code></td>
+<td><code>ne</code> / <code>nz</code></td>
+<td>not equal or not zero</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>6</code></td>
+<td><code>be</code></td>
+<td>unsigned &lt;=</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>7</code></td>
+<td><code>a</code></td>
+<td>unsigned &gt;</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>8</code></td>
+<td><code>s</code></td>
+<td>signed &lt; 0</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>9</code></td>
+<td><code>ns</code></td>
+<td>signed &gt;= 0</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>a</code></td>
+<td><code>p</code></td>
+<td>odd parity</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>b</code></td>
+<td><code>np</code></td>
+<td>even parity</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>c</code></td>
+<td><code>l</code></td>
+<td>signed &lt;</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>d</code></td>
+<td><code>ge</code></td>
+<td>signed &gt;=</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>e</code></td>
+<td><code>le</code></td>
+<td>signed &lt;=</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>f</code></td>
+<td><code>g</code></td>
+<td>signed &gt;</td>
+</tr>
+</tbody>
+</table>
+<h2 id="system-calls">System calls</h2>
+<p>A <a href="../syscalls/">system call</a> is achieved using interrupt <code>$80</code>.</p>
+<table>
+<thead>
+<tr>
+<th>machine code</th>
+<th>assembly</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>%315 $x</code></td>
+<td><code>int $x</code></td>
+<td>software interrupt number <code>x</code></td>
+</tr>
+</tbody>
+</table></div>
             </div>
         </div>
 

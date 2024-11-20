@@ -17,6 +17,7 @@
         <link href="../../css/base.css" rel="stylesheet">
         <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
         <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <link href="../../style.css" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
         <script>hljs.highlightAll();</script> 
     </head>
@@ -37,18 +38,16 @@
                             <li class="nav-item">
                                 <a href="../.." class="nav-link">Home</a>
                             </li>
-                            <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Steps</a>
-                                <ul class="dropdown-menu">
-                                    
-<li>
-    <a href="../../steps/first-program/" class="dropdown-item">First program</a>
-</li>
-                                </ul>
+                            <li class="nav-item">
+                                <a href="../../hello-world/" class="nav-link">Hello, world!</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Reference</a>
                                 <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../numbers/" class="dropdown-item">Number notation</a>
+</li>
                                     
 <li>
     <a href="./" class="dropdown-item active" aria-current="page">ASCII</a>
@@ -79,7 +78,7 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../../steps/first-program/" class="nav-link">
+                                <a rel="prev" href="../numbers/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
@@ -116,7 +115,7 @@
                     <div class="col-md-9" role="main">
 
 <h1 id="ascii">ASCII</h1>
-<p>Each ASCII character corresponds to a byte in the range 0-127 (hex 0-7F).
+<p>Each ASCII character corresponds to a byte in the range 0-127 (hex 0-<code>$7F</code>).
 Rows correspond to the first hex digit, colums to the second hex digit.</p>
 <table>
 <thead>
@@ -295,14 +294,16 @@ Rows correspond to the first hex digit, colums to the second hex digit.</p>
 </tr>
 </tbody>
 </table>
-<p>Whitespace characters:
-* SP: space
-* LF: end of line ("line feed")
-* HT: tab ("horizontal tab")
-* CR: alternate end of line ("carriage return").
-  Windows editors commonly end lines with two characters: CR LF.
-* VT: vertical tab, rarely used
-* FF: end of page ("form feed"), rarely used</p>
+<p>Whitespace characters:</p>
+<ul>
+<li><strong>SP</strong>: space</li>
+<li><strong>LF</strong>: end of line ("line feed")</li>
+<li><strong>HT</strong>: tab ("horizontal tab")</li>
+<li><strong>CR</strong>: alternate end of line ("carriage return").
+  Windows editors commonly end lines with two characters: CR LF.</li>
+<li><strong>VT</strong>: vertical tab, rarely used</li>
+<li><strong>FF</strong>: end of page ("form feed"), rarely used</li>
+</ul>
 <p>In our files we only use SP and LF for whitespace.</p>
 <p>Irrelevant special characters are ommitted from the table.</p></div>
             </div>

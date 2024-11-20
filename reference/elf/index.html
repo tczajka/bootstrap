@@ -17,6 +17,7 @@
         <link href="../../css/base.css" rel="stylesheet">
         <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
         <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <link href="../../style.css" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
         <script>hljs.highlightAll();</script> 
     </head>
@@ -37,18 +38,16 @@
                             <li class="nav-item">
                                 <a href="../.." class="nav-link">Home</a>
                             </li>
-                            <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Steps</a>
-                                <ul class="dropdown-menu">
-                                    
-<li>
-    <a href="../../steps/first-program/" class="dropdown-item">First program</a>
-</li>
-                                </ul>
+                            <li class="nav-item">
+                                <a href="../../hello-world/" class="nav-link">Hello, world!</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Reference</a>
                                 <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../numbers/" class="dropdown-item">Number notation</a>
+</li>
                                     
 <li>
     <a href="../ascii/" class="dropdown-item">ASCII</a>
@@ -133,7 +132,7 @@
 of files for different CPUs and operating systems, but we are only interested in executable
 programs for x86 Linux.</p>
 <h2 id="elf-header">ELF Header</h2>
-<p>An ELF file starts with a #34-byte (52-byte) the ELF Header:</p>
+<p>An ELF file starts with a <code>#34</code>-byte (52-byte) the ELF Header:</p>
 <table>
 <thead>
 <tr>
@@ -145,130 +144,130 @@ programs for x86 Linux.</p>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: right;">#0</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: left;">$7f 'E 'L 'F</td>
+<td style="text-align: right;"><code>#0</code></td>
+<td style="text-align: right;"><code>4</code></td>
+<td style="text-align: left;"><code>$7f 'E 'L 'F</code></td>
 <td style="text-align: left;">magic number that identifies ELF files</td>
 </tr>
 <tr>
-<td style="text-align: right;">#4</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">word size: 1 = 32-bit, 2 = 64-bit</td>
+<td style="text-align: right;"><code>#4</code></td>
+<td style="text-align: right;"><code>1</code></td>
+<td style="text-align: left;"><code>1</code></td>
+<td style="text-align: left;">word size: <code>1</code> = 32-bit, <code>2</code> = 64-bit</td>
 </tr>
 <tr>
-<td style="text-align: right;">#5</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">endianness: 1 = little-endian, 2 = big-endian</td>
+<td style="text-align: right;"><code>#5</code></td>
+<td style="text-align: right;"><code>1</code></td>
+<td style="text-align: left;"><code>1</code></td>
+<td style="text-align: left;">endianness: <code>1</code> = little-endian, <code>2</code> = big-endian</td>
 </tr>
 <tr>
-<td style="text-align: right;">#6</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">1</td>
+<td style="text-align: right;"><code>#6</code></td>
+<td style="text-align: right;"><code>1</code></td>
+<td style="text-align: left;"><code>1</code></td>
 <td style="text-align: left;">ELF specification version</td>
 </tr>
 <tr>
-<td style="text-align: right;">#7</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: left;">operating system ABI: 0 = UNIX System V (this is what is typically used)</td>
+<td style="text-align: right;"><code>#7</code></td>
+<td style="text-align: right;"><code>1</code></td>
+<td style="text-align: left;"><code>0</code></td>
+<td style="text-align: left;">operating system ABI: <code>0</code> = UNIX System V (this is what is typically used)</td>
 </tr>
 <tr>
-<td style="text-align: right;">#8</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">0</td>
+<td style="text-align: right;"><code>#8</code></td>
+<td style="text-align: right;"><code>1</code></td>
+<td style="text-align: left;"><code>0</code></td>
 <td style="text-align: left;">operating system ABI version</td>
 </tr>
 <tr>
-<td style="text-align: right;">#9</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: left;">0 0 0 0 0 0 0</td>
+<td style="text-align: right;"><code>#9</code></td>
+<td style="text-align: right;"><code>7</code></td>
+<td style="text-align: left;"><code>0 0 0 0 0 0 0</code></td>
 <td style="text-align: left;">padding</td>
 </tr>
 <tr>
-<td style="text-align: right;">#10</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">2 0</td>
-<td style="text-align: left;">object file type: 2 = executable file</td>
+<td style="text-align: right;"><code>#10</code></td>
+<td style="text-align: right;"><code>2</code></td>
+<td style="text-align: left;"><code>2 0</code></td>
+<td style="text-align: left;">object file type: <code>2</code> = executable file</td>
 </tr>
 <tr>
-<td style="text-align: right;">#12</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">3 0</td>
-<td style="text-align: left;">CPU: 3 = x86</td>
+<td style="text-align: right;"><code>#12</code></td>
+<td style="text-align: right;"><code>2</code></td>
+<td style="text-align: left;"><code>3 0</code></td>
+<td style="text-align: left;">CPU: <code>3</code> = x86</td>
 </tr>
 <tr>
-<td style="text-align: right;">#14</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: left;">#1</td>
-<td style="text-align: left;">ELF specification version 1 (same as #6)</td>
+<td style="text-align: right;"><code>#14</code></td>
+<td style="text-align: right;"><code>4</code></td>
+<td style="text-align: left;"><code>#1</code></td>
+<td style="text-align: left;">ELF specification version <code>1</code> (same as entry at <code>#6</code>)</td>
 </tr>
 <tr>
-<td style="text-align: right;">#18</td>
-<td style="text-align: right;">4</td>
+<td style="text-align: right;"><code>#18</code></td>
+<td style="text-align: right;"><code>4</code></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">program entry point (virtual address)</td>
 </tr>
 <tr>
-<td style="text-align: right;">#1c</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: left;">#34</td>
-<td style="text-align: left;">program header table location: #34 = directly behind the ELF header</td>
+<td style="text-align: right;"><code>#1c</code></td>
+<td style="text-align: right;"><code>4</code></td>
+<td style="text-align: left;"><code>#34</code></td>
+<td style="text-align: left;">program header table location: <code>#34</code> = directly behind the ELF header</td>
 </tr>
 <tr>
-<td style="text-align: right;">#20</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: left;">#0</td>
-<td style="text-align: left;">section header table location: 0 = none; executable files don't need sections</td>
+<td style="text-align: right;"><code>#20</code></td>
+<td style="text-align: right;"><code>4</code></td>
+<td style="text-align: left;"><code>#0</code></td>
+<td style="text-align: left;">section header table location: <code>0</code> = none; executable files don't need sections</td>
 </tr>
 <tr>
-<td style="text-align: right;">#24</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: left;">#0</td>
+<td style="text-align: right;"><code>#24</code></td>
+<td style="text-align: right;"><code>4</code></td>
+<td style="text-align: left;"><code>#0</code></td>
 <td style="text-align: left;">flags (none are defined for Linux executables)</td>
 </tr>
 <tr>
-<td style="text-align: right;">#28</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">$34 0</td>
+<td style="text-align: right;"><code>#28</code></td>
+<td style="text-align: right;"><code>2</code></td>
+<td style="text-align: left;"><code>$34 0</code></td>
 <td style="text-align: left;">ELF header size</td>
 </tr>
 <tr>
-<td style="text-align: right;">#2a</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">$20 0</td>
+<td style="text-align: right;"><code>#2a</code></td>
+<td style="text-align: right;"><code>2</code></td>
+<td style="text-align: left;"><code>$20 0</code></td>
 <td style="text-align: left;">program header size</td>
 </tr>
 <tr>
-<td style="text-align: right;">#2c</td>
-<td style="text-align: right;">2</td>
+<td style="text-align: right;"><code>#2c</code></td>
+<td style="text-align: right;"><code>2</code></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">number of program headers</td>
 </tr>
 <tr>
-<td style="text-align: right;">#2e</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">0 0</td>
+<td style="text-align: right;"><code>#2e</code></td>
+<td style="text-align: right;"><code>2</code></td>
+<td style="text-align: left;"><code>0 0</code></td>
 <td style="text-align: left;">section header size (ignored if there are no sections)</td>
 </tr>
 <tr>
-<td style="text-align: right;">#30</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">0 0</td>
+<td style="text-align: right;"><code>#30</code></td>
+<td style="text-align: right;"><code>2</code></td>
+<td style="text-align: left;"><code>0 0</code></td>
 <td style="text-align: left;">number of section headers (executable files don't need sections)</td>
 </tr>
 <tr>
-<td style="text-align: right;">#32</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">0 0</td>
-<td style="text-align: left;">section name string table index: 0 = none</td>
+<td style="text-align: right;"><code>#32</code></td>
+<td style="text-align: right;"><code>2</code></td>
+<td style="text-align: left;"><code>0 0</code></td>
+<td style="text-align: left;">section name string table index: <code>0</code> = none</td>
 </tr>
 </tbody>
 </table>
 <h2 id="program-header">Program header</h2>
 <p>An ELF file contains a number of segments that will be loaded into memory. Those are described by
-the Program Header Table with some number of #20-byte (32-byte) Program Headers:</p>
+the Program Header Table with some number of <code>#20</code>-byte (32-byte) Program Headers:</p>
 <table>
 <thead>
 <tr>
@@ -280,57 +279,57 @@ the Program Header Table with some number of #20-byte (32-byte) Program Headers:
 </thead>
 <tbody>
 <tr>
-<td style="text-align: right;">#0</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: left;">#1</td>
-<td style="text-align: left;">Segment type. 1 = load into memory</td>
+<td style="text-align: right;"><code>#0</code></td>
+<td style="text-align: right;"><code>4</code></td>
+<td style="text-align: left;"><code>#1</code></td>
+<td style="text-align: left;">Segment type. <code>1</code> = load into memory</td>
 </tr>
 <tr>
-<td style="text-align: right;">#4</td>
-<td style="text-align: right;">4</td>
+<td style="text-align: right;"><code>#4</code></td>
+<td style="text-align: right;"><code>4</code></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">file location of the segment</td>
 </tr>
 <tr>
-<td style="text-align: right;">#8</td>
-<td style="text-align: right;">4</td>
+<td style="text-align: right;"><code>#8</code></td>
+<td style="text-align: right;"><code>4</code></td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;">virtual address; typically should be at least #10000 (64KB)</td>
+<td style="text-align: left;">virtual address; typically should be at least <code>#10000</code> (64KB)</td>
 </tr>
 <tr>
-<td style="text-align: right;">#c</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: left;">#0</td>
+<td style="text-align: right;"><code>#c</code></td>
+<td style="text-align: right;"><code>4</code></td>
+<td style="text-align: left;"><code>#0</code></td>
 <td style="text-align: left;">physical address (ignored)</td>
 </tr>
 <tr>
-<td style="text-align: right;">#10</td>
-<td style="text-align: right;">4</td>
+<td style="text-align: right;"><code>#10</code></td>
+<td style="text-align: right;"><code>4</code></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">size in the file</td>
 </tr>
 <tr>
-<td style="text-align: right;">#14</td>
-<td style="text-align: right;">4</td>
+<td style="text-align: right;"><code>#14</code></td>
+<td style="text-align: right;"><code>4</code></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">size in memory; if larger than the size in the file, the rest is filled with 0 bytes</td>
 </tr>
 <tr>
-<td style="text-align: right;">#18</td>
-<td style="text-align: right;">4</td>
+<td style="text-align: right;"><code>#18</code></td>
+<td style="text-align: right;"><code>4</code></td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;">permissions (can be combined): #1 = execute, #2 = write, #4 = read</td>
+<td style="text-align: left;">permissions (can be combined): <code>#1</code> = execute, <code>#2</code> = write, <code>#4</code> = read</td>
 </tr>
 <tr>
-<td style="text-align: right;">#1c</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: left;">#1000</td>
+<td style="text-align: right;"><code>#1c</code></td>
+<td style="text-align: right;"><code>4</code></td>
+<td style="text-align: left;"><code>#1000</code></td>
 <td style="text-align: left;">memory alignment: one page = 4 KB</td>
 </tr>
 </tbody>
 </table>
 <p>The virtual address where a segment is loaded in memory must match its location in the file modulo
-memory page size (#1000) because that allows mapping the file into memory using the virtual memory
+memory page size (<code>#1000</code>) because that allows mapping the file into memory using the virtual memory
 system which works at page size granularity.</p>
 <h2 id="stack-segment">Stack segment</h2>
 <p>The stack segment is automatically created (normally at the top of memory addresses) for each executable
