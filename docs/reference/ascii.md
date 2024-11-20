@@ -1,6 +1,6 @@
 # ASCII
 
-Each ASCII character corresponds to a byte in the range 0-127 (hex 0-$7F).
+Each ASCII character corresponds to a byte in the range 0-127 (hex 0-`$7F`).
 Rows correspond to the first hex digit, colums to the second hex digit.
 
 |       | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | A | B | C | D | E | F

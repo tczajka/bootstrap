@@ -4,8 +4,7 @@ site_author: Tomek Czajka
 
 nav:
   - Home: index.md
-  - Steps:
-    - steps/hello-world.md
+  - hello-world.md
   - Reference:
     - reference/numbers.md
     - reference/ascii.md
