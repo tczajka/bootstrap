@@ -194,8 +194,13 @@ $ echo -en "\
 $ wc -l bin/hello.1
 139 bin/hello.1
 $ chmod u+x bin/hello.1
+```
+
+Let's try it!
+
+```bash
 $ bin/hello.1
 Hello, world!
 ```
 
-It works! We have created our first executable.
+It works! We have created our first program from scratch.
