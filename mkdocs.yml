@@ -1,5 +1,7 @@
-site_name: Bootstrapping a compiler
-site_description: Bootstrap a compiler from nothing
+site_name: Echo to Tetris
+site_description: >
+  Bootstrap a compiler, and a Tetris game,
+  using nothing but command line tools like echo.
 site_author: Tomek Czajka
 
 nav:
@@ -12,6 +14,9 @@ nav:
     - reference/x86.md
     - reference/syscalls.md
   - Code repository: https://github.com/tczajka/bootstrap
+
+plugins:
+  - mkdocs-homepage-copier
 
 extra_css:
   - style.css

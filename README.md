@@ -1,17 +1,16 @@
-# Bootstrapping a compiler
+# Echo to Tetris
 
-Follow the full story on the [project page](https://tczajka.github.io/bootstrap/).
+Follow the full story on the [project page](https://tczajka.github.io/echo-to-tetris/).
 
 ## The goal
 
-We are going to bootstrap a compiler for a high level programming language
-without using another programming language. Not even assembly. We are going to
-build our tools from scratch!
+We are going to build a clone of Tetris, the game, starting from nothing but a Linux terminal.
+We are not going to use existing compilers, not even an assembler.
 
-Before we get there, it will take us a lot of little steps. And we will learn a lot
+Before we get there, we will have to take us a lot of little steps. And we will learn a lot
 in the process.
 
-Where do we start? We assume we have a computer with a Linux operating system with a command line terminal.
+Where do we start? We assume we have a computer with a Linux operating system and a command line terminal.
 We will use some basic Linux commands such as `echo` and `cat` and a plain text
 editor such as `vi`, `emacs` or `gedit`.
 
@@ -35,9 +34,9 @@ in Brooklyn.
 
 ## The code
 
-All the code is available in the [`src`](https://github.com/tczajka/bootstrap/tree/main/src) directory
-of the [github](https://github.com/tczajka/bootstrap) repository.
-The [`Makefile`](https://github.com/tczajka/bootstrap/blob/main/Makefile) has all the build steps.
+All the code is available in the [`src`](https://github.com/tczajka/echo-to-tetris/tree/main/src) directory
+of the [github](https://github.com/tczajka/echo-to-tetris) repository.
+The [`Makefile`](https://github.com/tczajka/echo-to-tetris/blob/main/Makefile) has all the build steps.
 So if you want to see a program in action rather than repeat the whole process yourself,
 you can build any step in the tutorial using `make`:
 
