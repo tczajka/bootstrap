@@ -21,14 +21,15 @@ editor from scratch. Maybe some day.
 We will build our tools in phases:
 
 * Our first programs will be built from the command line using `echo`.
-* **Stack assembler**. We will progressively develop a simple assembler.
-* **Forth**. A simple stack-based programming language.
-* **Brooklyn**. A higher level programming language we will make up on the fly, similar to C or Pascal.
+* **Assembler**. We will progressively develop a simple assembler.
+* **Forth**. A simple stack-based interpreted programming language.
+* **Brooklyn**. A higher level compiled programming language we will make up on the fly,
+  similar to C or Pascal.
 * **Tetris**. The game.
 
-As we develop our programming languages, we will *bootstrap* each compiler to use its own language!
-So the Stack Assembler will be written in Stack Assembly, the Forth compiler will be written in Forth,
-and Brooklyn will be written in Brooklyn.
+As we develop our programming languages, we will *bootstrap* the compilers to use their own language!
+So the assembler will be written in assembly, Forth will be written in Forth, and Brooklyn will be written
+in Brooklyn.
 
 ## The code
 
