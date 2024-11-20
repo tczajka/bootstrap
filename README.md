@@ -10,7 +10,8 @@ We are not going to use existing compilers, not even an assembler.
 Before we get there, we will have to take us a lot of little steps. And we will learn a lot
 in the process.
 
-Where do we start? We assume we have a computer with a Linux operating system and a command line terminal.
+Where do we start? We assume we have a computer with a Linux operating system,
+an [x86](https://en.wikipedia.org/wiki/X86) CPU and a command line terminal.
 We will use some basic Linux commands such as `echo` and `cat` and a plain text
 editor such as `vi`, `emacs` or `gedit`.
 
