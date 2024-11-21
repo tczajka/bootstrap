@@ -30,8 +30,7 @@ We will build our tools in phases:
 * **Tetris**. The game.
 
 As we develop our programming languages, we will *bootstrap* the compilers to use their own language!
-So the assembler will be written in assembly, Forth will be written in Forth, and Brooklyn will be written
-in Brooklyn.
+So the assembler will be written in assembly and Brooklyn will be written in Brooklyn.
 
 ## The code
 

@@ -62,12 +62,12 @@ exit:               ; return value in ebx
 ```
 
 Finally we need the message we want to print. `db` defines bytes, and we write the message in ASCII,
-including the "new line" character (ASCII `$a`).
+including the "new line" character (ASCII `$A`).
 Note: `$` indicates [a hexadecimal byte](reference/numbers.md).
 
 ```nasm
 message:
-  db "Hello, world!", $0a   ; the message with a new line
+  db "Hello, world!", $0A   ; the message with a new line
 message_end:                ; end of the message
 text_end:                   ; end of text segment
 ```
@@ -80,7 +80,7 @@ According to our [conventions](reference/numbers.md), `$` indicates a hexadecima
 
 offset | contents | comment
 ----: | :---           | :------
-`#0`  | `$7f 'E 'L 'F` | magic number that identifies ELF files
+`#0`  | `$7F "ELF"` | magic number that identifies ELF files
 `#4`  | `1` | word size: 32-bit
 `#5`  | `1` | endianness: little-endian
 `#6`  | `1` | ELF specification version
@@ -91,13 +91,13 @@ offset | contents | comment
 `#12` | `3 0` | CPU: x86
 `#14` | `#1`  | ELF specification version again
 `#18` | `start` | program entry point (virtual address)
-`#1c` | `#34` | program header table location (directly behind the ELF header)
+`#1C` | `#34` | program header table location (directly behind the ELF header)
 `#20` | `#0` | section header table location: none
 `#24` | `#0` | flags (none)
 `#28` | `$34 0` | ELF header size
-`#2a` | `$20 0` | program header size
-`#2c` | `1 0` | number of program headers
-`#2e` | `0 0` | section header size (ignored)
+`#2A` | `$20 0` | program header size
+`#2C` | `1 0` | number of program headers
+`#2E` | `0 0` | section header size (ignored)
 `#30` | `0 0` | number of section headers
 `#32` | `0 0` | section name string table index: none
 
@@ -113,19 +113,19 @@ offset | contents | comment
 ----: | --------- | ------
 `#34` | `#1`      | segment type: load into memory
 `#38` | `#54`     | location of the segment (immediately after the program header table)
-`#3c` | `text`    | virtual address of the text segment
+`#3C` | `text`    | virtual address of the text segment
 `#40` | `#0`      | physical address (ignored)
 `#44` | `text_end - text` | file size of the text segment
 `#48` | `text_end - text` | size in memory (same)
-`#4c` | `#1 + #4` | permissions: execute + read
-`#50` | `#1000`   | memory alignment, 4 KB
+`#4C` | `#1 + #4` | permissions: execute + read
+`#50` | `#1000`   | memory alignment, 4 KiB
 
 We will need to fill out the address and length of the segment, later.
 
 We need to decide where in virtual memory our code will be stored. Linux won't typically
 let us just put things at virtual address 0. The file `/proc/sys/vm/mmap_min_addr` shows
-the minimum address: it's typically 64 KB = `#10000`. It doesn't really matter much where we put
-it. Let's put it at `#100000` (1 MB).
+the minimum address: it's typically 64 KiB = `#10000`. It doesn't really matter much where we put
+it. Let's put it at 1 MiB = `#100000`.
 
 But we can't quite use `#100000` as the beginning of the segment because of page alignment. Since
 we will start at at `#54` in the file, we have to start it at `#100054` in virtual memory. This
@@ -140,24 +140,24 @@ offset | virtual address | contents | assembly
 `#54` | `#100054` |                 | `start:`
 `#54` | `#100054` | `%273 #1`       | `mov ebx, 1`
 `#59` | `#100059` | `%271 message`  | `mov ecx, message`
-`#5e` | `#10005e` | `%272 message_end - message` | `mov edx, message_end - message`
+`#5E` | `#10005e` | `%272 message_end - message` | `mov edx, message_end - message`
 `#63` | `#100063` |                 | `write_loop:`
 `#63` | `#100063` | `%270 #4`       | `mov eax, 4`
 `#68` | `#100068` | `%315 $80`      | `int $80`
-`#6a` | `#10006a` | `%205 %300`     | `test eax, eax`
-`#6c` | `#10006c` | `$7e exit - *`  | `jle exit`
-`#6e` | `#10006e` | `%003 %310`     | `add ecx, eax`
+`#6A` | `#10006A` | `%205 %300`     | `test eax, eax`
+`#6C` | `#10006C` | `$7E exit - *`  | `jle exit`
+`#6E` | `#10006E` | `%003 %310`     | `add ecx, eax`
 `#70` | `#100070` | `%053 %320`     | `sub edx, eax`
 `#72` | `#100072` | `$75 write_loop - *` | `jnz write_loop`
 `#74` | `#100074` |                 | `exit_success:`
 `#76` | `#100074` | `%063 %333`     | `xor ebx, ebx`
 `#76` | `#100076` |                 | `exit:`
 `#76` | `#100076` | `%270 #1`       | `mov eax, 1`
-`#7b` | `#10007b` | `%315 $80`      | `int $80`
-`#7d` | `#10007d` |                 | `message:`
-`#7d` | `#10007d` | `"Hello, world!" $a` | `db "Hello, world!", $a`
-`#8b` | `#10008b` |                 | `message_end:`
-`#8b` | `#10008b` |                 | `text_end:`
+`#7B` | `#10007B` | `%315 $80`      | `int $80`
+`#7D` | `#10007D` |                 | `message:`
+`#7D` | `#10007D` | `"Hello, world!" $A` | `db "Hello, world!", $A`
+`#8B` | `#10008b` |                 | `message_end:`
+`#8B` | `#10008b` |                 | `text_end:`
 
 ## Fill in addresses
 
@@ -169,10 +169,10 @@ expr      | value
 `start`   | `#100054`
 `text`    | `#100054`
 `text_end - text` | `#37`
-`message` | `#10007d`
-`message_end - message` | `#e`
+`message` | `#10007D`
+`message_end - message` | `#E`
 `exit - *` | `$8`
-`write_loop - *` | `-$11` = `$ef`
+`write_loop - *` | `-$11` = `$EF`
 
 ## Create the file using `echo`
 
@@ -192,13 +192,13 @@ $ echo -e '\x41\x42\x43'
 ABC
 ```
 
-We know what `#8b` = 139 bytes we want to have in our program. Let's put them in
+We know what `#8B` = 139 bytes we want to have in our program. Let's put them in
 a single line in a text file in the format expected by `echo` in its argument:
 
 [`src/hello.1.echo`](https://github.com/tczajka/echo-to-tetris/blob/main/src/hello.1.echo)
 
 ```
-\x7fELF\x1\x1\x1\0\0\0\0\0\0\0\0\0\x2\0\x3\0\x1\0\0\0\x54\0\x10\0\x34\0\0\0\0\0\0\0\0\0\0\0\x34\0\x20\0\x1\0\0\0\0\0\0\0\x1\0\0\0\x54\0\0\0\x54\0\x10\0\0\0\0\0\x37\0\0\0\x37\0\0\0\x5\0\0\0\x0\x10\0\0\0273\x1\0\0\0\0271\x7d\0\x10\0\0272\xe\0\0\0\0270\x4\0\0\0\0315\x80\0205\0300\x7e\x8\03\0310\053\0320\x75\xef\063\0333\0270\x1\0\0\0\0315\x80Hello, world!\xa
+\x7FELF\x1\x1\x1\0\0\0\0\0\0\0\0\0\x2\0\x3\0\x1\0\0\0\x54\0\x10\0\x34\0\0\0\0\0\0\0\0\0\0\0\x34\0\x20\0\x1\0\0\0\0\0\0\0\x1\0\0\0\x54\0\0\0\x54\0\x10\0\0\0\0\0\x37\0\0\0\x37\0\0\0\x5\0\0\0\x0\x10\0\0\0273\x1\0\0\0\0271\x7d\0\x10\0\0272\xE\0\0\0\0270\x4\0\0\0\0315\x80\0205\0300\x7E\x8\03\0310\053\0320\x75\xEF\063\0333\0270\x1\0\0\0\0315\x80Hello, world!\xA
 ```
 
 We can redirect that file as the argument to `echo`. The `-n` flag says: don't print an extra
