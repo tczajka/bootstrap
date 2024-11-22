@@ -18,14 +18,14 @@ standard output of the process. The operating system automatically opens 3 files
 * file descriptor 2: standard error
 
 ```nasm
-text:               ; beginning of text segment
-start:              ; entry point to the program
-  mov ebx, 1        ; ebx = standard output
-  mov ecx, message  ; ecx = message address
-  mov edx, message_end - message ; edx = message length
+text:                   ; beginning of text segment
+start:                  ; entry point to the program
+    mov ebx, 1          ; standard output
+    mov ecx, message    ; message address
+    mov edx, message_end - message  ; message length
 write_loop:
-  mov eax, 4        ; eax = "write" system call
-  int $80           ; system call
+    mov eax, 4          ; "write" system call
+    int $80             ; system call
 ```
 
 The `write` system call can fail. For example, if we redirect the output to a file, and we run out
@@ -43,39 +43,43 @@ partially, we will loop around and continue writing. That's why we have put the 
 in the code above.
 
 ```nasm
-  test eax, eax     ; eax = bytes written by "write", or -1 if error
-  jle exit          ; exit on failure; ebx = exit code 1
-  add ecx, eax      ; ecx = remaining message
-  sub edx, eax      ; edx = remaining length
-  jnz write_loop    ; if edx != 0, go back to write_loop
+  test eax, eax         ; bytes written by "write", or -1 if error
+  jl exit               ; exit on failure; ebx = exit code 1
+  add ecx, eax          ; remaining message
+  sub edx, eax          ; remaining length
+  jnz write_loop        ; if edx != 0, go back to write_loop
 ```
 
 Then we need to call the `exit` system call to finish the program. We will pass 0 in `ebx` to indicate
 a successful exit, and 1 to indicate an error. It just so happens that `ebx` already contains 1.
 
 ```nasm
+; exit the program with exit code 0
 exit_success:
-  xor ebx, ebx      ; ebx = 0 = successful exit
-exit:               ; return value in ebx
-  mov eax, 1        ; eax = "exit" system call
-  int $80           ; system call
+  xor ebx, ebx          ; 0 = successful exit
+
+; exit the program
+; return value in ebx
+exit:                   
+  mov eax, 1            ; eax = "exit" system call
+  int $80               ; system call
 ```
 
 Finally we need the message we want to print. `db` defines bytes, and we write the message in ASCII,
 including the "new line" character (ASCII `$A`).
-Note: `$` indicates [a hexadecimal byte](reference/numbers.md).
+Note: `$` indicates [a hexadecimal byte](reference/notation.md).
 
 ```nasm
 message:
-  db "Hello, world!", $0A   ; the message with a new line
-message_end:                ; end of the message
-text_end:                   ; end of text segment
+  db "Hello, world!", $0A  ; the message with a new line
+message_end:            ; end of the message
+text_end:               ; end of text segment
 ```
 
 ## ELF header
 
 Our executable file needs to begin with an [ELF header](reference/elf.md).
-According to our [conventions](reference/numbers.md), `$` indicates a hexadecimal byte,
+According to our [conventions](reference/notation.md), `$` indicates a hexadecimal byte,
 `#` a hexadecimal 32-bit number, `%` an octal byte, `'` an [ASCII](reference/ascii.md) byte.
 
 offset | contents | comment
@@ -103,6 +107,8 @@ offset | contents | comment
 
 We will fill out the address of `start` later.
 
+## Program header
+
 Now we need the program header table describing memory segments: parts of the file that should
 be loaded into memory. Normally we want seperate segments for executable code, read-only data and
 read-write data, each with appropriate permissions. But for simplicity we define only one
@@ -117,7 +123,7 @@ offset | contents | comment
 `#40` | `#0`      | physical address (ignored)
 `#44` | `text_end - text` | file size of the text segment
 `#48` | `text_end - text` | size in memory (same)
-`#4C` | `#1 + #4` | permissions: execute + read
+`#4C` | `#5`      | permissions: execute + read
 `#50` | `#1000`   | memory alignment, 4 KiB
 
 We will need to fill out the address and length of the segment, later.
@@ -130,6 +136,8 @@ it. Let's put it at 1 MiB = `#100000`.
 But we can't quite use `#100000` as the beginning of the segment because of page alignment. Since
 we will start at at `#54` in the file, we have to start it at `#100054` in virtual memory. This
 way Linux can map pages of the file (of size `#1000`) into virtual memory.
+
+## Machine code
 
 And finally, we put the actual machine code in the file. We translate assembly instructions
 into [x86 machine code](reference/x86.md).
@@ -145,10 +153,10 @@ offset | virtual address | contents | assembly
 `#63` | `#100063` | `%270 #4`       | `mov eax, 4`
 `#68` | `#100068` | `%315 $80`      | `int $80`
 `#6A` | `#10006A` | `%205 %300`     | `test eax, eax`
-`#6C` | `#10006C` | `$7E exit - *`  | `jle exit`
+`#6C` | `#10006C` | `$7C $(exit - *)` | `jl exit`
 `#6E` | `#10006E` | `%003 %310`     | `add ecx, eax`
 `#70` | `#100070` | `%053 %320`     | `sub edx, eax`
-`#72` | `#100072` | `$75 write_loop - *` | `jnz write_loop`
+`#72` | `#100072` | `$75 $(write_loop - *)` | `jnz write_loop`
 `#74` | `#100074` |                 | `exit_success:`
 `#76` | `#100074` | `%063 %333`     | `xor ebx, ebx`
 `#76` | `#100076` |                 | `exit:`
@@ -159,20 +167,21 @@ offset | virtual address | contents | assembly
 `#8B` | `#10008b` |                 | `message_end:`
 `#8B` | `#10008b` |                 | `text_end:`
 
-## Fill in addresses
+## Fill in addresses and offsets
 
 Now we need to fill in addresses into our headers and our code. Note that we used `*` to indicate
 "next instruction", needed for relative addressing.
 
-expr      | value
---------- | -----
-`start`   | `#100054`
-`text`    | `#100054`
-`text_end - text` | `#37`
-`message` | `#10007D`
-`message_end - message` | `#E`
-`exit - *` | `$8`
-`write_loop - *` | `-$11` = `$EF`
+offset | expr      | value
+----: | --------- | -----
+`#18` | `start`   | `#100054`
+`#3C` | `text`    | `#100054`
+`#44` | `text_end - text` | `#37`
+`#48` | `text_end - text` | `#37`
+`#5A` | `message` | `#10007D`
+`#5F` | `message_end - message` | `#E`
+`#6D` | `$(exit - *)` | `$8`
+`#73` | `$(write_loop - *)` | `-$11` = `$EF`
 
 ## Create the file using `echo`
 

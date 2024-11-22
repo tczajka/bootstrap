@@ -7,6 +7,9 @@ site_author: Tomek Czajka
 nav:
   - Home: index.md
   - hello-world.md
+  - Assembler:
+    - asm/assembler-overview.md
+    - asm/numbers-and-strings.md
   - Reference:
     - reference/notation.md
     - reference/ascii.md
