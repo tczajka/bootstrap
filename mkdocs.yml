@@ -9,7 +9,9 @@ nav:
   - hello-world.md
   - Assembler:
     - asm/assembler-overview.md
-    - asm/numbers-and-strings.md
+    - asm/first-version.md
+    - asm/hello-asm.md
+    - asm/asm-asm.md
   - Reference:
     - reference/notation.md
     - reference/ascii.md

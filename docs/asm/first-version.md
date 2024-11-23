@@ -1,4 +1,4 @@
-# Numbers and strings
+# First version
 
 The first version of our assembler will implement our [notation](../reference/notation.md) for
 octal bytes, hexadecimal bytes and dwords, and strings. In particular:
@@ -109,7 +109,7 @@ assemble_loop:
     je comment          ; if yes, go to comment handling
     cmp al, $22         ; is it a quote character, "?
     je string           ; if yes, go to string handling
-    cmp al, "%'         ; is it a percent sign?
+    cmp al, "%"         ; is it a percent sign?
     je oct_byte         ; if yes, go to octal byte handling
     cmp al, "$"         ; is it a dollar sign?
     je hex_byte         ; if yes, go to the hex byte handling
@@ -129,7 +129,7 @@ comment:
     lodsb               ; load next character into al
     test al, al         ; is it a 0 byte (including EOF)?
     jz assemble_loop    ; if yes: done
-    cmp al, $0a         ; is it end of line?
+    cmp al, $A          ; is it end of line?
     je assemble_loop    ; if yes: done
     jmp comment         ; repeat
 ```
@@ -246,7 +246,6 @@ After we are done writing the output, we exit the program.
 exit_success:
     xor ebx, ebx        ; success exit code
 
-; exit
 ; ebx = exit code
 exit:
   mov eax, #1           ; "exit" system call

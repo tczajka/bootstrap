@@ -20,11 +20,11 @@ standard output of the process. The operating system automatically opens 3 files
 ```nasm
 text:                   ; beginning of text segment
 start:                  ; entry point to the program
-    mov ebx, 1          ; standard output
+    mov ebx, #1         ; standard output
     mov ecx, message    ; message address
     mov edx, message_end - message  ; message length
 write_loop:
-    mov eax, 4          ; "write" system call
+    mov eax, #4         ; "write" system call
     int $80             ; system call
 ```
 
@@ -61,7 +61,7 @@ exit_success:
 ; exit the program
 ; return value in ebx
 exit:                   
-  mov eax, 1            ; eax = "exit" system call
+  mov eax, #1           ; "exit" system call
   int $80               ; system call
 ```
 
@@ -71,7 +71,7 @@ Note: `$` indicates [a hexadecimal byte](reference/notation.md).
 
 ```nasm
 message:
-  db "Hello, world!", $0A  ; the message with a new line
+  db "Hello, world!", $A  ; the message with a new line
 message_end:            ; end of the message
 text_end:               ; end of text segment
 ```
@@ -146,11 +146,11 @@ offset | virtual address | contents | assembly
 ----- | --------- | --------------- | --------
 `#54` | `#100054` |                 | `text:`
 `#54` | `#100054` |                 | `start:`
-`#54` | `#100054` | `%273 #1`       | `mov ebx, 1`
+`#54` | `#100054` | `%273 #1`       | `mov ebx, #1`
 `#59` | `#100059` | `%271 message`  | `mov ecx, message`
 `#5E` | `#10005e` | `%272 message_end - message` | `mov edx, message_end - message`
 `#63` | `#100063` |                 | `write_loop:`
-`#63` | `#100063` | `%270 #4`       | `mov eax, 4`
+`#63` | `#100063` | `%270 #4`       | `mov eax, #4`
 `#68` | `#100068` | `%315 $80`      | `int $80`
 `#6A` | `#10006A` | `%205 %300`     | `test eax, eax`
 `#6C` | `#10006C` | `$7C $(exit - *)` | `jl exit`
@@ -160,12 +160,12 @@ offset | virtual address | contents | assembly
 `#74` | `#100074` |                 | `exit_success:`
 `#76` | `#100074` | `%063 %333`     | `xor ebx, ebx`
 `#76` | `#100076` |                 | `exit:`
-`#76` | `#100076` | `%270 #1`       | `mov eax, 1`
+`#76` | `#100076` | `%270 #1`       | `mov eax, #1`
 `#7B` | `#10007B` | `%315 $80`      | `int $80`
 `#7D` | `#10007D` |                 | `message:`
 `#7D` | `#10007D` | `"Hello, world!" $A` | `db "Hello, world!", $A`
-`#8B` | `#10008b` |                 | `message_end:`
-`#8B` | `#10008b` |                 | `text_end:`
+`#8B` | `#10008B` |                 | `message_end:`
+`#8B` | `#10008B` |                 | `text_end:`
 
 ## Fill in addresses and offsets
 

@@ -16,7 +16,8 @@ We will use some basic Linux commands such as `echo` and `cat` and a plain text
 editor such as `vi`, `emacs` or `gedit`.
 
 We *could* make do without even these tools and build our own operating system and a text
-editor from scratch. Maybe some day.
+editor from scratch on a raw machine. That would be much harder for the readers to reproduce.
+Maybe some day.
 
 ## The plan
 
