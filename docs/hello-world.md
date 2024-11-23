@@ -169,8 +169,7 @@ offset | virtual address | contents | assembly
 
 ## Fill in addresses and offsets
 
-Now we need to fill in addresses into our headers and our code. Note that we used `*` to indicate
-"next instruction", needed for relative addressing.
+Now we need to fill in addresses and offsets into our headers and our code. We used `*` to indicate "next instruction", needed for relative addressing.
 
 offset | expr      | value
 ----: | --------- | -----
@@ -206,7 +205,7 @@ a single line in a text file in the format expected by `echo` in its argument:
 
 [`src/hello.1.echo`](https://github.com/tczajka/echo-to-tetris/blob/main/src/hello.1.echo)
 
-```
+```text
 \x7FELF\x1\x1\x1\0\0\0\0\0\0\0\0\0\x2\0\x3\0\x1\0\0\0\x54\0\x10\0\x34\0\0\0\0\0\0\0\0\0\0\0\x34\0\x20\0\x1\0\0\0\0\0\0\0\x1\0\0\0\x54\0\0\0\x54\0\x10\0\0\0\0\0\x37\0\0\0\x37\0\0\0\x5\0\0\0\x0\x10\0\0\0273\x1\0\0\0\0271\x7d\0\x10\0\0272\xE\0\0\0\0270\x4\0\0\0\0315\x80\0205\0300\x7E\x8\03\0310\053\0320\x75\xEF\063\0333\0270\x1\0\0\0\0315\x80Hello, world!\xA
 ```
 
