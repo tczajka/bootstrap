@@ -1,3 +1,8 @@
 th, td {
-  border: 1px solid #aaa
+  border: 1px solid #aaa;
+  padding: 5px;
+}
+
+table {
+  margin-bottom: 2ex;
 }

@@ -1,0 +1,1763 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <meta name="author" content="Tomek Czajka">
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Numbers and strings - Echo to Tetris</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <link href="../../style.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">Echo to Tetris</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../hello-world/" class="nav-link">Hello, world!</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Assembler</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../assembler-overview/" class="dropdown-item">Assembler overview</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">Numbers and strings</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Reference</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../reference/notation/" class="dropdown-item">Notation</a>
+</li>
+                                    
+<li>
+    <a href="../../reference/ascii/" class="dropdown-item">ASCII</a>
+</li>
+                                    
+<li>
+    <a href="../../reference/elf/" class="dropdown-item">Linux executable files</a>
+</li>
+                                    
+<li>
+    <a href="../../reference/x86/" class="dropdown-item">x86 machine code</a>
+</li>
+                                    
+<li>
+    <a href="../../reference/syscalls/" class="dropdown-item">Linux system calls</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://github.com/tczajka/bootstrap" class="nav-link">Code repository</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                            <li class="nav-item">
+                                <a rel="prev" href="../assembler-overview/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../../reference/notation/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#numbers-and-strings" class="nav-link">Numbers and strings</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#reserve-space-for-input-and-output" class="nav-link">Reserve space for input and output</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#read-the-source-code" class="nav-link">Read the source code</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#the-main-loop" class="nav-link">The main loop</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#comments" class="nav-link">Comments</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#strings" class="nav-link">Strings</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#octal-bytes" class="nav-link">Octal bytes</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#hexadecimal-bytes-and-dwords" class="nav-link">Hexadecimal bytes and dwords</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#write-the-output" class="nav-link">Write the output</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#exit" class="nav-link">Exit</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#error-handling" class="nav-link">Error handling</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#elf-header" class="nav-link">ELF header</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#program-header-table" class="nav-link">Program header table</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#machine-code" class="nav-link">Machine code</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#fill-in-addresses-and-offsets" class="nav-link">Fill in addresses and offsets</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#create-the-assembler-using-echo" class="nav-link">Create the assembler using echo</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#lets-test-it" class="nav-link">Let's test it!</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="numbers-and-strings">Numbers and strings</h1>
+<p>The first version of our assembler will implement our <a href="../../reference/notation/">notation</a> for
+octal bytes, hexadecimal bytes and dwords, and strings. In particular:</p>
+<ul>
+<li><code>%xxx</code> is an octal byte, e.g. <code>%101</code></li>
+<li><code>$xx</code> is a hexadecimal byte using upper-case letters, e.g. <code>$1C</code></li>
+<li><code>#xx</code> is a hexadecimal dword (32 bits) using upper-case letters, e.g. <code>#1234CDEF</code></li>
+<li><code>"xxxx"</code> is a string of characters, e.g. <code>"hello"</code></li>
+<li><code>; xxxx</code> is a comment until the end of the line, e.g. <code>; this is a comment</code></li>
+<li>spaces and new lines are ignored</li>
+</ul>
+<p>Let's start writing our code in assembly. We will have to manually translate it to machine
+code just like we did with <a href="../../hello-world/"><code>hello.1</code></a>.</p>
+<h2 id="reserve-space-for-input-and-output">Reserve space for input and output</h2>
+<p>We will store the input and output in memory. We could do all processing online in one pass,
+reading and writing one byte at a time without storing anything in memory. But soon we will want
+to do two passes over the input to add support for forward references. So let's store the input
+and output in memory from the beginning.
+The memory buffering also makes the I/O more performant.</p>
+<p>Let's reserve 1 MiB of memory for the input and 1 MiB for the output at the end of our program.</p>
+<p>These large buffers don't have to be stored in the executable file:
+<a href="../../reference/elf/">ELF files</a> support reserving more memory than we have in the file,
+and this extra memory is initialized to 0. Let's call it <code>zero_initialized_data</code>. The more
+common name is "bss segment", but that's obscure.</p>
+<p>A bonus is that such zero initialized memory is only allocated as needed using virtual memory.
+We reserve 2 MiB in virtual memory, but the actual amount of physical memory used will only
+depend on how much is ever needed. Sweet!</p>
+<pre><code class="language-nasm">text_end:               ; the program text ends here
+zero_initialized:       ; zero-initialized data starts here
+
+; input assembly text
+input:
+    resb #100000        ; reserve 1 MiB for input
+input_end:
+
+; output binary file
+output:
+    resb #100000        ; reserve 1 MiB for output
+
+zero_initialized_end:   ; zero-initialized data ends here
+</code></pre>
+<h2 id="read-the-source-code">Read the source code</h2>
+<p>We begin our program by reading the source code. For this, we use the <code>read</code>
+<a href="../../reference/syscalls/">system call</a>. Each time we call it, it may read only part of the input,
+so we have to read in a loop.</p>
+<pre><code class="language-nasm">text:                   ; the program text starts here
+start:
+
+; read input file into `input`
+; ecx points to the end of input
+read:
+    xor ebx, ebx        ; 0 = standard input
+    mov ecx, input      ; initialize end of input
+    ; Make sure there is at least 1 byte with value 0 at the end.
+    ; This helps us deal with end of file later.
+    mov edx, input_end - input - 1   ; buffer size
+read_loop:
+    mov eax, #3         ; &quot;read&quot; system call
+    int $80             ; system call: read bytes starting from ecx
+    ; The adjustments here will not be valid if there is a read error,
+    ; but that is OK.
+    add ecx, eax        ; move end of input
+    sub edx, eax        ; adjust remaining buffer size
+    test eax, eax       ; check eax
+    jl error            ; if eax &lt; 0: error, go to the error handler
+    jg read_loop        ; if eax &gt; 0: go back to read more
+</code></pre>
+<h2 id="the-main-loop">The main loop</h2>
+<p>In the main loop, the invariant is:</p>
+<ul>
+<li><code>esi</code> points to the next character of input</li>
+<li><code>ecx</code> points to the end of input</li>
+<li><code>edi</code> points to the next byte of output</li>
+</ul>
+<pre><code class="language-nasm">; assemble `input` into `output`
+; ecx = end of input
+assemble:
+    ; esi points to next character of input
+    ; ecx points to the end of input
+    ; edi points to the next byte of output
+    mov esi, input
+    mov edi, output
+
+; main assembling loop
+assemble_loop:
+    cmp esi, ecx        ; check if we have reached end of input
+    jge write_output    ; if yes, go to write_output
+    lodsb               ; load next input byte into al; increment esi
+    cmp al, &quot; &quot;         ; is it a space?
+    je assemble_loop    ; if yes, skip
+    cmp al, $A          ; is it a newline?
+    je assemble_loop    ; if yes, skip
+    cmp al, &quot;;&quot;         ; is it a semicolon?
+    je comment          ; if yes, go to comment handling
+    cmp al, $22         ; is it a quote character, &quot;?
+    je string           ; if yes, go to string handling
+    cmp al, &quot;%'         ; is it a percent sign?
+    je oct_byte         ; if yes, go to octal byte handling
+    cmp al, &quot;$&quot;         ; is it a dollar sign?
+    je hex_byte         ; if yes, go to the hex byte handling
+    cmp al, &quot;#&quot;         ; is it a hash sign?
+    je hex_dword        ; if yes, go to the hex dword handling
+other:
+    jmp error           ; otherwise go to the error handler
+</code></pre>
+<h2 id="comments">Comments</h2>
+<p>Comments start with <code>";"</code> and continue until end of line. Any 0 byte also ends a comment.
+This makes comments at the end of the file without the final new line also work.</p>
+<pre><code class="language-nasm">comment:
+    lodsb               ; load next character into al
+    test al, al         ; is it a 0 byte (including EOF)?
+    jz assemble_loop    ; if yes: done
+    cmp al, $0a         ; is it end of line?
+    je assemble_loop    ; if yes: done
+    jmp comment         ; repeat
+</code></pre>
+<h2 id="strings">Strings</h2>
+<p>Strings start and end with a quote <code>'"'</code> (<a href="../../reference/ascii/">ASCII <code>$22</code></a>.
+Again we consider 0 bytes inside a string as errors,
+which automatically catches strings that are unclosed until the end of file. Copy each character
+to the output pointed to by <code>edi</code>.</p>
+<pre><code class="language-nasm">string:
+    lodsb               ; load next character into al
+    test al, al         ; is it a 0 byte (including EOF)?
+    je error            ; if yes: error
+    cmp al, $22         ; is it a quote?
+    je assemble_loop    ; if yes: done
+    stosb               ; copy the character to output
+    jmp string          ; repeat
+</code></pre>
+<h2 id="octal-bytes">Octal bytes</h2>
+<p>Parse octal bytes after a <code>%</code> character. We calculate the value in <code>ebx</code> and ignore overflow.</p>
+<pre><code class="language-nasm">oct_byte:
+    xor ebx, ebx        ; ebx will contain the octal number
+oct_byte_loop:
+    lodsb               ; load the next character into al
+    sub al, &quot;0&quot;         ; adjust so that digits '0'-'7' are 0-7
+    cmp al, $8          ; is it below 8?
+    jae oct_byte_done   ; no: we are done
+    shl ebx, $3         ; ebx = 8 * ebx
+    or bl, al           ; add next digit
+    jmp oct_byte_loop   ; read more digits
+oct_byte_done:
+    dec esi             ; undo last byte read since it wasn't octal
+    mov al, bl          ; al = the byte
+    stosb               ; store the byte in the output
+    jmp assemble_loop   ; go back to main loop
+</code></pre>
+<h2 id="hexadecimal-bytes-and-dwords">Hexadecimal bytes and dwords</h2>
+<p>Hexadecimal numbers are similar. Create a helper function <code>read_hex</code> that is used by
+both <code>hex_byte</code> and <code>hex_dword</code>.</p>
+<pre><code class="language-nasm">; a hex byte
+hex_byte:
+    call read_hex       ; read a hex number
+    stosb               ; store the hex byte in the output
+    jmp assemble_loop   ; go back to main loop
+
+; a hex dword
+hex_dword:
+    call read_hex       ; read a hex number
+    stosd               ; store the hex dword in the output
+    jmp assemble_loop   ; go back to main loop
+
+; reads a hex number into eax
+read_hex:
+    xor ebx, ebx        ; ebx will contain the hex number
+read_hex_loop:
+    lodsb               ; load the next character into al
+    sub al, &quot;0&quot;         ; '0'-'9' are now 0-9
+    cmp al, $A          ; is it below 10?
+    jb read_hex_have_digit  ; if yes, go to read_hex_have_digit
+    sub al, &quot;A&quot; - &quot;0&quot;   ; 'A'-'F are now 0-5
+    cmp al, $6          ; is it below 6?
+    jae read_hex_done   ; if no, go to read_hex_done
+    add al, $A          ; al is now 10-15
+read_hex_have_digit:
+    shl ebx, $4         ; ebx = 16 * ebx
+    or bl, al           ; add next digit
+    jmp read_hex_loop   ; read more digits
+read_hex_done:
+    dec esi             ; undo last byte read since it wasn't hexadecimal
+    mov eax, ebx        ; put the return value in eax
+    ret                 ; return
+</code></pre>
+<h2 id="write-the-output">Write the output</h2>
+<p>When we are done with all of the source code, we write the generated output.
+We already did this in <a href="../../hello-world/"><code>hello.1</code></a>.</p>
+<pre><code class="language-nasm">; write output to stdout
+; edi = end of output
+write_output:
+    mov ebx, #1         ; standard output
+    mov ecx, output     ; output bytes
+    mov edx, edi        ; calculate length
+    sub edx, ecx        ; edx = edi - output = output length
+write_loop:
+    mov eax, #4         ; &quot;write&quot; system call
+    int $80             ; system call
+    test eax, eax       ; check result
+    jl error            ; if eax &lt; 0: handle error
+    add ecx, eax        ; remaining output
+    sub edx, eax        ; remaining length
+    jnz write_loop      ; if edx != 0, go back to write_loop
+</code></pre>
+<h2 id="exit">Exit</h2>
+<p>After we are done writing the output, we exit the program.</p>
+<pre><code class="language-nasm">; exit with exit code 0
+exit_success:
+    xor ebx, ebx        ; success exit code
+
+; exit
+; ebx = exit code
+exit:
+  mov eax, #1           ; &quot;exit&quot; system call
+  int $80               ; system call
+</code></pre>
+<h2 id="error-handling">Error handling</h2>
+<p>On error, we print an error message to standard error (file descriptor 2). This is similar
+to <code>write</code>, except if there is any problem with writing to standard error, we just give up
+and exit. We don't want an infinite recursion when trying to print an error message.</p>
+<pre><code class="language-nasm">; print error message and exit with exit code 1
+error:
+    mov ebx, #2         ; standard error
+    mov ecx, error_message  ; error message
+    mov edx, error_message_end - error_message  ; error message length
+error_loop:
+    mov eax, #4         ; &quot;write&quot; system call
+    int $80             ; system call
+    test eax, eax       ; check result
+    jl error_done       ; if eax &lt; 0: give up writing
+    add ecx, eax        ; remaining error message
+    sub edx, eax        ; remaining length
+    jne error_loop      ; if edx != 0: write more
+error_done:
+    dec ebx             ; exit code 1
+    jmp exit            ; exit
+
+; error message
+error_message:
+    db &quot;Error!&quot;, $A     ; &quot;Error!&quot;, new line
+error_message_end:
+</code></pre>
+<h2 id="elf-header">ELF header</h2>
+<p>We have all the code we need. Like before, we now have to translate this to an executable
+file.</p>
+<p>We start with the <a href="../../reference/elf/">ELF header</a>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">offset</th>
+<th style="text-align: left;">contents</th>
+<th style="text-align: left;">comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;"><code>#0</code></td>
+<td style="text-align: left;"><code>$7F "ELF"</code></td>
+<td style="text-align: left;">magic number that identifies ELF files</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#4</code></td>
+<td style="text-align: left;"><code>1</code></td>
+<td style="text-align: left;">word size: 32-bit</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#5</code></td>
+<td style="text-align: left;"><code>1</code></td>
+<td style="text-align: left;">endianness: little-endian</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#6</code></td>
+<td style="text-align: left;"><code>1</code></td>
+<td style="text-align: left;">ELF specification version</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#7</code></td>
+<td style="text-align: left;"><code>0</code></td>
+<td style="text-align: left;">operating system ABI: UNIX System V</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#8</code></td>
+<td style="text-align: left;"><code>0</code></td>
+<td style="text-align: left;">operating system ABI version</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#9</code></td>
+<td style="text-align: left;"><code>0 0 0 #0</code></td>
+<td style="text-align: left;">padding</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#10</code></td>
+<td style="text-align: left;"><code>2 0</code></td>
+<td style="text-align: left;">object file type: executable file</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#12</code></td>
+<td style="text-align: left;"><code>3 0</code></td>
+<td style="text-align: left;">CPU: x86</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#14</code></td>
+<td style="text-align: left;"><code>#1</code></td>
+<td style="text-align: left;">ELF specification version again</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#18</code></td>
+<td style="text-align: left;"><code>start</code></td>
+<td style="text-align: left;">program entry point (virtual address)</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#1C</code></td>
+<td style="text-align: left;"><code>#34</code></td>
+<td style="text-align: left;">program header table location (directly behind the ELF header)</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#20</code></td>
+<td style="text-align: left;"><code>#0</code></td>
+<td style="text-align: left;">section header table location: none</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#24</code></td>
+<td style="text-align: left;"><code>#0</code></td>
+<td style="text-align: left;">flags (none)</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#28</code></td>
+<td style="text-align: left;"><code>$34 0</code></td>
+<td style="text-align: left;">ELF header size</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#2A</code></td>
+<td style="text-align: left;"><code>$20 0</code></td>
+<td style="text-align: left;">program header size</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#2C</code></td>
+<td style="text-align: left;"><code>1 0</code></td>
+<td style="text-align: left;">number of program headers</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#2E</code></td>
+<td style="text-align: left;"><code>0 0</code></td>
+<td style="text-align: left;">section header size (ignored)</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#30</code></td>
+<td style="text-align: left;"><code>0 0</code></td>
+<td style="text-align: left;">number of section headers</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#32</code></td>
+<td style="text-align: left;"><code>0 0</code></td>
+<td style="text-align: left;">section name string table index: none</td>
+</tr>
+</tbody>
+</table>
+<h2 id="program-header-table">Program header table</h2>
+<p>Now we need the program header table. Again, for simplicity, we use just 1 segment that
+contains all our code and data.</p>
+<p>This time we have to include 2 MiB of zero-initialized buffers (<code>input</code> and <code>output</code>), so
+the size in memory is going to be larger than the file size of the segment.</p>
+<p>We now also have to include the <em>write</em> permission for the segment so that we can write into
+the buffers.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">offset</th>
+<th>contents</th>
+<th>comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;"><code>#34</code></td>
+<td><code>#1</code></td>
+<td>segment type: load into memory</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#38</code></td>
+<td><code>#54</code></td>
+<td>location of the segment (immediately after the program header table)</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#3C</code></td>
+<td><code>text</code></td>
+<td>virtual address of the text segment</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#40</code></td>
+<td><code>#0</code></td>
+<td>physical address (ignored)</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#44</code></td>
+<td><code>text_end - text</code></td>
+<td>file size of the text segment</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#48</code></td>
+<td><code>zero_initialized_end - text</code></td>
+<td>size in memory</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#4C</code></td>
+<td><code>#7</code></td>
+<td>permissions: execute + write + read</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#50</code></td>
+<td><code>#1000</code></td>
+<td>memory alignment, 4 KiB</td>
+</tr>
+</tbody>
+</table>
+<h2 id="machine-code">Machine code</h2>
+<p>Now it's time to translate all the code in <a href="../../reference/x86/">x86 machine code</a>. Like
+before, we put <code>text</code> at virtual address <code>#100054</code>.</p>
+<table>
+<thead>
+<tr>
+<th>offset</th>
+<th>virtual address</th>
+<th>contents</th>
+<th>assembly</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>#54</code></td>
+<td><code>#100054</code></td>
+<td></td>
+<td><code>text:</code></td>
+</tr>
+<tr>
+<td><code>#54</code></td>
+<td><code>#100054</code></td>
+<td></td>
+<td><code>start:</code></td>
+</tr>
+<tr>
+<td><code>#54</code></td>
+<td><code>#100054</code></td>
+<td></td>
+<td><code>read:</code></td>
+</tr>
+<tr>
+<td><code>#54</code></td>
+<td><code>#100054</code></td>
+<td><code>%063 %333</code></td>
+<td><code>xor ebx, ebx</code></td>
+</tr>
+<tr>
+<td><code>#56</code></td>
+<td><code>#100056</code></td>
+<td><code>%271 input</code></td>
+<td><code>mov ecx, input</code></td>
+</tr>
+<tr>
+<td><code>#5B</code></td>
+<td><code>#10005B</code></td>
+<td><code>%272 #FFFFF</code></td>
+<td><code>mov edx, input_end - input - 1</code></td>
+</tr>
+<tr>
+<td><code>#60</code></td>
+<td><code>#100060</code></td>
+<td></td>
+<td><code>read_loop:</code></td>
+</tr>
+<tr>
+<td><code>#60</code></td>
+<td><code>#100060</code></td>
+<td><code>%270 #3</code></td>
+<td><code>mov eax, #3</code></td>
+</tr>
+<tr>
+<td><code>#65</code></td>
+<td><code>#100065</code></td>
+<td><code>%315 $80</code></td>
+<td><code>int $80</code></td>
+</tr>
+<tr>
+<td><code>#67</code></td>
+<td><code>#100067</code></td>
+<td><code>%003 %310</code></td>
+<td><code>add ecx, eax</code></td>
+</tr>
+<tr>
+<td><code>#69</code></td>
+<td><code>#100069</code></td>
+<td><code>%053 %320</code></td>
+<td><code>sub edx, eax</code></td>
+</tr>
+<tr>
+<td><code>#6B</code></td>
+<td><code>#10006B</code></td>
+<td><code>%205 %300</code></td>
+<td><code>test eax, eax</code></td>
+</tr>
+<tr>
+<td><code>#6D</code></td>
+<td><code>#10006D</code></td>
+<td><code>%017 $8C error - *</code></td>
+<td><code>jl long error</code></td>
+</tr>
+<tr>
+<td><code>#73</code></td>
+<td><code>#100073</code></td>
+<td><code>$7F $(read_loop - *)</code></td>
+<td><code>jg read_loop</code></td>
+</tr>
+<tr>
+<td><code>#75</code></td>
+<td><code>#100075</code></td>
+<td></td>
+<td><code>assemble:</code></td>
+</tr>
+<tr>
+<td><code>#75</code></td>
+<td><code>#100075</code></td>
+<td><code>%276 input</code></td>
+<td><code>mov esi, input</code></td>
+</tr>
+<tr>
+<td><code>#7A</code></td>
+<td><code>#10007A</code></td>
+<td><code>%277 output</code></td>
+<td><code>mov esi, input</code></td>
+</tr>
+<tr>
+<td><code>#7F</code></td>
+<td><code>#10007F</code></td>
+<td></td>
+<td><code>assemble_loop:</code></td>
+</tr>
+<tr>
+<td><code>#7F</code></td>
+<td><code>#10007F</code></td>
+<td><code>%073 %361</code></td>
+<td><code>cmp esi, ecx</code></td>
+</tr>
+<tr>
+<td><code>#81</code></td>
+<td><code>#100081</code></td>
+<td><code>$7D $(write_output - *)</code></td>
+<td><code>jge write_output</code></td>
+</tr>
+<tr>
+<td><code>#83</code></td>
+<td><code>#100083</code></td>
+<td><code>%254</code></td>
+<td><code>lodsb</code></td>
+</tr>
+<tr>
+<td><code>#84</code></td>
+<td><code>#100084</code></td>
+<td><code>%074 " "</code></td>
+<td><code>cmp al, " "</code></td>
+</tr>
+<tr>
+<td><code>#86</code></td>
+<td><code>#100086</code></td>
+<td><code>$74 $(assemble_loop - *)</code></td>
+<td><code>je assemble_loop</code></td>
+</tr>
+<tr>
+<td><code>#88</code></td>
+<td><code>#100088</code></td>
+<td><code>%074 $A</code></td>
+<td><code>cmp al, $A</code></td>
+</tr>
+<tr>
+<td><code>#8A</code></td>
+<td><code>#10008A</code></td>
+<td><code>$74 $(assemble_loop - *)</code></td>
+<td><code>je assemble_loop</code></td>
+</tr>
+<tr>
+<td><code>#8C</code></td>
+<td><code>#10008C</code></td>
+<td><code>%074 ";"</code></td>
+<td><code>cmp al, ";"</code></td>
+</tr>
+<tr>
+<td><code>#8E</code></td>
+<td><code>#10008E</code></td>
+<td><code>$74 $(comment - *)</code></td>
+<td><code>je comment</code></td>
+</tr>
+<tr>
+<td><code>#90</code></td>
+<td><code>#100090</code></td>
+<td><code>%074 $22</code></td>
+<td><code>cmp al, $22</code></td>
+</tr>
+<tr>
+<td><code>#92</code></td>
+<td><code>#100092</code></td>
+<td><code>$74 $(string - *)</code></td>
+<td><code>je string</code></td>
+</tr>
+<tr>
+<td><code>#94</code></td>
+<td><code>#100094</code></td>
+<td><code>%074 "%"</code></td>
+<td><code>cmp al, "%"</code></td>
+</tr>
+<tr>
+<td><code>#96</code></td>
+<td><code>#100096</code></td>
+<td><code>$74 $(oct_byte - *)</code></td>
+<td><code>je oct_byte</code></td>
+</tr>
+<tr>
+<td><code>#98</code></td>
+<td><code>#100098</code></td>
+<td><code>%074 "$"</code></td>
+<td><code>cmp al, "$"</code></td>
+</tr>
+<tr>
+<td><code>#9A</code></td>
+<td><code>#10009A</code></td>
+<td><code>$74 $(hex_byte - *)</code></td>
+<td><code>je hex_byte</code></td>
+</tr>
+<tr>
+<td><code>#9C</code></td>
+<td><code>#10009C</code></td>
+<td><code>%074 "#"</code></td>
+<td><code>cmp al, "#"</code></td>
+</tr>
+<tr>
+<td><code>#9E</code></td>
+<td><code>#10009E</code></td>
+<td><code>$74 $(hex_dword - *)</code></td>
+<td><code>je hex_dword</code></td>
+</tr>
+<tr>
+<td><code>#A0</code></td>
+<td><code>#1000A0</code></td>
+<td></td>
+<td><code>other:</code></td>
+</tr>
+<tr>
+<td><code>#A0</code></td>
+<td><code>#1000A0</code></td>
+<td><code>%351 error - *</code></td>
+<td><code>jmp long error</code></td>
+</tr>
+<tr>
+<td><code>#A5</code></td>
+<td><code>#1000A5</code></td>
+<td></td>
+<td><code>comment:</code></td>
+</tr>
+<tr>
+<td><code>#A5</code></td>
+<td><code>#1000A5</code></td>
+<td><code>%254</code></td>
+<td><code>lodsb</code></td>
+</tr>
+<tr>
+<td><code>#A6</code></td>
+<td><code>#1000A6</code></td>
+<td><code>%204 %300</code></td>
+<td><code>test al, al</code></td>
+</tr>
+<tr>
+<td><code>#A8</code></td>
+<td><code>#1000A8</code></td>
+<td><code>$74 $(assemble_loop - *)</code></td>
+<td><code>jz assemble_loop</code></td>
+</tr>
+<tr>
+<td><code>#AA</code></td>
+<td><code>#1000AA</code></td>
+<td><code>%074 $A</code></td>
+<td><code>cmp al, $A</code></td>
+</tr>
+<tr>
+<td><code>#AC</code></td>
+<td><code>#1000AC</code></td>
+<td><code>$74 $(assemble_loop - *)</code></td>
+<td><code>ja assemble_loop</code></td>
+</tr>
+<tr>
+<td><code>#AE</code></td>
+<td><code>#1000AE</code></td>
+<td><code>%353 $(comment - *)</code></td>
+<td><code>jmp comment</code></td>
+</tr>
+<tr>
+<td><code>#B0</code></td>
+<td><code>#1000B0</code></td>
+<td></td>
+<td><code>string:</code></td>
+</tr>
+<tr>
+<td><code>#B0</code></td>
+<td><code>#1000B0</code></td>
+<td><code>%254</code></td>
+<td><code>lodsb</code></td>
+</tr>
+<tr>
+<td><code>#B1</code></td>
+<td><code>#1000B1</code></td>
+<td><code>%204 %300</code></td>
+<td><code>test al, al</code></td>
+</tr>
+<tr>
+<td><code>#B3</code></td>
+<td><code>#1000B3</code></td>
+<td><code>$74 $(error - *)</code></td>
+<td><code>je error</code></td>
+</tr>
+<tr>
+<td><code>#B5</code></td>
+<td><code>#1000B5</code></td>
+<td><code>%074 $22</code></td>
+<td><code>cmp al, $22</code></td>
+</tr>
+<tr>
+<td><code>#B7</code></td>
+<td><code>#1000B7</code></td>
+<td><code>$74 $(assemble_loop - *)</code></td>
+<td><code>je assemble_loop</code></td>
+</tr>
+<tr>
+<td><code>#B9</code></td>
+<td><code>#1000B9</code></td>
+<td><code>%252</code></td>
+<td><code>stosb</code></td>
+</tr>
+<tr>
+<td><code>#BA</code></td>
+<td><code>#1000BA</code></td>
+<td><code>%353 $(string - *)</code></td>
+<td><code>jmp string</code></td>
+</tr>
+<tr>
+<td><code>#BC</code></td>
+<td><code>#1000BC</code></td>
+<td></td>
+<td><code>oct_byte:</code></td>
+</tr>
+<tr>
+<td><code>#BC</code></td>
+<td><code>#1000BC</code></td>
+<td><code>%063 %333</code></td>
+<td><code>xor ebx, ebx</code></td>
+</tr>
+<tr>
+<td><code>#BE</code></td>
+<td><code>#1000BE</code></td>
+<td></td>
+<td><code>oct_byte_loop:</code></td>
+</tr>
+<tr>
+<td><code>#BE</code></td>
+<td><code>#1000BE</code></td>
+<td><code>%254</code></td>
+<td><code>lodsb</code></td>
+</tr>
+<tr>
+<td><code>#BF</code></td>
+<td><code>#1000BF</code></td>
+<td><code>%054 "0"</code></td>
+<td><code>sub al, "0"</code></td>
+</tr>
+<tr>
+<td><code>#C1</code></td>
+<td><code>#1000C1</code></td>
+<td><code>%074 $8</code></td>
+<td><code>cmp al, $8</code></td>
+</tr>
+<tr>
+<td><code>#C3</code></td>
+<td><code>#1000C3</code></td>
+<td><code>$73 $(oct_byte_done - *)</code></td>
+<td><code>jae oct_byte_done</code></td>
+</tr>
+<tr>
+<td><code>#C5</code></td>
+<td><code>#1000C5</code></td>
+<td><code>%301 %343 $3</code></td>
+<td><code>shl ebx, $3</code></td>
+</tr>
+<tr>
+<td><code>#C8</code></td>
+<td><code>#1000C8</code></td>
+<td><code>%012 %330</code></td>
+<td><code>or bl, al</code></td>
+</tr>
+<tr>
+<td><code>#CA</code></td>
+<td><code>#1000CA</code></td>
+<td><code>%353 $(oct_byte_loop - *)</code></td>
+<td><code>jmp oct_byte_loop</code></td>
+</tr>
+<tr>
+<td><code>#CC</code></td>
+<td><code>#1000CC</code></td>
+<td></td>
+<td><code>oct_byte_done:</code></td>
+</tr>
+<tr>
+<td><code>#CC</code></td>
+<td><code>#1000CC</code></td>
+<td><code>%116</code></td>
+<td><code>dec esi</code></td>
+</tr>
+<tr>
+<td><code>#CD</code></td>
+<td><code>#1000CD</code></td>
+<td><code>%212 %303</code></td>
+<td><code>mov al, bl</code></td>
+</tr>
+<tr>
+<td><code>#CF</code></td>
+<td><code>#1000CF</code></td>
+<td><code>%252</code></td>
+<td><code>stosb</code></td>
+</tr>
+<tr>
+<td><code>#D0</code></td>
+<td><code>#1000D0</code></td>
+<td><code>%353 $(assemble_loop - *)</code></td>
+<td><code>jmp assemble_loop</code></td>
+</tr>
+<tr>
+<td><code>#D2</code></td>
+<td><code>#1000D2</code></td>
+<td></td>
+<td><code>hex_byte:</code></td>
+</tr>
+<tr>
+<td><code>#D2</code></td>
+<td><code>#1000D2</code></td>
+<td><code>%350 read_hex - *</code></td>
+<td><code>call read_hex</code></td>
+</tr>
+<tr>
+<td><code>#D7</code></td>
+<td><code>#1000D7</code></td>
+<td><code>%252</code></td>
+<td><code>stosb</code></td>
+</tr>
+<tr>
+<td><code>#D8</code></td>
+<td><code>#1000D8</code></td>
+<td><code>%353 $(assemble_loop - *)</code></td>
+<td><code>jmp assemble_loop</code></td>
+</tr>
+<tr>
+<td><code>#DA</code></td>
+<td><code>#1000DA</code></td>
+<td></td>
+<td><code>hex_dword:</code></td>
+</tr>
+<tr>
+<td><code>#DA</code></td>
+<td><code>#1000DA</code></td>
+<td><code>%350 read_hex - *</code></td>
+<td><code>call read_hex</code></td>
+</tr>
+<tr>
+<td><code>#DF</code></td>
+<td><code>#1000DF</code></td>
+<td><code>%253</code></td>
+<td><code>stosd</code></td>
+</tr>
+<tr>
+<td><code>#E0</code></td>
+<td><code>#1000E0</code></td>
+<td><code>%353 $(assemble_loop - *)</code></td>
+<td><code>jmp assemble_loop</code></td>
+</tr>
+<tr>
+<td><code>#E2</code></td>
+<td><code>#1000E2</code></td>
+<td></td>
+<td><code>read_hex:</code></td>
+</tr>
+<tr>
+<td><code>#E2</code></td>
+<td><code>#1000E2</code></td>
+<td><code>%063 %333</code></td>
+<td><code>xor ebx, ebx</code></td>
+</tr>
+<tr>
+<td><code>#E4</code></td>
+<td><code>#1000E4</code></td>
+<td></td>
+<td><code>read_hex_loop:</code></td>
+</tr>
+<tr>
+<td><code>#E4</code></td>
+<td><code>#1000E4</code></td>
+<td><code>%254</code></td>
+<td><code>lodsb</code></td>
+</tr>
+<tr>
+<td><code>#E5</code></td>
+<td><code>#1000E5</code></td>
+<td><code>%054 "0"</code></td>
+<td><code>sub al, "0"</code></td>
+</tr>
+<tr>
+<td><code>#E7</code></td>
+<td><code>#1000E7</code></td>
+<td><code>%074 $A</code></td>
+<td><code>cmp al, $A</code></td>
+</tr>
+<tr>
+<td><code>#E9</code></td>
+<td><code>#1000E9</code></td>
+<td><code>$72 $(read_hex_have_digit - *)</code></td>
+<td><code>jb read_hex_have_digit</code></td>
+</tr>
+<tr>
+<td><code>#EB</code></td>
+<td><code>#1000EB</code></td>
+<td><code>%054 $11</code></td>
+<td><code>sub al, "A" - "0"</code></td>
+</tr>
+<tr>
+<td><code>#ED</code></td>
+<td><code>#1000ED</code></td>
+<td><code>%074 $6</code></td>
+<td><code>cmp al, $6</code></td>
+</tr>
+<tr>
+<td><code>#EF</code></td>
+<td><code>#1000EF</code></td>
+<td><code>$73 $(read_hex_done - *)</code></td>
+<td><code>jae read_hex_done</code></td>
+</tr>
+<tr>
+<td><code>#F1</code></td>
+<td><code>#1000F1</code></td>
+<td><code>%004 $A</code></td>
+<td><code>add al, $A</code></td>
+</tr>
+<tr>
+<td><code>#F3</code></td>
+<td><code>#1000F3</code></td>
+<td></td>
+<td><code>read_hex_have_digit:</code></td>
+</tr>
+<tr>
+<td><code>#F3</code></td>
+<td><code>#1000F3</code></td>
+<td><code>%301 %343 $4</code></td>
+<td><code>shl ebx, $4</code></td>
+</tr>
+<tr>
+<td><code>#F6</code></td>
+<td><code>#1000F6</code></td>
+<td><code>%012 %330</code></td>
+<td><code>or bl, al</code></td>
+</tr>
+<tr>
+<td><code>#F8</code></td>
+<td><code>#1000F8</code></td>
+<td><code>%353 $(read_hex_loop - *)</code></td>
+<td><code>jmp read_hex_loop</code></td>
+</tr>
+<tr>
+<td><code>#FA</code></td>
+<td><code>#1000FA</code></td>
+<td></td>
+<td><code>read_hex_done:</code></td>
+</tr>
+<tr>
+<td><code>#FA</code></td>
+<td><code>#1000FA</code></td>
+<td><code>%116</code></td>
+<td><code>dec esi</code></td>
+</tr>
+<tr>
+<td><code>#FB</code></td>
+<td><code>#1000FB</code></td>
+<td><code>%213 %303</code></td>
+<td><code>mov eax, ebx</code></td>
+</tr>
+<tr>
+<td><code>#FD</code></td>
+<td><code>#1000FD</code></td>
+<td><code>%303</code></td>
+<td><code>ret</code></td>
+</tr>
+<tr>
+<td><code>#FE</code></td>
+<td><code>#1000FE</code></td>
+<td></td>
+<td><code>write_output:</code></td>
+</tr>
+<tr>
+<td><code>#FE</code></td>
+<td><code>#1000FE</code></td>
+<td><code>%273 #1</code></td>
+<td><code>mov ebx, #1</code></td>
+</tr>
+<tr>
+<td><code>#103</code></td>
+<td><code>#100103</code></td>
+<td><code>%271 output</code></td>
+<td><code>mov ecx, output</code></td>
+</tr>
+<tr>
+<td><code>#108</code></td>
+<td><code>#100108</code></td>
+<td><code>%213 %327</code></td>
+<td><code>mov edx, edi</code></td>
+</tr>
+<tr>
+<td><code>#10A</code></td>
+<td><code>#10010A</code></td>
+<td><code>%053 %321</code></td>
+<td><code>sub edx, ecx</code></td>
+</tr>
+<tr>
+<td><code>#10C</code></td>
+<td><code>#10010C</code></td>
+<td></td>
+<td><code>write_loop:</code></td>
+</tr>
+<tr>
+<td><code>#10C</code></td>
+<td><code>#10010C</code></td>
+<td><code>%270 #4</code></td>
+<td><code>mov eax, #4</code></td>
+</tr>
+<tr>
+<td><code>#111</code></td>
+<td><code>#100111</code></td>
+<td><code>%315 $80</code></td>
+<td><code>int $80</code></td>
+</tr>
+<tr>
+<td><code>#113</code></td>
+<td><code>#100113</code></td>
+<td><code>%205 %300</code></td>
+<td><code>test eax, eax</code></td>
+</tr>
+<tr>
+<td><code>#115</code></td>
+<td><code>#100115</code></td>
+<td><code>$7C $(error - *)</code></td>
+<td><code>jl error</code></td>
+</tr>
+<tr>
+<td><code>#117</code></td>
+<td><code>#100117</code></td>
+<td><code>%003 %310</code></td>
+<td><code>add ecx, eax</code></td>
+</tr>
+<tr>
+<td><code>#119</code></td>
+<td><code>#100119</code></td>
+<td><code>%053 %320</code></td>
+<td><code>sub edx, eax</code></td>
+</tr>
+<tr>
+<td><code>#11B</code></td>
+<td><code>#10011B</code></td>
+<td><code>$75 $(write_loop - *)</code></td>
+<td><code>jnz write_loop</code></td>
+</tr>
+<tr>
+<td><code>#11D</code></td>
+<td><code>#10011D</code></td>
+<td></td>
+<td><code>exit_success:</code></td>
+</tr>
+<tr>
+<td><code>#11D</code></td>
+<td><code>#10011D</code></td>
+<td><code>%063 %333</code></td>
+<td><code>xor ebx, ebx</code></td>
+</tr>
+<tr>
+<td><code>#11F</code></td>
+<td><code>#10011F</code></td>
+<td></td>
+<td><code>exit:</code></td>
+</tr>
+<tr>
+<td><code>#11F</code></td>
+<td><code>#10011F</code></td>
+<td><code>%270 #1</code></td>
+<td><code>mov eax, #1</code></td>
+</tr>
+<tr>
+<td><code>#124</code></td>
+<td><code>#100124</code></td>
+<td><code>%315 $80</code></td>
+<td><code>int $80</code></td>
+</tr>
+<tr>
+<td><code>#126</code></td>
+<td><code>#100126</code></td>
+<td></td>
+<td><code>error:</code></td>
+</tr>
+<tr>
+<td><code>#126</code></td>
+<td><code>#100126</code></td>
+<td><code>%273 #2</code></td>
+<td><code>mov ebx, #2</code></td>
+</tr>
+<tr>
+<td><code>#12B</code></td>
+<td><code>#10012B</code></td>
+<td><code>%271 error_message</code></td>
+<td><code>mov ecx, error_message</code></td>
+</tr>
+<tr>
+<td><code>#130</code></td>
+<td><code>#100130</code></td>
+<td><code>%272 #7</code></td>
+<td><code>mov edx, error_message_end - error_message</code></td>
+</tr>
+<tr>
+<td><code>#135</code></td>
+<td><code>#100135</code></td>
+<td></td>
+<td><code>error_loop:</code></td>
+</tr>
+<tr>
+<td><code>#135</code></td>
+<td><code>#100135</code></td>
+<td><code>%270 #4</code></td>
+<td><code>mov eax, #4</code></td>
+</tr>
+<tr>
+<td><code>#13A</code></td>
+<td><code>#10013A</code></td>
+<td><code>%315 $80</code></td>
+<td><code>int $80</code></td>
+</tr>
+<tr>
+<td><code>#13C</code></td>
+<td><code>#10013C</code></td>
+<td><code>%205 %300</code></td>
+<td><code>test eax, eax</code></td>
+</tr>
+<tr>
+<td><code>#13E</code></td>
+<td><code>#10013E</code></td>
+<td><code>$7C $(error_done - *)</code></td>
+<td><code>jl error_done</code></td>
+</tr>
+<tr>
+<td><code>#140</code></td>
+<td><code>#100140</code></td>
+<td><code>%003 %310</code></td>
+<td><code>add ecx, eax</code></td>
+</tr>
+<tr>
+<td><code>#142</code></td>
+<td><code>#100142</code></td>
+<td><code>%053 %320</code></td>
+<td><code>sub edx, eax</code></td>
+</tr>
+<tr>
+<td><code>#144</code></td>
+<td><code>#100144</code></td>
+<td><code>$75 $(error_loop - *)</code></td>
+<td><code>jne error_loop</code></td>
+</tr>
+<tr>
+<td><code>#146</code></td>
+<td><code>#100146</code></td>
+<td></td>
+<td><code>error_done:</code></td>
+</tr>
+<tr>
+<td><code>#146</code></td>
+<td><code>#100146</code></td>
+<td><code>%113</code></td>
+<td><code>dec ebx</code></td>
+</tr>
+<tr>
+<td><code>#147</code></td>
+<td><code>#100147</code></td>
+<td><code>%353 $(exit - *)</code></td>
+<td><code>jmp exit</code></td>
+</tr>
+<tr>
+<td><code>#149</code></td>
+<td><code>#100149</code></td>
+<td></td>
+<td><code>error_message:</code></td>
+</tr>
+<tr>
+<td><code>#149</code></td>
+<td><code>#100149</code></td>
+<td><code>"Error!" $A</code></td>
+<td><code>db "Error!", $A</code></td>
+</tr>
+<tr>
+<td><code>#150</code></td>
+<td><code>#100150</code></td>
+<td></td>
+<td><code>error_message_end:</code></td>
+</tr>
+<tr>
+<td><code>#150</code></td>
+<td><code>#100150</code></td>
+<td></td>
+<td><code>text_end:</code></td>
+</tr>
+<tr>
+<td></td>
+<td><code>#100150</code></td>
+<td></td>
+<td><code>zero_initialized:</code></td>
+</tr>
+<tr>
+<td></td>
+<td><code>#100150</code></td>
+<td></td>
+<td><code>input:</code></td>
+</tr>
+<tr>
+<td></td>
+<td><code>#100150</code></td>
+<td></td>
+<td><code>resb #100000</code></td>
+</tr>
+<tr>
+<td></td>
+<td><code>#200150</code></td>
+<td></td>
+<td><code>input_end:</code></td>
+</tr>
+<tr>
+<td></td>
+<td><code>#200150</code></td>
+<td></td>
+<td><code>output:</code></td>
+</tr>
+<tr>
+<td></td>
+<td><code>#200150</code></td>
+<td></td>
+<td><code>resb #100000</code></td>
+</tr>
+<tr>
+<td></td>
+<td><code>#300150</code></td>
+<td></td>
+<td><code>zero_initialized_end:</code></td>
+</tr>
+</tbody>
+</table>
+<p>The <code>zero_initialized</code> 2 MiB part is not included in the file. So our executable file
+will have <code>#150</code> = 336 bytes.</p>
+<h2 id="fill-in-addresses-and-offsets">Fill in addresses and offsets</h2>
+<p>Let's now fill in all the addresses and offsets.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">offset</th>
+<th>expr</th>
+<th>value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;"><code>#18</code></td>
+<td><code>start</code></td>
+<td><code>#100054</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#3C</code></td>
+<td><code>text</code></td>
+<td><code>#100054</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#44</code></td>
+<td><code>text_end - text</code></td>
+<td><code>#FC</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#48</code></td>
+<td><code>zero_initialized_end - text</code></td>
+<td><code>#2000FC</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#57</code></td>
+<td><code>input</code></td>
+<td><code>#100150</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#6F</code></td>
+<td><code>error - *</code></td>
+<td><code>#B3</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#74</code></td>
+<td><code>$(read_loop - *)</code></td>
+<td><code>-$15</code> = <code>$EB</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#76</code></td>
+<td><code>input</code></td>
+<td><code>#100150</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#7B</code></td>
+<td><code>output</code></td>
+<td><code>#200150</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#82</code></td>
+<td><code>$(write_output - *)</code></td>
+<td><code>$7B</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#87</code></td>
+<td><code>$(assemble_loop - *)</code></td>
+<td><code>-$9</code> = <code>$F7</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#8B</code></td>
+<td><code>$(assemble_loop - *)</code></td>
+<td><code>-$D</code> = <code>$F3</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#8F</code></td>
+<td><code>$(comment - *)</code></td>
+<td><code>$15</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#93</code></td>
+<td><code>$(string - *)</code></td>
+<td><code>$1C</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#97</code></td>
+<td><code>$(oct_byte - *)</code></td>
+<td><code>$24</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#9B</code></td>
+<td><code>$(hex_byte - *)</code></td>
+<td><code>$36</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#9F</code></td>
+<td><code>$(hex_dword - *)</code></td>
+<td><code>$3A</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#A1</code></td>
+<td><code>error - *</code></td>
+<td><code>#81</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#A9</code></td>
+<td><code>$(assemble_loop - *)</code></td>
+<td><code>-$2B</code> = <code>$D5</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#AD</code></td>
+<td><code>$(assemble_loop - *)</code></td>
+<td><code>-$2F</code> = <code>$D1</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#AF</code></td>
+<td><code>$(comment - *)</code></td>
+<td><code>-$B</code> = <code>$F5</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#B4</code></td>
+<td><code>$(error - *)</code></td>
+<td><code>$71</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#B8</code></td>
+<td><code>$(assemble_loop - *)</code></td>
+<td><code>-$3A</code> = <code>$C6</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#BB</code></td>
+<td><code>$(string - *)</code></td>
+<td><code>-$C</code> = <code>$F4</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#C4</code></td>
+<td><code>$(oct_byte_done - *)</code></td>
+<td><code>$7</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#CB</code></td>
+<td><code>$(oct_byte_loop - *)</code></td>
+<td><code>-$E</code> = <code>$F2</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#D1</code></td>
+<td><code>$(assemble_loop - *)</code></td>
+<td><code>-$53</code> = <code>$AD</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#D3</code></td>
+<td><code>read_hex - *</code></td>
+<td><code>#B</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#D9</code></td>
+<td><code>$(assemble_loop - *)</code></td>
+<td><code>-$5B</code> = <code>$A5</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#DB</code></td>
+<td><code>read_hex - *</code></td>
+<td><code>#3</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#D9</code></td>
+<td><code>$(assemble_loop - *)</code></td>
+<td><code>-$63</code> = <code>$9D</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#EA</code></td>
+<td><code>$(read_hex_have_digit - *)</code></td>
+<td><code>$8</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#F0</code></td>
+<td><code>$(read_hex_done - *)</code></td>
+<td><code>$9</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#F9</code></td>
+<td><code>$(read_hex_loop - *)</code></td>
+<td><code>-$16</code> = <code>$EA</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#104</code></td>
+<td><code>output</code></td>
+<td><code>#200150</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#116</code></td>
+<td><code>$(error - *)</code></td>
+<td><code>$F</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#11C</code></td>
+<td><code>$(write_loop - *)</code></td>
+<td><code>-$11</code> = <code>$EF</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#12C</code></td>
+<td><code>error_message</code></td>
+<td><code>#100149</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#13F</code></td>
+<td><code>$(error_done - *)</code></td>
+<td><code>$6</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#145</code></td>
+<td><code>$(error_loop - *)</code></td>
+<td><code>-$11</code> = <code>$EF</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#148</code></td>
+<td><code>$(exit - *)</code></td>
+<td><code>-$2A</code> = <code>$D6</code></td>
+</tr>
+</tbody>
+</table>
+<p>We needed to make the jumps at <code>#6D</code> and <code>#A0</code> to be <strong>long</strong> jumps because the distances from there
+to <code>error</code> are larger than <code>$7F</code> so they wouldn't fit in a single byte.</p>
+<p>How did I know this before calculating the jump offsets? On the first iteration I didn't.
+After calculating the jump offsets I realized the offsets were too large.
+And so I went back and change the jumps to long jumps, which changed some of the subsequent offsets.
+Compiling assembly is an iterative process.</p>
+<h2 id="create-the-assembler-using-echo">Create the assembler using <code>echo</code></h2>
+<p>We still have to carefully put all those <code>#150</code> = 336 bytes in a file.
+First describe them using <code>echo</code> format:</p>
+<p><a href="https://github.com/tczajka/echo-to-tetris/blob/main/src/asm.1.echo"><code>src/asm.1.echo</code></a></p>
+<pre><code class="language-text">\x7FELF\x1\x1\x1\0\0\0\0\0\0\0\0\0\x2\0\x3\0\x1\0\0\0\x54\0\x10\0\x34\0\0\0\0\0\0\0\0\0\0\0\x34\0\x20\0\x1\0\0\0\0\0\0\0\x1\0\0\0\x54\0\0\0\x54\0\x10\0\0\0\0\0\xFC\0\0\0\xFC\0\x20\0\x7\0\0\0\0\x10\0\0\063\0333\0271\x50\x1\x10\0\0272\xFF\xFF\xF\0\0270\x3\0\0\0\0315\x80\03\0310\053\0320\0205\0300\017\x8C\xB3\0\0\0\x7F\xEB\0276\x50\x1\x10\0\0277\x50\x1\x20\0\073\0361\x74\x7B\0254\074 \x74\xF7\074\xA\x74\xF3\074;\x74\x15\074\x22\x74\x1C\074%\x74\x24\074$\x74\x36\074#\x74\x3A\0351\x81\0\0\0\0254\0204\0300\x74\xD5\074\xA\x74\xD1\0353\xF5\0254\0204\0300\x74\x71\074\x22\x74\xC6\0252\0353\xF4\063\0333\0254\054\x30\074\x8\x73\x7\0301\0343\x3\012\0330\0353\xF2\0116\0212\0303\0252\0353\xAD\0350\xB\0\0\0\0252\0353\xA5\0350\x3\0\0\0\0253\0353\x9D\063\0333\0254\054\x30\074\xA\x72\x8\054\x11\074\x6\x73\x9\04\xA\0301\0343\x4\012\0330\0353\xEA\0116\0213\0303\0303\0273\x1\0\0\0\0271\x50\x1\x20\0\0213\0327\053\0321\0270\x4\0\0\0\0315\x80\0205\0300\x7C\xF\03\0310\053\0320\x75\xEF\063\0333\0270\x1\0\0\0\0315\x80\0273\x2\0\0\0\0271\x49\x1\x10\0\0272\x7\0\0\0\0270\x4\0\0\0\0315\x80\0205\0300\x7C\x6\03\0310\053\0320\x75\xEF\0113\0353\xD6Error!\xA
+</code></pre>
+<p>Finally, write the code to an executable file using <code>echo</code>:</p>
+<pre><code class="language-bash">$ echo -en `cat src/asm.1.echo` &gt; bin/asm.1
+$ wc -c bin/asm.1
+336 bin/asm.1
+$ chmod u+x bin/asm.1
+</code></pre>
+<h2 id="lets-test-it">Let's test it!</h2>
+<p>Let's see if it works.</p>
+<p><a href="https://github.com/tczajka/echo-to-tetris/blob/main/test/test.1.asm"><code>src/test.1.asm</code></a></p>
+<pre><code class="language-text">&quot;Hello there&quot; ; comment
+#44434241    ; hex bytes &quot;ABCD&quot;
+$7A %106     ; hex byte &quot;z&quot;, oct byte &quot;F&quot;
+$A           ; new line
+</code></pre>
+<p><a href="https://github.com/tczajka/echo-to-tetris/blob/main/test/test.2.asm"><code>test/test.2.asm</code></a></p>
+<pre><code class="language-text">&quot;Unfinished string
+</code></pre>
+<p><a href="https://github.com/tczajka/echo-to-tetris/blob/main/test/test.3.asm"><code>test/test.3.asm</code></a></p>
+<pre><code class="language-text">invalid characters
+</code></pre>
+<pre><code class="language-bash">$ bin/asm.1 &lt; test/test.1.asm
+Hello thereABCDzF
+$ bin/asm.1 &lt; test/test.2.asm
+Error!
+$ bin/asm.1 &lt; test/test.3.asm
+Error!
+</code></pre>
+<p>Everything seems to work as expected. We can now proceed to use our newly created assembler to write
+some programs.</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+
+        <div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

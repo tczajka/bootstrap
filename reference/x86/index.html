@@ -42,11 +42,24 @@
                                 <a href="../../hello-world/" class="nav-link">Hello, world!</a>
                             </li>
                             <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Assembler</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../asm/assembler-overview/" class="dropdown-item">Assembler overview</a>
+</li>
+                                    
+<li>
+    <a href="../../asm/numbers-and-strings/" class="dropdown-item">Numbers and strings</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Reference</a>
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="../numbers/" class="dropdown-item">Number notation</a>
+    <a href="../notation/" class="dropdown-item">Notation</a>
 </li>
                                     
 <li>
@@ -110,11 +123,11 @@
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-bs-level="2"><a href="#basic-arithmetic-and-logic" class="nav-link">Basic arithmetic and logic</a>
+            <li class="nav-item" data-bs-level="2"><a href="#arithmetic-and-logic" class="nav-link">Arithmetic and logic</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-bs-level="2"><a href="#other-arithmetic" class="nav-link">Other arithmetic</a>
+            <li class="nav-item" data-bs-level="2"><a href="#string-operations" class="nav-link">String operations</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -142,7 +155,7 @@
 32-bit operating systems or "compatibility mode" on 64-bit operating systems.</p>
 <p>We only describe some common instructions that may be useful to us.</p>
 <h2 id="registers">Registers</h2>
-<p>There are 8 general-purpose 32-bit registers:</p>
+<p>There are 8 general-purpose 32-bit (dword) registers:</p>
 <table>
 <thead>
 <tr>
@@ -185,22 +198,22 @@
 <tr>
 <td style="text-align: right;"><code>6</code></td>
 <td><code>esi</code></td>
-<td></td>
+<td>source for string operations</td>
 </tr>
 <tr>
 <td style="text-align: right;"><code>7</code></td>
 <td><code>edi</code></td>
-<td></td>
+<td>destination for string operations</td>
 </tr>
 </tbody>
 </table>
-<p>8-bit instructions use 8-bit fragments of these registers</p>
+<p>8-bit instructions use 8-bit (byte) fragments of these registers.</p>
 <table>
 <thead>
 <tr>
 <th style="text-align: right;">ID</th>
 <th>name</th>
-<th>which byte</th>
+<th>byte register</th>
 </tr>
 </thead>
 <tbody>
@@ -248,7 +261,7 @@
 </table>
 <h2 id="moves">Moves</h2>
 <p>Move instructions copy data between registers and/or memory.</p>
-<p>Note that we use %, $, # to indicate <a href="../numbers/">octal and hexadecimal numbers</a>.</p>
+<p>Note that we use %, $, # to indicate <a href="../notation/">octal and hexadecimal numbers</a>.</p>
 <table>
 <thead>
 <tr>
@@ -261,46 +274,46 @@
 <tr>
 <td><code>%212 %3xy</code></td>
 <td><code>movb x, y</code></td>
-<td>8-bit copy</td>
+<td>byte copy</td>
 </tr>
 <tr>
 <td><code>%213 %3xy</code></td>
 <td><code>mov x, y</code></td>
-<td>32-bit copy</td>
+<td>dword copy</td>
 </tr>
 <tr>
 <td><code>%212 %0xy</code></td>
 <td><code>movb x, [y]</code></td>
-<td>8-bit load from memory</td>
+<td>load byte from memory</td>
 </tr>
 <tr>
 <td><code>%213 %0xy</code></td>
 <td><code>mov x, [y]</code></td>
-<td>32-bit load from memory</td>
+<td>load dword from memory</td>
 </tr>
 <tr>
 <td><code>%210 %0xy</code></td>
 <td><code>movb [y], x</code></td>
-<td>8-bit store in memory</td>
+<td>store byte in memory</td>
 </tr>
 <tr>
 <td><code>%211 %0xy</code></td>
 <td><code>mov [y], x</code></td>
-<td>32-bit store in memory</td>
+<td>store dword in memory</td>
 </tr>
 <tr>
 <td><code>%26x $y</code></td>
 <td><code>movb x, $y</code></td>
-<td>8-bit load constant</td>
+<td>load byte constant</td>
 </tr>
 <tr>
 <td><code>%27x #y</code></td>
 <td><code>mov x, #y</code></td>
-<td>32-bit load constant</td>
+<td>load dword constant</td>
 </tr>
 </tbody>
 </table>
-<h2 id="basic-arithmetic-and-logic">Basic arithmetic and logic</h2>
+<h2 id="arithmetic-and-logic">Arithmetic and logic</h2>
 <p>Basic arithmetic instructions are encoded similarly to moves:</p>
 <table>
 <thead>
@@ -314,57 +327,57 @@
 <tr>
 <td><code>%0p2 %3xy</code></td>
 <td><code>opb x, y</code></td>
-<td>8-bit arithmetic</td>
+<td>byte arithmetic</td>
 </tr>
 <tr>
 <td><code>%0p3 %3xy</code></td>
 <td><code>op x, y</code></td>
-<td>32-bit arithmetic</td>
+<td>dword arithmetic</td>
 </tr>
 <tr>
 <td><code>%0p0 %0xy</code></td>
 <td><code>opb [y], x</code></td>
-<td>8-bit arithmetic to memory</td>
+<td>byte arithmetic to memory</td>
 </tr>
 <tr>
 <td><code>%0p1 %0xy</code></td>
 <td><code>op [y], x</code></td>
-<td>32-bit arithmetic to memory</td>
+<td>dword arithmetic to memory</td>
 </tr>
 <tr>
 <td><code>%0p2 %0xy</code></td>
 <td><code>opb x, [y]</code></td>
-<td>8-bit arithmetic from memory</td>
+<td>byte arithmetic from memory</td>
 </tr>
 <tr>
 <td><code>%0p3 %0xy</code></td>
 <td><code>opb x, [y]</code></td>
-<td>32-bit arithmetic from memory</td>
+<td>dword arithmetic from memory</td>
 </tr>
 <tr>
 <td><code>%0p4 $y</code></td>
 <td><code>opb al, $y</code></td>
-<td>8-bit arithmetic of <code>al</code> with a constant</td>
+<td>byte arithmetic of <code>al</code> with a constant</td>
 </tr>
 <tr>
 <td><code>%0p5 #y</code></td>
 <td><code>op eax, #y</code></td>
-<td>32-bit arithmetic of <code>eax</code> with a constant</td>
+<td>dword arithmetic of <code>eax</code> with a constant</td>
 </tr>
 <tr>
 <td><code>%200 %3px $y</code></td>
 <td><code>opb x, $y</code></td>
-<td>8-bit arithmetic with a constant</td>
+<td>byte arithmetic with a constant</td>
 </tr>
 <tr>
 <td><code>%201 %3px #y</code></td>
 <td><code>op x, #y</code></td>
-<td>32-bit arithmetic with a constant</td>
+<td>dword arithmetic with a constant</td>
 </tr>
 <tr>
 <td><code>%203 %3px $y</code></td>
 <td><code>op x, $y</code></td>
-<td>32-bit arithmetic with a sign-extended 8-bit constant</td>
+<td>dword arithmetic with a sign-extended byte constant</td>
 </tr>
 </tbody>
 </table>
@@ -420,7 +433,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="other-arithmetic">Other arithmetic</h2>
+<p>Other arithmetic instructions:</p>
 <table>
 <thead>
 <tr>
@@ -433,12 +446,17 @@
 <tr>
 <td><code>%10x</code></td>
 <td><code>inc x</code></td>
-<td>increment by 1</td>
+<td>increment dword by 1</td>
 </tr>
 <tr>
 <td><code>%11x</code></td>
 <td><code>dec x</code></td>
-<td>decrement by 1</td>
+<td>decrement dword by 1</td>
+</tr>
+<tr>
+<td><code>%204 %3xy</code></td>
+<td><code>testb x, y</code></td>
+<td><code>andb x, y</code> without storing the result</td>
 </tr>
 <tr>
 <td><code>%205 %3xy</code></td>
@@ -448,17 +466,49 @@
 <tr>
 <td><code>%301 %34x $y</code></td>
 <td><code>shl x, $y</code></td>
-<td>shift <code>x</code> left by <code>y</code> bits</td>
+<td>shift dword <code>x</code> left by <code>y</code> bits</td>
 </tr>
 <tr>
 <td><code>%301 %35x $y</code></td>
 <td><code>shr x, $y</code></td>
-<td>signed shift <code>x</code> right by <code>y</code> bits</td>
+<td>signed shift dword <code>x</code> right by <code>y</code> bits</td>
 </tr>
 <tr>
 <td><code>%301 %37x $y</code></td>
 <td><code>sar x, $y</code></td>
-<td>unsigned shift <code>x</code> right by <code>y</code> bits</td>
+<td>unsigned shift dword <code>x</code> right by <code>y</code> bits</td>
+</tr>
+</tbody>
+</table>
+<h2 id="string-operations">String operations</h2>
+<table>
+<thead>
+<tr>
+<th>machine code</th>
+<th>assembly</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>%252</code></td>
+<td><code>stosb</code></td>
+<td>write byte al into <code>[edi]</code>, increment <code>edi</code> by 1</td>
+</tr>
+<tr>
+<td><code>%253</code></td>
+<td><code>stosd</code></td>
+<td>write dword eax into <code>[edi]</code>, increment <code>edi</code> by 4</td>
+</tr>
+<tr>
+<td><code>%254</code></td>
+<td><code>lodsb</code></td>
+<td>read byte <code>[esi]</code> into <code>al</code>, increment <code>esi</code> by 1</td>
+</tr>
+<tr>
+<td><code>%255</code></td>
+<td><code>lodsd</code></td>
+<td>read dword <code>[esi]</code> into <code>eax</code>, increment <code>esi</code> by 4</td>
 </tr>
 </tbody>
 </table>
@@ -479,12 +529,12 @@ it off the stack.</p>
 <tr>
 <td><code>%12x</code></td>
 <td><code>push x</code></td>
-<td>push on the stack</td>
+<td>push dword on the stack</td>
 </tr>
 <tr>
 <td><code>%13x</code></td>
 <td><code>pop x</code></td>
-<td>pop off the stack</td>
+<td>pop dowrd off the stack</td>
 </tr>
 <tr>
 <td><code>%350 #rel</code></td>
@@ -509,23 +559,28 @@ it off the stack.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>%377 $rel</code></td>
+<td><code>%353 $rel</code></td>
 <td><code>jmp $rel</code></td>
 <td>jump, <code>rel</code>: 8-bit relative address</td>
 </tr>
 <tr>
 <td><code>%351 #rel</code></td>
-<td><code>jmp #rel</code></td>
-<td>jump, <code>rel</code>: 32-bit relative address</td>
+<td><code>jmp long #rel</code></td>
+<td>long jump, <code>rel</code>: 32-bit relative address</td>
 </tr>
 <tr>
 <td><code>$7q $rel</code></td>
 <td><code>jq $rel</code></td>
 <td>conditional jump, <code>q</code>: condition, <code>rel</code>: 8-bit relative address</td>
 </tr>
+<tr>
+<td><code>%017 $8q #rel</code></td>
+<td><code>jq long #rel</code></td>
+<td>conditional long jump, <code>q</code>: condition, <code>rel</code>: 32-bit relative address</td>
+</tr>
 </tbody>
 </table>
-<p>Conditional jumps are easiest to write in hexadecimal. <code>$7x</code> corresponds to <code>%16x</code> or <code>%17x</code> in octal.</p>
+<p>Conditional jumps are easiest to write in hexadecimal. <code>$7q</code> corresponds to <code>%16x</code> or <code>%17x</code> in octal.</p>
 <p>Possible conditions are as follows:</p>
 <table>
 <thead>
@@ -587,32 +642,32 @@ it off the stack.</p>
 <td>signed &gt;= 0</td>
 </tr>
 <tr>
-<td style="text-align: right;"><code>a</code></td>
+<td style="text-align: right;"><code>A</code></td>
 <td><code>p</code></td>
 <td>odd parity</td>
 </tr>
 <tr>
-<td style="text-align: right;"><code>b</code></td>
+<td style="text-align: right;"><code>B</code></td>
 <td><code>np</code></td>
 <td>even parity</td>
 </tr>
 <tr>
-<td style="text-align: right;"><code>c</code></td>
+<td style="text-align: right;"><code>C</code></td>
 <td><code>l</code></td>
 <td>signed &lt;</td>
 </tr>
 <tr>
-<td style="text-align: right;"><code>d</code></td>
+<td style="text-align: right;"><code>D</code></td>
 <td><code>ge</code></td>
 <td>signed &gt;=</td>
 </tr>
 <tr>
-<td style="text-align: right;"><code>e</code></td>
+<td style="text-align: right;"><code>E</code></td>
 <td><code>le</code></td>
 <td>signed &lt;=</td>
 </tr>
 <tr>
-<td style="text-align: right;"><code>f</code></td>
+<td style="text-align: right;"><code>F</code></td>
 <td><code>g</code></td>
 <td>signed &gt;</td>
 </tr>

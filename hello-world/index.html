@@ -42,11 +42,24 @@
                                 <a href="./" class="nav-link active" aria-current="page">Hello, world!</a>
                             </li>
                             <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Assembler</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../asm/assembler-overview/" class="dropdown-item">Assembler overview</a>
+</li>
+                                    
+<li>
+    <a href="../asm/numbers-and-strings/" class="dropdown-item">Numbers and strings</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Reference</a>
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="../reference/numbers/" class="dropdown-item">Number notation</a>
+    <a href="../reference/notation/" class="dropdown-item">Notation</a>
 </li>
                                     
 <li>
@@ -78,7 +91,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../reference/numbers/" class="nav-link">
+                                <a rel="next" href="../asm/assembler-overview/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -110,7 +123,15 @@
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-bs-level="2"><a href="#fill-in-addresses" class="nav-link">Fill in addresses</a>
+            <li class="nav-item" data-bs-level="2"><a href="#program-header" class="nav-link">Program header</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#machine-code" class="nav-link">Machine code</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#fill-in-addresses-and-offsets" class="nav-link">Fill in addresses and offsets</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -139,14 +160,14 @@ standard output of the process. The operating system automatically opens 3 files
 <li>file descriptor 1: standard output</li>
 <li>file descriptor 2: standard error</li>
 </ul>
-<pre><code class="language-nasm">text:               ; beginning of text segment
-start:              ; entry point to the program
-  mov ebx, 1        ; ebx = standard output
-  mov ecx, message  ; ecx = message address
-  mov edx, message_end - message ; edx = message length
+<pre><code class="language-nasm">text:                   ; beginning of text segment
+start:                  ; entry point to the program
+    mov ebx, 1          ; standard output
+    mov ecx, message    ; message address
+    mov edx, message_end - message  ; message length
 write_loop:
-  mov eax, 4        ; eax = &quot;write&quot; system call
-  int $80           ; system call
+    mov eax, 4          ; &quot;write&quot; system call
+    int $80             ; system call
 </code></pre>
 <p>The <code>write</code> system call can fail. For example, if we redirect the output to a file, and we run out
 of disk space, it will fail.</p>
@@ -159,31 +180,35 @@ of disk space, it will fail.</p>
 <p>So we need to check. On failure we will just finish the program. If a message has been printed
 partially, we will loop around and continue writing. That's why we have put the <code>write_loop</code> label
 in the code above.</p>
-<pre><code class="language-nasm">  test eax, eax     ; eax = bytes written by &quot;write&quot;, or -1 if error
-  jle exit          ; exit on failure; ebx = exit code 1
-  add ecx, eax      ; ecx = remaining message
-  sub edx, eax      ; edx = remaining length
-  jnz write_loop    ; if edx != 0, go back to write_loop
+<pre><code class="language-nasm">  test eax, eax         ; bytes written by &quot;write&quot;, or -1 if error
+  jl exit               ; exit on failure; ebx = exit code 1
+  add ecx, eax          ; remaining message
+  sub edx, eax          ; remaining length
+  jnz write_loop        ; if edx != 0, go back to write_loop
 </code></pre>
 <p>Then we need to call the <code>exit</code> system call to finish the program. We will pass 0 in <code>ebx</code> to indicate
 a successful exit, and 1 to indicate an error. It just so happens that <code>ebx</code> already contains 1.</p>
-<pre><code class="language-nasm">exit_success:
-  xor ebx, ebx      ; ebx = 0 = successful exit
-exit:               ; return value in ebx
-  mov eax, 1        ; eax = &quot;exit&quot; system call
-  int $80           ; system call
+<pre><code class="language-nasm">; exit the program with exit code 0
+exit_success:
+  xor ebx, ebx          ; 0 = successful exit
+
+; exit the program
+; return value in ebx
+exit:                   
+  mov eax, 1            ; eax = &quot;exit&quot; system call
+  int $80               ; system call
 </code></pre>
 <p>Finally we need the message we want to print. <code>db</code> defines bytes, and we write the message in ASCII,
-including the "new line" character (ASCII <code>$a</code>).
-Note: <code>$</code> indicates <a href="../reference/numbers/">a hexadecimal byte</a>.</p>
+including the "new line" character (ASCII <code>$A</code>).
+Note: <code>$</code> indicates <a href="../reference/notation/">a hexadecimal byte</a>.</p>
 <pre><code class="language-nasm">message:
-  db &quot;Hello, world!&quot;, $0a   ; the message with a new line
-message_end:                ; end of the message
-text_end:                   ; end of text segment
+  db &quot;Hello, world!&quot;, $0A  ; the message with a new line
+message_end:            ; end of the message
+text_end:               ; end of text segment
 </code></pre>
 <h2 id="elf-header">ELF header</h2>
 <p>Our executable file needs to begin with an <a href="../reference/elf/">ELF header</a>.
-According to our <a href="../reference/numbers/">conventions</a>, <code>$</code> indicates a hexadecimal byte,
+According to our <a href="../reference/notation/">conventions</a>, <code>$</code> indicates a hexadecimal byte,
 <code>#</code> a hexadecimal 32-bit number, <code>%</code> an octal byte, <code>'</code> an <a href="../reference/ascii/">ASCII</a> byte.</p>
 <table>
 <thead>
@@ -196,7 +221,7 @@ According to our <a href="../reference/numbers/">conventions</a>, <code>$</code>
 <tbody>
 <tr>
 <td style="text-align: right;"><code>#0</code></td>
-<td style="text-align: left;"><code>$7f 'E 'L 'F</code></td>
+<td style="text-align: left;"><code>$7F "ELF"</code></td>
 <td style="text-align: left;">magic number that identifies ELF files</td>
 </tr>
 <tr>
@@ -250,7 +275,7 @@ According to our <a href="../reference/numbers/">conventions</a>, <code>$</code>
 <td style="text-align: left;">program entry point (virtual address)</td>
 </tr>
 <tr>
-<td style="text-align: right;"><code>#1c</code></td>
+<td style="text-align: right;"><code>#1C</code></td>
 <td style="text-align: left;"><code>#34</code></td>
 <td style="text-align: left;">program header table location (directly behind the ELF header)</td>
 </tr>
@@ -270,17 +295,17 @@ According to our <a href="../reference/numbers/">conventions</a>, <code>$</code>
 <td style="text-align: left;">ELF header size</td>
 </tr>
 <tr>
-<td style="text-align: right;"><code>#2a</code></td>
+<td style="text-align: right;"><code>#2A</code></td>
 <td style="text-align: left;"><code>$20 0</code></td>
 <td style="text-align: left;">program header size</td>
 </tr>
 <tr>
-<td style="text-align: right;"><code>#2c</code></td>
+<td style="text-align: right;"><code>#2C</code></td>
 <td style="text-align: left;"><code>1 0</code></td>
 <td style="text-align: left;">number of program headers</td>
 </tr>
 <tr>
-<td style="text-align: right;"><code>#2e</code></td>
+<td style="text-align: right;"><code>#2E</code></td>
 <td style="text-align: left;"><code>0 0</code></td>
 <td style="text-align: left;">section header size (ignored)</td>
 </tr>
@@ -297,6 +322,7 @@ According to our <a href="../reference/numbers/">conventions</a>, <code>$</code>
 </tbody>
 </table>
 <p>We will fill out the address of <code>start</code> later.</p>
+<h2 id="program-header">Program header</h2>
 <p>Now we need the program header table describing memory segments: parts of the file that should
 be loaded into memory. Normally we want seperate segments for executable code, read-only data and
 read-write data, each with appropriate permissions. But for simplicity we define only one
@@ -322,7 +348,7 @@ Traditionally the code segment is called <code>text</code>.</p>
 <td>location of the segment (immediately after the program header table)</td>
 </tr>
 <tr>
-<td style="text-align: right;"><code>#3c</code></td>
+<td style="text-align: right;"><code>#3C</code></td>
 <td><code>text</code></td>
 <td>virtual address of the text segment</td>
 </tr>
@@ -342,25 +368,26 @@ Traditionally the code segment is called <code>text</code>.</p>
 <td>size in memory (same)</td>
 </tr>
 <tr>
-<td style="text-align: right;"><code>#4c</code></td>
-<td><code>#1 + #4</code></td>
+<td style="text-align: right;"><code>#4C</code></td>
+<td><code>#5</code></td>
 <td>permissions: execute + read</td>
 </tr>
 <tr>
 <td style="text-align: right;"><code>#50</code></td>
 <td><code>#1000</code></td>
-<td>memory alignment, 4 KB</td>
+<td>memory alignment, 4 KiB</td>
 </tr>
 </tbody>
 </table>
 <p>We will need to fill out the address and length of the segment, later.</p>
 <p>We need to decide where in virtual memory our code will be stored. Linux won't typically
 let us just put things at virtual address 0. The file <code>/proc/sys/vm/mmap_min_addr</code> shows
-the minimum address: it's typically 64 KB = <code>#10000</code>. It doesn't really matter much where we put
-it. Let's put it at <code>#100000</code> (1 MB).</p>
+the minimum address: it's typically 64 KiB = <code>#10000</code>. It doesn't really matter much where we put
+it. Let's put it at 1 MiB = <code>#100000</code>.</p>
 <p>But we can't quite use <code>#100000</code> as the beginning of the segment because of page alignment. Since
 we will start at at <code>#54</code> in the file, we have to start it at <code>#100054</code> in virtual memory. This
 way Linux can map pages of the file (of size <code>#1000</code>) into virtual memory.</p>
+<h2 id="machine-code">Machine code</h2>
 <p>And finally, we put the actual machine code in the file. We translate assembly instructions
 into <a href="../reference/x86/">x86 machine code</a>.</p>
 <table>
@@ -398,7 +425,7 @@ into <a href="../reference/x86/">x86 machine code</a>.</p>
 <td><code>mov ecx, message</code></td>
 </tr>
 <tr>
-<td><code>#5e</code></td>
+<td><code>#5E</code></td>
 <td><code>#10005e</code></td>
 <td><code>%272 message_end - message</code></td>
 <td><code>mov edx, message_end - message</code></td>
@@ -422,20 +449,20 @@ into <a href="../reference/x86/">x86 machine code</a>.</p>
 <td><code>int $80</code></td>
 </tr>
 <tr>
-<td><code>#6a</code></td>
-<td><code>#10006a</code></td>
+<td><code>#6A</code></td>
+<td><code>#10006A</code></td>
 <td><code>%205 %300</code></td>
 <td><code>test eax, eax</code></td>
 </tr>
 <tr>
-<td><code>#6c</code></td>
-<td><code>#10006c</code></td>
-<td><code>$7e exit - *</code></td>
-<td><code>jle exit</code></td>
+<td><code>#6C</code></td>
+<td><code>#10006C</code></td>
+<td><code>$7C $(exit - *)</code></td>
+<td><code>jl exit</code></td>
 </tr>
 <tr>
-<td><code>#6e</code></td>
-<td><code>#10006e</code></td>
+<td><code>#6E</code></td>
+<td><code>#10006E</code></td>
 <td><code>%003 %310</code></td>
 <td><code>add ecx, eax</code></td>
 </tr>
@@ -448,7 +475,7 @@ into <a href="../reference/x86/">x86 machine code</a>.</p>
 <tr>
 <td><code>#72</code></td>
 <td><code>#100072</code></td>
-<td><code>$75 write_loop - *</code></td>
+<td><code>$75 $(write_loop - *)</code></td>
 <td><code>jnz write_loop</code></td>
 </tr>
 <tr>
@@ -476,75 +503,87 @@ into <a href="../reference/x86/">x86 machine code</a>.</p>
 <td><code>mov eax, 1</code></td>
 </tr>
 <tr>
-<td><code>#7b</code></td>
-<td><code>#10007b</code></td>
+<td><code>#7B</code></td>
+<td><code>#10007B</code></td>
 <td><code>%315 $80</code></td>
 <td><code>int $80</code></td>
 </tr>
 <tr>
-<td><code>#7d</code></td>
-<td><code>#10007d</code></td>
+<td><code>#7D</code></td>
+<td><code>#10007D</code></td>
 <td></td>
 <td><code>message:</code></td>
 </tr>
 <tr>
-<td><code>#7d</code></td>
-<td><code>#10007d</code></td>
-<td><code>"Hello, world!" $a</code></td>
-<td><code>db "Hello, world!", $a</code></td>
+<td><code>#7D</code></td>
+<td><code>#10007D</code></td>
+<td><code>"Hello, world!" $A</code></td>
+<td><code>db "Hello, world!", $A</code></td>
 </tr>
 <tr>
-<td><code>#8b</code></td>
+<td><code>#8B</code></td>
 <td><code>#10008b</code></td>
 <td></td>
 <td><code>message_end:</code></td>
 </tr>
 <tr>
-<td><code>#8b</code></td>
+<td><code>#8B</code></td>
 <td><code>#10008b</code></td>
 <td></td>
 <td><code>text_end:</code></td>
 </tr>
 </tbody>
 </table>
-<h2 id="fill-in-addresses">Fill in addresses</h2>
-<p>Now we need to fill in addresses into our headers and our code. Note that we used <code>*</code> to indicate
-"next instruction", needed for relative addressing.</p>
+<h2 id="fill-in-addresses-and-offsets">Fill in addresses and offsets</h2>
+<p>Now we need to fill in addresses and offsets into our headers and our code. We used <code>*</code> to indicate "next instruction", needed for relative addressing.</p>
 <table>
 <thead>
 <tr>
+<th style="text-align: right;">offset</th>
 <th>expr</th>
 <th>value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td style="text-align: right;"><code>#18</code></td>
 <td><code>start</code></td>
 <td><code>#100054</code></td>
 </tr>
 <tr>
+<td style="text-align: right;"><code>#3C</code></td>
 <td><code>text</code></td>
 <td><code>#100054</code></td>
 </tr>
 <tr>
+<td style="text-align: right;"><code>#44</code></td>
 <td><code>text_end - text</code></td>
 <td><code>#37</code></td>
 </tr>
 <tr>
+<td style="text-align: right;"><code>#48</code></td>
+<td><code>text_end - text</code></td>
+<td><code>#37</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>#5A</code></td>
 <td><code>message</code></td>
-<td><code>#10007d</code></td>
+<td><code>#10007D</code></td>
 </tr>
 <tr>
+<td style="text-align: right;"><code>#5F</code></td>
 <td><code>message_end - message</code></td>
-<td><code>#e</code></td>
+<td><code>#E</code></td>
 </tr>
 <tr>
-<td><code>exit - *</code></td>
+<td style="text-align: right;"><code>#6D</code></td>
+<td><code>$(exit - *)</code></td>
 <td><code>$8</code></td>
 </tr>
 <tr>
-<td><code>write_loop - *</code></td>
-<td><code>-$11</code> = <code>$ef</code></td>
+<td style="text-align: right;"><code>#73</code></td>
+<td><code>$(write_loop - *)</code></td>
+<td><code>-$11</code> = <code>$EF</code></td>
 </tr>
 </tbody>
 </table>
@@ -559,10 +598,10 @@ Here, we print ABC again by using <a href="../reference/ascii/">ASCII</a> codes:
 <pre><code class="language-bash">$ echo -e '\x41\x42\x43'
 ABC
 </code></pre>
-<p>We know what <code>#8b</code> = 139 bytes we want to have in our program. Let's put them in
+<p>We know what <code>#8B</code> = 139 bytes we want to have in our program. Let's put them in
 a single line in a text file in the format expected by <code>echo</code> in its argument:</p>
 <p><a href="https://github.com/tczajka/echo-to-tetris/blob/main/src/hello.1.echo"><code>src/hello.1.echo</code></a></p>
-<pre><code>\x7fELF\x1\x1\x1\0\0\0\0\0\0\0\0\0\x2\0\x3\0\x1\0\0\0\x54\0\x10\0\x34\0\0\0\0\0\0\0\0\0\0\0\x34\0\x20\0\x1\0\0\0\0\0\0\0\x1\0\0\0\x54\0\0\0\x54\0\x10\0\0\0\0\0\x37\0\0\0\x37\0\0\0\x5\0\0\0\x0\x10\0\0\0273\x1\0\0\0\0271\x7d\0\x10\0\0272\xe\0\0\0\0270\x4\0\0\0\0315\x80\0205\0300\x7e\x8\03\0310\053\0320\x75\xef\063\0333\0270\x1\0\0\0\0315\x80Hello, world!\xa
+<pre><code class="language-text">\x7FELF\x1\x1\x1\0\0\0\0\0\0\0\0\0\x2\0\x3\0\x1\0\0\0\x54\0\x10\0\x34\0\0\0\0\0\0\0\0\0\0\0\x34\0\x20\0\x1\0\0\0\0\0\0\0\x1\0\0\0\x54\0\0\0\x54\0\x10\0\0\0\0\0\x37\0\0\0\x37\0\0\0\x5\0\0\0\x0\x10\0\0\0273\x1\0\0\0\0271\x7d\0\x10\0\0272\xE\0\0\0\0270\x4\0\0\0\0315\x80\0205\0300\x7E\x8\03\0310\053\0320\x75\xEF\063\0333\0270\x1\0\0\0\0315\x80Hello, world!\xA
 </code></pre>
 <p>We can redirect that file as the argument to <code>echo</code>. The <code>-n</code> flag says: don't print an extra
 new line character at the end.</p>

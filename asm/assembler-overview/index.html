@@ -8,7 +8,7 @@
         <meta name="author" content="Tomek Czajka">
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Number notation - Echo to Tetris</title>
+        <title>Assembler overview - Echo to Tetris</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -42,27 +42,40 @@
                                 <a href="../../hello-world/" class="nav-link">Hello, world!</a>
                             </li>
                             <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Reference</a>
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Assembler</a>
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="./" class="dropdown-item active" aria-current="page">Number notation</a>
+    <a href="./" class="dropdown-item active" aria-current="page">Assembler overview</a>
 </li>
                                     
 <li>
-    <a href="../ascii/" class="dropdown-item">ASCII</a>
+    <a href="../numbers-and-strings/" class="dropdown-item">Numbers and strings</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Reference</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../reference/notation/" class="dropdown-item">Notation</a>
 </li>
                                     
 <li>
-    <a href="../elf/" class="dropdown-item">Linux executable files</a>
+    <a href="../../reference/ascii/" class="dropdown-item">ASCII</a>
 </li>
                                     
 <li>
-    <a href="../x86/" class="dropdown-item">x86 machine code</a>
+    <a href="../../reference/elf/" class="dropdown-item">Linux executable files</a>
 </li>
                                     
 <li>
-    <a href="../syscalls/" class="dropdown-item">Linux system calls</a>
+    <a href="../../reference/x86/" class="dropdown-item">x86 machine code</a>
+</li>
+                                    
+<li>
+    <a href="../../reference/syscalls/" class="dropdown-item">Linux system calls</a>
 </li>
                                 </ul>
                             </li>
@@ -78,7 +91,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../ascii/" class="nav-link">
+                                <a rel="next" href="../numbers-and-strings/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -100,7 +113,7 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#number-notation" class="nav-link">Number notation</a>
+            <li class="nav-item" data-bs-level="1"><a href="#assembler-overview" class="nav-link">Assembler overview</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -109,51 +122,22 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="number-notation">Number notation</h1>
-<p>We write numbers as follows:</p>
-<table>
-<thead>
-<tr>
-<th>prefix</th>
-<th style="text-align: right;">base</th>
-<th style="text-align: right;">bytes</th>
-<th>notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>none</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;"></td>
-<td>We use base 10 informally.</td>
-</tr>
-<tr>
-<td><code>%</code></td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">1</td>
-<td>Octal bytes are prefixed by <code>%</code>.</td>
-</tr>
-<tr>
-<td><code>$</code></td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">1</td>
-<td>Hexadecimal bytes are prefixed by <code>$</code>.</td>
-</tr>
-<tr>
-<td><code>#</code></td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">4</td>
-<td>Hexadecimal 32-bit numbers are prefixed by <code>#</code>.</td>
-</tr>
-<tr>
-<td><code>'</code></td>
-<td style="text-align: right;">256</td>
-<td style="text-align: right;">1</td>
-<td><a href="../ascii/">ASCII</a> character.</td>
-</tr>
-</tbody>
-</table>
-<p>For example: <code>65</code> = <code>$41</code> = <code>%101</code> = <code>'A</code>.</p></div>
+<h1 id="assembler-overview">Assembler overview</h1>
+<p>Writing bytes with <code>echo</code> is fun, but it is a lot of work. To write our
+<a href="../../hello-world/">Hello, world</a> program we had to do a lot of things manually and
+the resulting <a href="https://github.com/tczajka/echo-to-tetris/blob/main/src/hello.1.echo">code</a> is not
+easy to read. Any changes we want to make require a lot of work to make sure everything still
+fits in correctly.</p>
+<p>Let's create an <strong>assembler</strong>: a tool that will let us write machine code in a nicer format.</p>
+<p>What do we want from our assembler? We want to:</p>
+<ul>
+<li>split our code into many lines and use whitespace freely</li>
+<li>put comments in the code</li>
+<li>write 32-bit (dword) numbers, rather than just individual bytes</li>
+<li>addresses and offsets to be calculated automatically</li>
+<li>machine instruction <a href="../../reference/x86/">opcodes</a> to be calculated automatically</li>
+</ul>
+<p>Let's start creating it!</p></div>
             </div>
         </div>
 

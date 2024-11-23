@@ -42,11 +42,24 @@
                                 <a href="../../hello-world/" class="nav-link">Hello, world!</a>
                             </li>
                             <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Assembler</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../asm/assembler-overview/" class="dropdown-item">Assembler overview</a>
+</li>
+                                    
+<li>
+    <a href="../../asm/numbers-and-strings/" class="dropdown-item">Numbers and strings</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Reference</a>
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="../numbers/" class="dropdown-item">Number notation</a>
+    <a href="../notation/" class="dropdown-item">Notation</a>
 </li>
                                     
 <li>
@@ -141,7 +154,7 @@ programs for x86 Linux.</p>
 <tr>
 <td style="text-align: right;"><code>#0</code></td>
 <td style="text-align: right;"><code>4</code></td>
-<td style="text-align: left;"><code>$7f 'E 'L 'F</code></td>
+<td style="text-align: left;">`$7F "ELF"</td>
 <td style="text-align: left;">magic number that identifies ELF files</td>
 </tr>
 <tr>
@@ -205,7 +218,7 @@ programs for x86 Linux.</p>
 <td style="text-align: left;">program entry point (virtual address)</td>
 </tr>
 <tr>
-<td style="text-align: right;"><code>#1c</code></td>
+<td style="text-align: right;"><code>#1C</code></td>
 <td style="text-align: right;"><code>4</code></td>
 <td style="text-align: left;"><code>#34</code></td>
 <td style="text-align: left;">program header table location: <code>#34</code> = directly behind the ELF header</td>
@@ -229,19 +242,19 @@ programs for x86 Linux.</p>
 <td style="text-align: left;">ELF header size</td>
 </tr>
 <tr>
-<td style="text-align: right;"><code>#2a</code></td>
+<td style="text-align: right;"><code>#2A</code></td>
 <td style="text-align: right;"><code>2</code></td>
 <td style="text-align: left;"><code>$20 0</code></td>
 <td style="text-align: left;">program header size</td>
 </tr>
 <tr>
-<td style="text-align: right;"><code>#2c</code></td>
+<td style="text-align: right;"><code>#2C</code></td>
 <td style="text-align: right;"><code>2</code></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">number of program headers</td>
 </tr>
 <tr>
-<td style="text-align: right;"><code>#2e</code></td>
+<td style="text-align: right;"><code>#2E</code></td>
 <td style="text-align: right;"><code>2</code></td>
 <td style="text-align: left;"><code>0 0</code></td>
 <td style="text-align: left;">section header size (ignored if there are no sections)</td>
@@ -289,10 +302,10 @@ the Program Header Table with some number of <code>#20</code>-byte (32-byte) Pro
 <td style="text-align: right;"><code>#8</code></td>
 <td style="text-align: right;"><code>4</code></td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;">virtual address; typically should be at least <code>#10000</code> (64KB)</td>
+<td style="text-align: left;">virtual address; typically should be at least <code>#10000</code> (64 KiB)</td>
 </tr>
 <tr>
-<td style="text-align: right;"><code>#c</code></td>
+<td style="text-align: right;"><code>#C</code></td>
 <td style="text-align: right;"><code>4</code></td>
 <td style="text-align: left;"><code>#0</code></td>
 <td style="text-align: left;">physical address (ignored)</td>
@@ -316,10 +329,10 @@ the Program Header Table with some number of <code>#20</code>-byte (32-byte) Pro
 <td style="text-align: left;">permissions (can be combined): <code>#1</code> = execute, <code>#2</code> = write, <code>#4</code> = read</td>
 </tr>
 <tr>
-<td style="text-align: right;"><code>#1c</code></td>
+<td style="text-align: right;"><code>#1C</code></td>
 <td style="text-align: right;"><code>4</code></td>
 <td style="text-align: left;"><code>#1000</code></td>
-<td style="text-align: left;">memory alignment: one page = 4 KB</td>
+<td style="text-align: left;">memory alignment: one page = 4 KiB</td>
 </tr>
 </tbody>
 </table>

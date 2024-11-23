@@ -7,17 +7,17 @@
         
         <meta name="author" content="Tomek Czajka">
         
-        <link rel="shortcut icon" href="/img/favicon.ico">
-        <title>Echo to Tetris</title>
-        <link href="/css/bootstrap.min.css" rel="stylesheet">
-        <link href="/css/fontawesome.min.css" rel="stylesheet">
-        <link href="/css/brands.min.css" rel="stylesheet">
-        <link href="/css/solid.min.css" rel="stylesheet">
-        <link href="/css/v4-font-face.min.css" rel="stylesheet">
-        <link href="/css/base.css" rel="stylesheet">
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Notation - Echo to Tetris</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
         <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
         <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
-        <link href="/style.css" rel="stylesheet">
+        <link href="../../style.css" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
         <script>hljs.highlightAll();</script> 
     </head>
@@ -25,7 +25,7 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="/.">Echo to Tetris</a>
+                <a class="navbar-brand" href="../..">Echo to Tetris</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -36,46 +36,46 @@
                         <!-- Main navigation -->
                         <ul class="nav navbar-nav">
                             <li class="nav-item">
-                                <a href="/." class="nav-link">Home</a>
+                                <a href="../.." class="nav-link">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a href="/hello-world/" class="nav-link">Hello, world!</a>
+                                <a href="../../hello-world/" class="nav-link">Hello, world!</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Assembler</a>
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="/asm/assembler-overview/" class="dropdown-item">Assembler overview</a>
+    <a href="../../asm/assembler-overview/" class="dropdown-item">Assembler overview</a>
 </li>
                                     
 <li>
-    <a href="/asm/numbers-and-strings/" class="dropdown-item">Numbers and strings</a>
+    <a href="../../asm/numbers-and-strings/" class="dropdown-item">Numbers and strings</a>
 </li>
                                 </ul>
                             </li>
                             <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Reference</a>
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Reference</a>
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="/reference/notation/" class="dropdown-item">Notation</a>
+    <a href="./" class="dropdown-item active" aria-current="page">Notation</a>
 </li>
                                     
 <li>
-    <a href="/reference/ascii/" class="dropdown-item">ASCII</a>
+    <a href="../ascii/" class="dropdown-item">ASCII</a>
 </li>
                                     
 <li>
-    <a href="/reference/elf/" class="dropdown-item">Linux executable files</a>
+    <a href="../elf/" class="dropdown-item">Linux executable files</a>
 </li>
                                     
 <li>
-    <a href="/reference/x86/" class="dropdown-item">x86 machine code</a>
+    <a href="../x86/" class="dropdown-item">x86 machine code</a>
 </li>
                                     
 <li>
-    <a href="/reference/syscalls/" class="dropdown-item">Linux system calls</a>
+    <a href="../syscalls/" class="dropdown-item">Linux system calls</a>
 </li>
                                 </ul>
                             </li>
@@ -85,6 +85,16 @@
                         </ul>
 
                     <ul class="nav navbar-nav ms-md-auto">
+                            <li class="nav-item">
+                                <a rel="prev" href="../../asm/numbers-and-strings/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../ascii/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
                     </ul>
                 </div>
             </div>
@@ -92,15 +102,71 @@
 
         <div class="container">
             <div class="row">
-
-    <div class="row-fluid">
-      <div id="main-content" class="span12">
-        <h1 id="404-page-not-found" style="text-align: center">404</h1>
-        <p style="text-align: center"><strong>Page not found</strong></p>
-      </div>
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
     </div>
 
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#notation" class="nav-link">Notation</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
 
+<h1 id="notation">Notation</h1>
+<p>We write sequences of bytes as follows:</p>
+<table>
+<thead>
+<tr>
+<th>notation</th>
+<th style="text-align: right;">base</th>
+<th style="text-align: right;">bytes</th>
+<th>notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>xxx</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">any</td>
+<td>Decimal numbers of unspecified byte length.</td>
+</tr>
+<tr>
+<td><code>%ooo</code></td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1</td>
+<td>8-bit octal number.</td>
+</tr>
+<tr>
+<td><code>$xxx</code></td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">1</td>
+<td>8-bit hexadecimal number.</td>
+</tr>
+<tr>
+<td><code>#xxx</code></td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">4</td>
+<td>32-bit hexadecimal numbers.</td>
+</tr>
+<tr>
+<td><code>"xxx"</code></td>
+<td style="text-align: right;">256</td>
+<td style="text-align: right;">length</td>
+<td>A sequence of <a href="../ascii/">ASCII</a> bytes.</td>
+</tr>
+</tbody>
+</table>
+<p>For example: <code>$41</code> = <code>%101</code> = <code>"A"</code> = one 65 byte.</p></div>
             </div>
         </div>
 
@@ -108,12 +174,12 @@
             <hr>
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
-        <script src="/js/bootstrap.bundle.min.js"></script>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
         <script>
-            var base_url = "/",
+            var base_url = "../..",
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
         </script>
-        <script src="/js/base.js"></script>
+        <script src="../../js/base.js"></script>
 
         <div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
     <div class="modal-dialog">
