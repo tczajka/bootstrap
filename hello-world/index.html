@@ -50,7 +50,15 @@
 </li>
                                     
 <li>
-    <a href="../asm/numbers-and-strings/" class="dropdown-item">Numbers and strings</a>
+    <a href="../asm/first-version/" class="dropdown-item">First version</a>
+</li>
+                                    
+<li>
+    <a href="../asm/hello-asm/" class="dropdown-item">Rewrite "Hello, world!" in assembly</a>
+</li>
+                                    
+<li>
+    <a href="../asm/asm-asm/" class="dropdown-item">Rewrite the assembler in assembly</a>
 </li>
                                 </ul>
                             </li>
@@ -162,11 +170,11 @@ standard output of the process. The operating system automatically opens 3 files
 </ul>
 <pre><code class="language-nasm">text:                   ; beginning of text segment
 start:                  ; entry point to the program
-    mov ebx, 1          ; standard output
+    mov ebx, #1         ; standard output
     mov ecx, message    ; message address
     mov edx, message_end - message  ; message length
 write_loop:
-    mov eax, 4          ; &quot;write&quot; system call
+    mov eax, #4         ; &quot;write&quot; system call
     int $80             ; system call
 </code></pre>
 <p>The <code>write</code> system call can fail. For example, if we redirect the output to a file, and we run out
@@ -195,14 +203,14 @@ exit_success:
 ; exit the program
 ; return value in ebx
 exit:                   
-  mov eax, 1            ; eax = &quot;exit&quot; system call
+  mov eax, #1           ; &quot;exit&quot; system call
   int $80               ; system call
 </code></pre>
 <p>Finally we need the message we want to print. <code>db</code> defines bytes, and we write the message in ASCII,
 including the "new line" character (ASCII <code>$A</code>).
 Note: <code>$</code> indicates <a href="../reference/notation/">a hexadecimal byte</a>.</p>
 <pre><code class="language-nasm">message:
-  db &quot;Hello, world!&quot;, $0A  ; the message with a new line
+  db &quot;Hello, world!&quot;, $A  ; the message with a new line
 message_end:            ; end of the message
 text_end:               ; end of text segment
 </code></pre>
@@ -416,7 +424,7 @@ into <a href="../reference/x86/">x86 machine code</a>.</p>
 <td><code>#54</code></td>
 <td><code>#100054</code></td>
 <td><code>%273 #1</code></td>
-<td><code>mov ebx, 1</code></td>
+<td><code>mov ebx, #1</code></td>
 </tr>
 <tr>
 <td><code>#59</code></td>
@@ -440,7 +448,7 @@ into <a href="../reference/x86/">x86 machine code</a>.</p>
 <td><code>#63</code></td>
 <td><code>#100063</code></td>
 <td><code>%270 #4</code></td>
-<td><code>mov eax, 4</code></td>
+<td><code>mov eax, #4</code></td>
 </tr>
 <tr>
 <td><code>#68</code></td>
@@ -500,7 +508,7 @@ into <a href="../reference/x86/">x86 machine code</a>.</p>
 <td><code>#76</code></td>
 <td><code>#100076</code></td>
 <td><code>%270 #1</code></td>
-<td><code>mov eax, 1</code></td>
+<td><code>mov eax, #1</code></td>
 </tr>
 <tr>
 <td><code>#7B</code></td>
@@ -522,13 +530,13 @@ into <a href="../reference/x86/">x86 machine code</a>.</p>
 </tr>
 <tr>
 <td><code>#8B</code></td>
-<td><code>#10008b</code></td>
+<td><code>#10008B</code></td>
 <td></td>
 <td><code>message_end:</code></td>
 </tr>
 <tr>
 <td><code>#8B</code></td>
-<td><code>#10008b</code></td>
+<td><code>#10008B</code></td>
 <td></td>
 <td><code>text_end:</code></td>
 </tr>

@@ -8,7 +8,7 @@
         <meta name="author" content="Tomek Czajka">
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Numbers and strings - Echo to Tetris</title>
+        <title>First version - Echo to Tetris</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -50,7 +50,15 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active" aria-current="page">Numbers and strings</a>
+    <a href="./" class="dropdown-item active" aria-current="page">First version</a>
+</li>
+                                    
+<li>
+    <a href="../hello-asm/" class="dropdown-item">Rewrite "Hello, world!" in assembly</a>
+</li>
+                                    
+<li>
+    <a href="../asm-asm/" class="dropdown-item">Rewrite the assembler in assembly</a>
 </li>
                                 </ul>
                             </li>
@@ -91,7 +99,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../../reference/notation/" class="nav-link">
+                                <a rel="next" href="../hello-asm/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -113,7 +121,7 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#numbers-and-strings" class="nav-link">Numbers and strings</a>
+            <li class="nav-item" data-bs-level="1"><a href="#first-version" class="nav-link">First version</a>
               <ul class="nav flex-column">
             <li class="nav-item" data-bs-level="2"><a href="#reserve-space-for-input-and-output" class="nav-link">Reserve space for input and output</a>
               <ul class="nav flex-column">
@@ -186,7 +194,7 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="numbers-and-strings">Numbers and strings</h1>
+<h1 id="first-version">First version</h1>
 <p>The first version of our assembler will implement our <a href="../../reference/notation/">notation</a> for
 octal bytes, hexadecimal bytes and dwords, and strings. In particular:</p>
 <ul>
@@ -282,7 +290,7 @@ assemble_loop:
     je comment          ; if yes, go to comment handling
     cmp al, $22         ; is it a quote character, &quot;?
     je string           ; if yes, go to string handling
-    cmp al, &quot;%'         ; is it a percent sign?
+    cmp al, &quot;%&quot;         ; is it a percent sign?
     je oct_byte         ; if yes, go to octal byte handling
     cmp al, &quot;$&quot;         ; is it a dollar sign?
     je hex_byte         ; if yes, go to the hex byte handling
@@ -298,7 +306,7 @@ This makes comments at the end of the file without the final new line also work.
     lodsb               ; load next character into al
     test al, al         ; is it a 0 byte (including EOF)?
     jz assemble_loop    ; if yes: done
-    cmp al, $0a         ; is it end of line?
+    cmp al, $A          ; is it end of line?
     je assemble_loop    ; if yes: done
     jmp comment         ; repeat
 </code></pre>
@@ -395,7 +403,6 @@ write_loop:
 exit_success:
     xor ebx, ebx        ; success exit code
 
-; exit
 ; ebx = exit code
 exit:
   mov eax, #1           ; &quot;exit&quot; system call
@@ -1691,9 +1698,6 @@ $A           ; new line
 </code></pre>
 <p><a href="https://github.com/tczajka/echo-to-tetris/blob/main/test/test.2.asm"><code>test/test.2.asm</code></a></p>
 <pre><code class="language-text">&quot;Unfinished string
-</code></pre>
-<p><a href="https://github.com/tczajka/echo-to-tetris/blob/main/test/test.3.asm"><code>test/test.3.asm</code></a></p>
-<pre><code class="language-text">invalid characters
 </code></pre>
 <pre><code class="language-bash">$ bin/asm.1 &lt; test/test.1.asm
 Hello thereABCDzF

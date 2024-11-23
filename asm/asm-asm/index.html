@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <meta name="author" content="Tomek Czajka">
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Rewrite the assembler in assembly - Echo to Tetris</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <link href="../../style.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">Echo to Tetris</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../hello-world/" class="nav-link">Hello, world!</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Assembler</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../assembler-overview/" class="dropdown-item">Assembler overview</a>
+</li>
+                                    
+<li>
+    <a href="../first-version/" class="dropdown-item">First version</a>
+</li>
+                                    
+<li>
+    <a href="../hello-asm/" class="dropdown-item">Rewrite "Hello, world!" in assembly</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">Rewrite the assembler in assembly</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Reference</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../reference/notation/" class="dropdown-item">Notation</a>
+</li>
+                                    
+<li>
+    <a href="../../reference/ascii/" class="dropdown-item">ASCII</a>
+</li>
+                                    
+<li>
+    <a href="../../reference/elf/" class="dropdown-item">Linux executable files</a>
+</li>
+                                    
+<li>
+    <a href="../../reference/x86/" class="dropdown-item">x86 machine code</a>
+</li>
+                                    
+<li>
+    <a href="../../reference/syscalls/" class="dropdown-item">Linux system calls</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://github.com/tczajka/bootstrap" class="nav-link">Code repository</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                            <li class="nav-item">
+                                <a rel="prev" href="../hello-asm/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../../reference/notation/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#rewrite-the-assembler-in-assembly" class="nav-link">Rewrite the assembler in assembly</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#compile" class="nav-link">Compile</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="rewrite-the-assembler-in-assembly">Rewrite the assembler in assembly</h1>
+<p>Now let's rewrite the <a href="../first-version/">assembler</a> in assembly! This will make further development easier.</p>
+<p>The process of writing a compiler in its own language is called "bootstrapping".</p>
+<p><a href="https://github.com/tczajka/echo-to-tetris/blob/main/src/asm.2.asm"><code>src/asm.2.asm</code></a></p>
+<pre><code class="language-nasm">; ELF header
+$7F &quot;ELF&quot;   ;               ; magic number                  ;  #0
+$1 $1       ;               ; 32-bit little-endian          ;  #4
+$1 $0 $0    ;               ; ELF v1, Unix v0               ;  #6
+$0 $0 $0 #0 ;               ; padding                       ;  #9
+$2 $0 $3 $0 ;               ; executable, x86               ; #10
+#1          ;               ; ELF v1                        ; #14
+#100054     ; start         ; entry point                   ; #18
+#34         ;               ; program headers               ; #1C
+#0          ;               ; section headers               ; #20
+#0          ;               ; flags                         ; #24
+$34 $0      ;               ; ELF header size               ; #28
+$20 $0      ;               ; program header size           ; #2A
+$1 $0       ;               ; number of program headers     ; #2C
+$0 $0       ;               ; section header size           ; #2E
+$0 $0       ;               ; number of section headers     ; #30
+$0 $0       ;               ; section name table index      ; #32
+
+; program header: text segment
+#1          ;               ; segment type: load            ; #34
+#54         ;               ; file location                 ; #38
+#100054     ; text          ; virtual address               ; #3C
+#0          ;               ; physical address              ; #40
+#FC         ; text_end - text ; file size                   ; #44
+#2000FC     ; zero_initialized_end - text ; memory size     ; #48
+#7          ;               ; permissions: execute + write + read ; #4C
+#1000       ;               ; memory aligment, 4 KiB        ; #50
+
+; text segment
+            ; text:                 ; the program text starts here
+            ; start:                ; entry point
+
+            ; ; read input file into `input`
+            ; ; ecx points to the end of input
+            ; read:
+%063 %333   ;     xor ebx, ebx      ; 0 = standard input            ; #100054
+%271 #100150 ;    mov ecx, input    ; initialize end of input       ; #100056
+%272 #FFFFF ; ; Make sure there is at least 1 byte with value 0     ; #10005B
+            ; ; at the end. This helps us deal with end of file later.
+            ;     mov edx, input_end - input - 1  ; buffer size
+            ; read_loop:
+%270 #3     ;     mov eax, #3       ; &quot;read&quot; system call            ; #100060
+%315 $80    ;     int $80           ; system call: read bytes starting from ecx ; #100065
+            ; ; The adjustments here will not be valid if there is a read error,
+            ; ; but that is OK.
+%003 %310   ;     add ecx, eax      ; move end of input             ; #100067
+%053 %320   ;     sub edx, eax      ; adjust remaining buffer size  ; #100069
+%205 %300   ;     test eax, eax     ; check eax                     ; #10006B
+%017 $8C #B3 ;     jl long error   ; if eax &lt; 0: error, go to the error handler ; #10006D
+$7F $EB     ;     jg read_loop      ; if eax &gt; 0: go back to read more ; #100073
+
+            ; ; assemble `input` into `output`
+            ; ; ecx = end of input
+            ; assemble:
+            ; ; esi points to next character of input
+            ; ; ecx points to the end of input
+            ; ; edi points to the next byte of output
+%276 #100150 ;     mov esi, input   ;                               ; #100075
+%277 #200150 ;     mov edi, output  ;                               ; #10007A
+
+            ; ; main assembling loop
+            ; assemble_loop:
+%073 %361   ;     cmp esi, ecx      ; end of input?                 ; #10007F
+$7D $7B     ;     jge write_output  ; if yes, go to write_output    ; #100081
+%254        ;     lodsb             ; load next input byte into al  ; #100083
+%074 &quot; &quot;    ;     cmp al, &quot; &quot;       ; is it a space?                ; #100084
+$74 $F7     ;     je assemble_loop  ; if yes, skip                  ; #100086
+%074 $A     ;     cmp al, $A        ; is it a newline?              ; #100088
+$74 $F3     ;     je assemble_loop  ; if yes, skip                  ; #10008A
+%074 &quot;;&quot;    ;     cmp al, &quot;;&quot;       ; is it a semicolon?            ; #10008C
+$74 $15     ;     je comment        ; if yes, go to comment handling ; #10008E
+%074 $22    ;     cmp al, $22       ; is it a quote character, &quot;?   ; #100090
+$74 $1C     ;     je string         ; if yes, go to string handling ; #100092
+%074 &quot;%&quot;    ;     cmp al, &quot;%&quot;       ; is it a percent sign?         ; #100094
+$74 $24     ;     je oct_byte       ; if yes, go to octal byte handling ; #100096
+%074 &quot;$&quot;    ;     cmp al, &quot;$&quot;       ; is it a dollar sign?          ; #100098
+$74 $36     ;     je hex_byte       ; if yes, go to the hex byte handling ; #10009A
+%074 &quot;#&quot;    ;     cmp al, &quot;#&quot;       ; is it a hash sign?            ; #10009C
+$74 $3A     ;     je hex_dword      ; if yes, go to the hex dword handling ; #10009E
+            ; other:
+%351 #81    ;     jmp long error    ; otherwise go to the error handler ; #1000A0
+
+            ; comment:
+%254        ;     lodsb             ; load next character into al   ; #1000A5
+%204 %300   ;     test al, al       ; is it a 0 byte (including EOF)? ; #1000A6
+$74 $D5     ;     jz assemble_loop  ; if yes: done                  ; #1000A8
+%074 $A     ;     cmp al, $A        ; is it end of line?            ; #1000AA
+$74 $D1     ;     je assemble_loop  ; if yes: done                  ; #1000AC
+%353 $F5    ;     jmp comment       ; repeat                        ; #1000AE
+
+            ; string:
+%254        ;     lodsb             ; load next character into al   ; #1000B0
+%204 %300   ;     test al, al       ; is it a 0 byte (including EOF)? ; #1000B1
+$74 $71     ;     je error          ; if yes: error                 ; #1000B3
+%074 $22    ;     cmp al, $22       ; is it a quote?                ; #1000B5
+$74 $C6     ;     je assemble_loop  ; if yes: done                  ; #1000B7
+%252        ;     stosb             ; copy the character to output  ; #1000B9
+%353 $F4    ;     jmp string        ; repeat                        ; #1000BA
+
+            ; oct_byte:
+%063 %333   ;     xor ebx, ebx      ; ebx will contain the octal number ; #1000BC
+            ; oct_byte_loop:
+%254        ;     lodsb             ; load the next character into al ; #1000BE
+%054 &quot;0&quot;    ;     sub al, &quot;0&quot;       ; adjust so that digits '0'-'7' are 0-7 ; #1000BF
+%074 $8     ;     cmp al, $8        ; is it below 8?                ; #1000C1
+$73 $7      ;     jae oct_byte_done ; no: we are done               ; #1000C3
+%301 %343 $3 ;    shl ebx, $3       ; ebx = 8 * ebx                 ; #1000C5
+%012 %330   ;     or bl, al         ; add next digit                ; #1000C8
+%353 $F2    ;     jmp oct_byte_loop ; read more digits              ; #1000CA
+            ; oct_byte_done:
+%116        ;     dec esi           ; undo last byte read since it wasn't octal ; #1000CC
+%212 %303   ;     mov al, bl        ; al = the byte                 ; #1000CD
+%252        ;     stosb             ; store the byte in the output  ; #1000CF
+%353 $AD    ;     jmp assemble_loop ; go back to main loop          ; #1000D0
+
+            ; ; a hex byte
+            ; hex_byte:
+%350 #B     ;     call read_hex     ; read a hex number             ; #1000D2
+%252        ;     stosb             ; store the hex byte in the output ; #1000D7
+%353 $A5    ;     jmp assemble_loop ; go back to main loop          ; #1000D8
+
+            ; ; a hex dword
+            ; hex_dword:
+%350 #3     ;     call read_hex     ; read a hex number             ; #1000DA
+%253        ;     stosd             ; store the hex dword in the output ; #1000DF
+%353 $9D    ;     jmp assemble_loop ; go back to main loop          ; #1000E0
+
+            ; ; reads a hex number into eax
+            ; read_hex:
+%063 %333   ;     xor ebx, ebx      ; ebx will contain the hex number ; #1000E2
+            ; read_hex_loop:
+%254        ;     lodsb             ; load the next character into al ; #1000E4
+%054 &quot;0&quot;    ;     sub al, &quot;0&quot;       ; '0'-'9' are now 0-9           ; #1000E5
+%074 $A     ;     cmp al, $A        ; is it below 10?               ; #1000E7
+$72 $8      ;     jb read_hex_have_digit  ; if yes, go to read_hex_have_digit ; #1000E9
+%054 $11    ;     sub al, &quot;A&quot; - &quot;0&quot; ; 'A'-'F are now 0-5            ; #1000EB
+%074 $6     ;     cmp al, $6        ; is it below 6?                ; #1000ED
+$73 $9      ;     jae read_hex_done ; if no, go to read_hex_done    ; #1000EF
+%004 $A     ;     add al, $A        ; al is now 10-15               ; #1000F1
+            ; read_hex_have_digit:
+%301 %343 $4 ;    shl ebx, $4       ; ebx = 16 * ebx                ; #1000F3
+%012 %330   ;     or bl, al         ; add next digit                ; #1000F6
+%353 $EA    ;     jmp read_hex_loop ; read more digits              ; #1000F8
+            ; read_hex_done:
+%116        ;     dec esi           ; undo last byte read since it wasn't hexadecimal ; #1000FA
+%213 %303   ;     mov eax, ebx      ; put the return value in eax   ; #1000FB
+%303        ;     ret               ; return                        ; #1000FD
+
+            ; ; write output to stdout
+            ; ; edi = end of output
+            ; write_output:
+%273 #1     ;     mov ebx, #1       ; standard output               ; #1000FE
+%271 #200150 ;    mov ecx, output   ; output bytes                  ; #100103
+%213 %327   ;     mov edx, edi      ; calculate length              ; #100108
+%053 %321   ;     sub edx, ecx      ; edx = edi - output = output length ; #10010A
+            ; write_loop:
+%270 #4     ;     mov eax, #4       ; &quot;write&quot; system call           ; #10010C
+%315 $80    ;     int $80           ; system call                   ; #100111
+%205 %300   ;     test eax, eax     ; check result                  ; #100113
+$7C $F      ;     jl error          ; if eax &lt; 0: handle error      ; #100115
+%003 %310   ;     add ecx, eax      ; remaining output              ; #100117
+%053 %320   ;     sub edx, eax      ; remaining length              ; #100119
+$75 $EF     ;     jnz write_loop    ; if edx != 0, go back to write_loop ; #10011B
+
+            ; ; exit with exit code 0
+            ; exit_success:
+%063 %333   ;     xor ebx, ebx      ; success exit code             ; #10011D
+
+            ; ; ebx = exit code
+            ; exit:
+%270 #1     ;   mov eax, #1         ; &quot;exit&quot; system call            ; #10011F
+%315 $80    ;   int $80             ; system call                   ; #100124
+
+            ; ; print error message and exit with exit code 1
+            ; error:
+%273 #2     ;     mov ebx, #2         ; standard error              ; #100126
+%271 #100149 ;    mov ecx, error_message  ; error message           ; #10012B
+%272 #7     ;     mov edx, error_message_end - error_message  ; error message length ; #100130
+            ; error_loop:
+%270 #4     ;     mov eax, #4         ; &quot;write&quot; system call         ; #100135
+%315 $80    ;     int $80             ; system call                 ; #10013A
+%205 %300   ;     test eax, eax       ; check result                ; #10013C
+$7C $6      ;     jl error_done       ; if eax &lt; 0: give up writing ; #10013E
+%003 %310   ;     add ecx, eax        ; remaining error message     ; #100140
+%053 %320   ;     sub edx, eax        ; remaining length            ; #100142
+$75 $EF     ;     jne error_loop      ; if edx != 0: write more     ; #100144
+            ; error_done:
+%113        ;     dec ebx             ; exit code 1                 ; #100146
+%353 $D6    ;     jmp exit            ; exit                        ; #100147
+
+            ; ; error message
+            ; error_message:
+&quot;Error!&quot; $A ;     db &quot;Error!&quot;, $A     ; &quot;Error!&quot;, new line          ; #100149
+            ; error_message_end:
+
+            ; text_end:             ; the program text ends here
+            ; zero_initialized:     ; zero-initialized data starts here
+
+            ; ; input assembly text
+            ; input:
+            ;     resb #100000      ; reserve 1 MiB for input       ; #100150
+            ; input_end:
+
+            ; ; output binary file
+            ; output:
+            ;     resb #100000      ; reserve 1 MiB for output      ; #200150
+
+            ; zero_initialized_end: ; zero-initialized data ends here ; #300150
+</code></pre>
+<h2 id="compile">Compile</h2>
+<p>Let's compile the assembler using the previous version of the assembler. They resulting
+file should be identical.</p>
+<pre><code class="language-bash">$ bin/asm.1 &lt; src/asm.2.asm &gt; bin/asm.2
+$ cmp bin/asm.2 bin/asm.1
+$ chmod u+x bin/asm.2
+</code></pre>
+<p>Now we have an assembler that can compile its own source code!</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+
+        <div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
