@@ -579,12 +579,6 @@ $A           ; new line
 "Unfinished string
 ```
 
-[`test/test.3.asm`](https://github.com/tczajka/echo-to-tetris/blob/main/test/test.3.asm)
-
-```text
-invalid characters
-```
-
 ```bash
 $ bin/asm.1 < test/test.1.asm
 Hello thereABCDzF
