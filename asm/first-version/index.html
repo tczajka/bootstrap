@@ -8,7 +8,7 @@
         <meta name="author" content="Tomek Czajka">
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>First version - Echo to Tetris</title>
+        <title>First version - Brooklyn</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -25,7 +25,7 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Echo to Tetris</a>
+                <a class="navbar-brand" href="../..">Brooklyn</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -38,12 +38,30 @@
                             <li class="nav-item">
                                 <a href="../.." class="nav-link">Home</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="../../hello-world/" class="nav-link">Hello, world!</a>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Reference</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../reference/notation/" class="dropdown-item">Notation</a>
+</li>
+                                    
+<li>
+    <a href="../../reference/ascii/" class="dropdown-item">ASCII</a>
+</li>
+                                    
+<li>
+    <a href="../../reference/elf/" class="dropdown-item">ELF file format</a>
+</li>
+                                </ul>
                             </li>
                             <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Assembler</a>
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Old</a>
                                 <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../hello-world/" class="dropdown-item">Hello, world!</a>
+</li>
                                     
 <li>
     <a href="../assembler-overview/" class="dropdown-item">Assembler overview</a>
@@ -59,23 +77,6 @@
                                     
 <li>
     <a href="../asm-asm/" class="dropdown-item">Rewrite the assembler in assembly</a>
-</li>
-                                </ul>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Reference</a>
-                                <ul class="dropdown-menu">
-                                    
-<li>
-    <a href="../../reference/notation/" class="dropdown-item">Notation</a>
-</li>
-                                    
-<li>
-    <a href="../../reference/ascii/" class="dropdown-item">ASCII</a>
-</li>
-                                    
-<li>
-    <a href="../../reference/elf/" class="dropdown-item">Linux executable files</a>
 </li>
                                     
 <li>
@@ -1679,7 +1680,7 @@ Compiling assembly is an iterative process.</p>
 <h2 id="create-the-assembler-using-echo">Create the assembler using <code>echo</code></h2>
 <p>We still have to carefully put all those <code>#150</code> = 336 bytes in a file.
 First describe them using <code>echo</code> format:</p>
-<p><a href="https://github.com/tczajka/echo-to-tetris/blob/main/src/asm.1.echo"><code>src/asm.1.echo</code></a></p>
+<p><a href="https://github.com/tczajka/brooklyn/blob/main/src/asm.1.echo"><code>src/asm.1.echo</code></a></p>
 <pre><code class="language-text">\x7FELF\x1\x1\x1\0\0\0\0\0\0\0\0\0\x2\0\x3\0\x1\0\0\0\x54\0\x10\0\x34\0\0\0\0\0\0\0\0\0\0\0\x34\0\x20\0\x1\0\0\0\0\0\0\0\x1\0\0\0\x54\0\0\0\x54\0\x10\0\0\0\0\0\xFC\0\0\0\xFC\0\x20\0\x7\0\0\0\0\x10\0\0\063\0333\0271\x50\x1\x10\0\0272\xFF\xFF\xF\0\0270\x3\0\0\0\0315\x80\03\0310\053\0320\0205\0300\017\x8C\xB3\0\0\0\x7F\xEB\0276\x50\x1\x10\0\0277\x50\x1\x20\0\073\0361\x7D\x7B\0254\074 \x74\xF7\074\xA\x74\xF3\074;\x74\x15\074\x22\x74\x1C\074%\x74\x24\074$\x74\x36\074#\x74\x3A\0351\x81\0\0\0\0254\0204\0300\x74\xD5\074\xA\x74\xD1\0353\xF5\0254\0204\0300\x74\x71\074\x22\x74\xC6\0252\0353\xF4\063\0333\0254\054\x30\074\x8\x73\x7\0301\0343\x3\012\0330\0353\xF2\0116\0212\0303\0252\0353\xAD\0350\xB\0\0\0\0252\0353\xA5\0350\x3\0\0\0\0253\0353\x9D\063\0333\0254\054\x30\074\xA\x72\x8\054\x11\074\x6\x73\x9\04\xA\0301\0343\x4\012\0330\0353\xEA\0116\0213\0303\0303\0273\x1\0\0\0\0271\x50\x1\x20\0\0213\0327\053\0321\0270\x4\0\0\0\0315\x80\0205\0300\x7C\xF\03\0310\053\0320\x75\xEF\063\0333\0270\x1\0\0\0\0315\x80\0273\x2\0\0\0\0271\x49\x1\x10\0\0272\x7\0\0\0\0270\x4\0\0\0\0315\x80\0205\0300\x7C\x6\03\0310\053\0320\x75\xEF\0113\0353\xD6Error!\xA
 </code></pre>
 <p>Finally, write the code to an executable file using <code>echo</code>:</p>
@@ -1690,13 +1691,13 @@ $ chmod u+x bin/asm.1
 </code></pre>
 <h2 id="lets-test-it">Let's test it!</h2>
 <p>Let's see if it works.</p>
-<p><a href="https://github.com/tczajka/echo-to-tetris/blob/main/test/test.1.asm"><code>src/test.1.asm</code></a></p>
+<p><a href="https://github.com/tczajka/brooklyn/blob/main/test/test.1.asm"><code>src/test.1.asm</code></a></p>
 <pre><code class="language-text">&quot;Hello there&quot; ; comment
 #44434241    ; hex bytes &quot;ABCD&quot;
 $7A %106     ; hex byte &quot;z&quot;, oct byte &quot;F&quot;
 $A           ; new line
 </code></pre>
-<p><a href="https://github.com/tczajka/echo-to-tetris/blob/main/test/test.2.asm"><code>test/test.2.asm</code></a></p>
+<p><a href="https://github.com/tczajka/brooklyn/blob/main/test/test.2.asm"><code>test/test.2.asm</code></a></p>
 <pre><code class="language-text">&quot;Unfinished string
 </code></pre>
 <pre><code class="language-bash">$ bin/asm.1 &lt; test/test.1.asm

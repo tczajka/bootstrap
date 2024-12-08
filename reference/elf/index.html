@@ -8,7 +8,7 @@
         <meta name="author" content="Tomek Czajka">
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Linux executable files - Echo to Tetris</title>
+        <title>ELF file format - Brooklyn</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -25,7 +25,7 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Echo to Tetris</a>
+                <a class="navbar-brand" href="../..">Brooklyn</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -38,12 +38,30 @@
                             <li class="nav-item">
                                 <a href="../.." class="nav-link">Home</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="../../hello-world/" class="nav-link">Hello, world!</a>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Reference</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../notation/" class="dropdown-item">Notation</a>
+</li>
+                                    
+<li>
+    <a href="../ascii/" class="dropdown-item">ASCII</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">ELF file format</a>
+</li>
+                                </ul>
                             </li>
                             <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Assembler</a>
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Old</a>
                                 <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../hello-world/" class="dropdown-item">Hello, world!</a>
+</li>
                                     
 <li>
     <a href="../../asm/assembler-overview/" class="dropdown-item">Assembler overview</a>
@@ -59,23 +77,6 @@
                                     
 <li>
     <a href="../../asm/asm-asm/" class="dropdown-item">Rewrite the assembler in assembly</a>
-</li>
-                                </ul>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Reference</a>
-                                <ul class="dropdown-menu">
-                                    
-<li>
-    <a href="../notation/" class="dropdown-item">Notation</a>
-</li>
-                                    
-<li>
-    <a href="../ascii/" class="dropdown-item">ASCII</a>
-</li>
-                                    
-<li>
-    <a href="./" class="dropdown-item active" aria-current="page">Linux executable files</a>
 </li>
                                     
 <li>
@@ -99,7 +100,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../x86/" class="nav-link">
+                                <a rel="next" href="../../hello-world/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -121,17 +122,17 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#linux-executable-files" class="nav-link">Linux executable files</a>
+            <li class="nav-item" data-bs-level="1"><a href="#elf-file-format" class="nav-link">ELF file format</a>
               <ul class="nav flex-column">
             <li class="nav-item" data-bs-level="2"><a href="#elf-header" class="nav-link">ELF Header</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-bs-level="2"><a href="#program-header" class="nav-link">Program header</a>
+            <li class="nav-item" data-bs-level="2"><a href="#program-header-table" class="nav-link">Program header table</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-bs-level="2"><a href="#stack-segment" class="nav-link">Stack segment</a>
+            <li class="nav-item" data-bs-level="2"><a href="#section-header-table" class="nav-link">Section header table</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -142,214 +143,67 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="linux-executable-files">Linux executable files</h1>
+<h1 id="elf-file-format">ELF file format</h1>
 <p>Executable files on Linux follow the ELF file format.</p>
-<p>The ELF format can store many different kinds
-of files for different CPUs and operating systems, but we are only interested in executable
-programs for x86 Linux.</p>
+<p>ELF files describe several types of files (executable programs, shared libraries,
+linkable object files, etc) for various architectures and operating systems. We are interested
+in x86-64 executable programs for Linux.</p>
 <h2 id="elf-header">ELF Header</h2>
-<p>An ELF file starts with a <code>#34</code>-byte (52-byte) the ELF Header:</p>
-<table>
-<thead>
-<tr>
-<th style="text-align: right;">offset</th>
-<th style="text-align: right;">length</th>
-<th style="text-align: left;">contents</th>
-<th style="text-align: left;">comment</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;"><code>#0</code></td>
-<td style="text-align: right;"><code>4</code></td>
-<td style="text-align: left;">`$7F "ELF"</td>
-<td style="text-align: left;">magic number that identifies ELF files</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#4</code></td>
-<td style="text-align: right;"><code>1</code></td>
-<td style="text-align: left;"><code>1</code></td>
-<td style="text-align: left;">word size: <code>1</code> = 32-bit, <code>2</code> = 64-bit</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#5</code></td>
-<td style="text-align: right;"><code>1</code></td>
-<td style="text-align: left;"><code>1</code></td>
-<td style="text-align: left;">endianness: <code>1</code> = little-endian, <code>2</code> = big-endian</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#6</code></td>
-<td style="text-align: right;"><code>1</code></td>
-<td style="text-align: left;"><code>1</code></td>
-<td style="text-align: left;">ELF specification version</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#7</code></td>
-<td style="text-align: right;"><code>1</code></td>
-<td style="text-align: left;"><code>0</code></td>
-<td style="text-align: left;">operating system ABI: <code>0</code> = UNIX System V (this is what is typically used)</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#8</code></td>
-<td style="text-align: right;"><code>1</code></td>
-<td style="text-align: left;"><code>0</code></td>
-<td style="text-align: left;">operating system ABI version</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#9</code></td>
-<td style="text-align: right;"><code>7</code></td>
-<td style="text-align: left;"><code>0 0 0 0 0 0 0</code></td>
-<td style="text-align: left;">padding</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#10</code></td>
-<td style="text-align: right;"><code>2</code></td>
-<td style="text-align: left;"><code>2 0</code></td>
-<td style="text-align: left;">object file type: <code>2</code> = executable file</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#12</code></td>
-<td style="text-align: right;"><code>2</code></td>
-<td style="text-align: left;"><code>3 0</code></td>
-<td style="text-align: left;">CPU: <code>3</code> = x86</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#14</code></td>
-<td style="text-align: right;"><code>4</code></td>
-<td style="text-align: left;"><code>#1</code></td>
-<td style="text-align: left;">ELF specification version <code>1</code> (same as entry at <code>#6</code>)</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#18</code></td>
-<td style="text-align: right;"><code>4</code></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">program entry point (virtual address)</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#1C</code></td>
-<td style="text-align: right;"><code>4</code></td>
-<td style="text-align: left;"><code>#34</code></td>
-<td style="text-align: left;">program header table location: <code>#34</code> = directly behind the ELF header</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#20</code></td>
-<td style="text-align: right;"><code>4</code></td>
-<td style="text-align: left;"><code>#0</code></td>
-<td style="text-align: left;">section header table location: <code>0</code> = none; executable files don't need sections</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#24</code></td>
-<td style="text-align: right;"><code>4</code></td>
-<td style="text-align: left;"><code>#0</code></td>
-<td style="text-align: left;">flags (none are defined for Linux executables)</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#28</code></td>
-<td style="text-align: right;"><code>2</code></td>
-<td style="text-align: left;"><code>$34 0</code></td>
-<td style="text-align: left;">ELF header size</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#2A</code></td>
-<td style="text-align: right;"><code>2</code></td>
-<td style="text-align: left;"><code>$20 0</code></td>
-<td style="text-align: left;">program header size</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#2C</code></td>
-<td style="text-align: right;"><code>2</code></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">number of program headers</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#2E</code></td>
-<td style="text-align: right;"><code>2</code></td>
-<td style="text-align: left;"><code>0 0</code></td>
-<td style="text-align: left;">section header size (ignored if there are no sections)</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#30</code></td>
-<td style="text-align: right;"><code>2</code></td>
-<td style="text-align: left;"><code>0 0</code></td>
-<td style="text-align: left;">number of section headers (executable files don't need sections)</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#32</code></td>
-<td style="text-align: right;"><code>2</code></td>
-<td style="text-align: left;"><code>0 0</code></td>
-<td style="text-align: left;">section name string table index: <code>0</code> = none</td>
-</tr>
-</tbody>
-</table>
-<h2 id="program-header">Program header</h2>
-<p>An ELF file contains a number of segments that will be loaded into memory. Those are described by
-the Program Header Table with some number of <code>#20</code>-byte (32-byte) Program Headers:</p>
-<table>
-<thead>
-<tr>
-<th style="text-align: right;">offset</th>
-<th style="text-align: right;">length</th>
-<th style="text-align: left;">contents</th>
-<th style="text-align: left;">comment</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;"><code>#0</code></td>
-<td style="text-align: right;"><code>4</code></td>
-<td style="text-align: left;"><code>#1</code></td>
-<td style="text-align: left;">Segment type. <code>1</code> = load into memory</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#4</code></td>
-<td style="text-align: right;"><code>4</code></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">file location of the segment</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#8</code></td>
-<td style="text-align: right;"><code>4</code></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">virtual address; typically should be at least <code>#10000</code> (64 KiB)</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#C</code></td>
-<td style="text-align: right;"><code>4</code></td>
-<td style="text-align: left;"><code>#0</code></td>
-<td style="text-align: left;">physical address (ignored)</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#10</code></td>
-<td style="text-align: right;"><code>4</code></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">size in the file</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#14</code></td>
-<td style="text-align: right;"><code>4</code></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">size in memory; if larger than the size in the file, the rest is filled with 0 bytes</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#18</code></td>
-<td style="text-align: right;"><code>4</code></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">permissions (can be combined): <code>#1</code> = execute, <code>#2</code> = write, <code>#4</code> = read</td>
-</tr>
-<tr>
-<td style="text-align: right;"><code>#1C</code></td>
-<td style="text-align: right;"><code>4</code></td>
-<td style="text-align: left;"><code>#1000</code></td>
-<td style="text-align: left;">memory alignment: one page = 4 KiB</td>
-</tr>
-</tbody>
-</table>
-<p>The virtual address where a segment is loaded in memory must match its location in the file modulo
-memory page size (<code>#1000</code>) because that allows mapping the file into memory using the virtual memory
-system which works at page size granularity.</p>
-<h2 id="stack-segment">Stack segment</h2>
-<p>The stack segment is automatically created (normally at the top of memory addresses) for each executable
-program.</p></div>
+<p>A 64-bit ELF file starts with a header containing <code>#40</code> = 64 bytes:</p>
+<p><img alt="ELF header" src="../../images/elf.svg" /></p>
+<p><code>e_ident</code>:
+<img alt="e\_ident" src="../../images/elf_ident.svg" /></p>
+<p>The fields are:</p>
+<ul>
+<li><code>e_ident</code>: 16-byte file type identifier:<ul>
+<li>A 4-byte magic number <code>#7F "ELF"</code>: this identifies ELF files.</li>
+<li><code>EI_CLASS</code> = <code>ELFCLASS64</code> = 2: 64-bit architecture.</li>
+<li><code>EI_DATA</code> = <code>ELFDATA2LSB</code> = 1: little-endian architecture.</li>
+<li><code>EI_VERSION</code> = 1: ELF specification version.</li>
+<li><code>EI_OSABI</code> = <code>ELFOSABI_SYSV</code> = 0: UNIX System V ABI.</li>
+<li><code>EI_ABIVERSION</code> = 0: version 0 for UNIX System V ABI.</li>
+<li>7 bytes of 0 padding.</li>
+</ul>
+</li>
+<li><code>e_type</code> = <code>ET_EXEC</code> = 2: executable program.</li>
+<li><code>e_machine</code> = <code>EM_X86_64</code> = <code>#3E</code>: x86-64 CPU.</li>
+<li><code>e_entry</code>: Program entry point (virtual address).</li>
+<li><code>e_phoff</code>: Program header table file location.</li>
+<li><code>e_shoff</code> = 0: Section header table file offset (none).</li>
+<li><code>e_flags</code> = 0: CPU-specific flags (none).</li>
+<li><code>e_ehsize</code> = <code>#40</code>: ELF header size.</li>
+<li><code>e_phentsize</code> = <code>#38</code>: Program header table entry size.</li>
+<li><code>e_phnum</code>: Number of program header table entries.</li>
+<li><code>e_shentsize</code> = <code>#40</code>: Section header table entry size.</li>
+<li><code>e_shnum</code> = 0: Number of section header table entries (we don't need those).</li>
+<li><code>e_shstrndx</code>: Section header table index of the section name string table (0 = none).</li>
+</ul>
+<h2 id="program-header-table">Program header table</h2>
+<p>An ELF file contains a number of segments that will be loaded into memory. Each
+must be described in the program header table. Each program header entry contains
+<code>#38</code> = 56 bytes that look like this:</p>
+<p><img alt="Program header entry" src="../../images/program_header_entry.svg" /></p>
+<p><code>p_flags</code>: <img alt="p_flags" src="../../images/program_header_entry_flags.svg" /></p>
+<p>The fields are:</p>
+<ul>
+<li><code>p_type</code> = <code>PT_LOAD</code> = 1: Load into memory</li>
+<li><code>p_flags</code>: Segment permissions.<ul>
+<li><code>R</code>: Read access.</li>
+<li><code>W</code>: Write access.</li>
+<li><code>X</code>: Executable.</li>
+</ul>
+</li>
+<li><code>p_offset</code>: Location of the segment in the file.</li>
+<li><code>p_vaddr</code>: Virtual address where we want to load the segment.</li>
+<li><code>p_paddr</code> = 0: Physical address (ignored).</li>
+<li><code>p_filesz</code>: Size in the file.</li>
+<li><code>p_memsz</code>: Size in memory. If greater than <code>p_filesz</code> the rest is filled with zeros.</li>
+<li><code>p_align</code> = <code>#1000</code>: Alignment of segments in memory, must be a multiple of page
+    size. We must have <code>p_offset</code> = <code>p_vaddr</code> (mod <code>p_align</code>).</li>
+</ul>
+<h2 id="section-header-table">Section header table</h2>
+<p>The section header table is not required for executable programs, so we are going to
+ignore this.</p></div>
             </div>
         </div>
 

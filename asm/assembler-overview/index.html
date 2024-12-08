@@ -8,7 +8,7 @@
         <meta name="author" content="Tomek Czajka">
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Assembler overview - Echo to Tetris</title>
+        <title>Assembler overview - Brooklyn</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -25,7 +25,7 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Echo to Tetris</a>
+                <a class="navbar-brand" href="../..">Brooklyn</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -38,12 +38,30 @@
                             <li class="nav-item">
                                 <a href="../.." class="nav-link">Home</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="../../hello-world/" class="nav-link">Hello, world!</a>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Reference</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../reference/notation/" class="dropdown-item">Notation</a>
+</li>
+                                    
+<li>
+    <a href="../../reference/ascii/" class="dropdown-item">ASCII</a>
+</li>
+                                    
+<li>
+    <a href="../../reference/elf/" class="dropdown-item">ELF file format</a>
+</li>
+                                </ul>
                             </li>
                             <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Assembler</a>
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Old</a>
                                 <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../hello-world/" class="dropdown-item">Hello, world!</a>
+</li>
                                     
 <li>
     <a href="./" class="dropdown-item active" aria-current="page">Assembler overview</a>
@@ -59,23 +77,6 @@
                                     
 <li>
     <a href="../asm-asm/" class="dropdown-item">Rewrite the assembler in assembly</a>
-</li>
-                                </ul>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Reference</a>
-                                <ul class="dropdown-menu">
-                                    
-<li>
-    <a href="../../reference/notation/" class="dropdown-item">Notation</a>
-</li>
-                                    
-<li>
-    <a href="../../reference/ascii/" class="dropdown-item">ASCII</a>
-</li>
-                                    
-<li>
-    <a href="../../reference/elf/" class="dropdown-item">Linux executable files</a>
 </li>
                                     
 <li>
@@ -133,7 +134,7 @@
 <h1 id="assembler-overview">Assembler overview</h1>
 <p>Writing bytes with <code>echo</code> is fun, but it is a lot of work. To write our
 <a href="../../hello-world/">Hello, world</a> program we had to do a lot of things manually and
-the resulting <a href="https://github.com/tczajka/echo-to-tetris/blob/main/src/hello.1.echo">code</a> is not
+the resulting <a href="https://github.com/tczajka/brooklyn/blob/main/src/hello.1.echo">code</a> is not
 easy to read. Any changes we want to make require a lot of work to make sure everything still
 fits in correctly.</p>
 <p>Let's create an <strong>assembler</strong>: a tool that will let us write machine code in a nicer format.</p>
