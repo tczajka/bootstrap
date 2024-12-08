@@ -1,21 +1,20 @@
-site_name: Echo to Tetris
+site_name: Brooklyn
 site_description: >
-  Bootstrap a compiler, and a Tetris game,
-  using nothing but command line tools like echo.
+  Bootstrap a programming language compiler from command line tools.
 site_author: Tomek Czajka
 
 nav:
   - Home: index.md
-  - hello-world.md
-  - Assembler:
-    - asm/assembler-overview.md
-    - asm/first-version.md
-    - asm/hello-asm.md
-    - asm/asm-asm.md
   - Reference:
     - reference/notation.md
     - reference/ascii.md
     - reference/elf.md
+  - Old:
+    - hello-world.md
+    - asm/assembler-overview.md
+    - asm/first-version.md
+    - asm/hello-asm.md
+    - asm/asm-asm.md
     - reference/x86.md
     - reference/syscalls.md
   - Code repository: https://github.com/tczajka/bootstrap

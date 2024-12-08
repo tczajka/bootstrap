@@ -24,12 +24,16 @@ Maybe some day.
 
 We will build our tools in phases:
 
-* **Octal**. An octal byte parser build in machine code.
+* **Octal**. An octal byte parser built in machine code.
 * **Bytes**. A slightly more sophisticated binary file language.
 * **Stack-SL**. A stack-based programming language with single-letter commands.
-* **Stack**. A more sophisticated stack-based programming language inspired by Forth.
-* **Assembly**. An assembly language for x86-64.
-* **Brooklyn**. A compiled programming language inspired by C.
+* **Stack**. A more sophisticated stack-based programming language inspired by
+    [Forth](https://en.wikipedia.org/wiki/Forth_(programming_language).
+* **Assembly**. An assembler for x86-64.
+* **Brooklyn-NT**. A compiled programming language with no types, similar to
+    [B](https://en.wikipedia.org/wiki/B_(programming_language).
+* **Brooklyn**. A compiled programming language with types, similar to
+    [C](https://en.wikipedia.org/wiki/C_(programming_language).
 
 As we build our tools, we will bootstrap and make our lives easier. Eventually we
 want to be able to run the Brooklyn compiler in Brooklyn.
