@@ -11,7 +11,7 @@ Before we get there, we will have to take us a lot of little steps. And we will 
 in the process.
 
 Where do we start? We assume we have a computer with a Linux operating system,
-an [x86](https://en.wikipedia.org/wiki/X86) CPU and a command line terminal.
+an [x86-64](https://en.wikipedia.org/wiki/X86-64) CPU and a command line terminal.
 We will use some basic Linux commands such as `echo` and `cat` and a plain text
 editor such as `vi`, `emacs` or `gedit`.
 
@@ -23,15 +23,15 @@ Maybe some day.
 
 We will build our tools in phases:
 
-* Our first programs will be built from the command line using `echo`.
-* **Assembler**. We will progressively develop a simple assembler.
-* **Forth**. A simple stack-based interpreted programming language.
-* **Brooklyn**. A higher level compiled programming language we will make up on the fly,
-  similar to C or Pascal.
-* **Tetris**. The game.
+* **Octal**. An octal byte parser build in machine code.
+* **Bytes**. A slightly more sophisticated binary file language.
+* **Stack-SL**. A stack-based programming language with single-letter commands.
+* **Stack**. A more sophisticated stack-based programming language inspired by Forth.
+* **Assembly**. An assembly language for x86-64.
+* **Brooklyn**. A compiled programming language inspired by C.
 
-As we develop our programming languages, we will *bootstrap* the compilers to use their own language!
-So the assembler will be written in assembly and Brooklyn will be written in Brooklyn.
+As we build our tools, we will bootstrap and make our lives easier. Eventually we
+want to be able to run the Brooklyn compiler in Brooklyn.
 
 ## The code
 
