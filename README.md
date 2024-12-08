@@ -1,11 +1,12 @@
-# Echo to Tetris
+# Brooklyn
 
-Follow the full story on the [project page](https://tczajka.github.io/echo-to-tetris/).
+Follow the full story on the [project page](https://tczajka.github.io/brooklyn).
 
 ## The goal
 
-We are going to build a clone of [Tetris](https://tetris.com/)  starting from nothing but a Linux terminal.
-We are not going to use existing compilers, not even an assembler.
+We are going to build a compiled programming language
+starting from nothing but a Linux terminal.
+We are not going to use existing compilers, not even an assembler!
 
 Before we get there, we will have to take us a lot of little steps. And we will learn a lot
 in the process.
@@ -35,15 +36,15 @@ want to be able to run the Brooklyn compiler in Brooklyn.
 
 ## The code
 
-All the code is available in the [`src`](https://github.com/tczajka/echo-to-tetris/tree/main/src) directory
-of the [github](https://github.com/tczajka/echo-to-tetris) repository.
-The [`Makefile`](https://github.com/tczajka/echo-to-tetris/blob/main/Makefile) has all the build steps.
+All the code is available in the [`src`](https://github.com/tczajka/brooklyn/tree/main/src) directory
+of the [github](https://github.com/tczajka/brooklyn) repository.
+The [`Makefile`](https://github.com/tczajka/brooklyn/blob/main/Makefile) has all the build steps.
 So if you want to see a program in action rather than repeat the whole process yourself,
 you can build any step in the tutorial using `make`:
 
 ```bash
-$ make bin/hello.1
+$ make build/hello.1
 [...]
-$ bin/hello.1
+$ build/hello.1
 Hello, world!
 ```

@@ -2,7 +2,7 @@
 
 Writing bytes with `echo` is fun, but it is a lot of work. To write our
 [Hello, world](../hello-world.md) program we had to do a lot of things manually and
-the resulting [code](https://github.com/tczajka/echo-to-tetris/blob/main/src/hello.1.echo) is not
+the resulting [code](https://github.com/tczajka/brooklyn/blob/main/src/hello.1.echo) is not
 easy to read. Any changes we want to make require a lot of work to make sure everything still
 fits in correctly.
 

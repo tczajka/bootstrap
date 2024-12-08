@@ -4,7 +4,7 @@ Now let's rewrite the [assembler](first-version.md) in assembly! This will make 
 
 The process of writing a compiler in its own language is called "bootstrapping".
 
-[`src/asm.2.asm`](https://github.com/tczajka/echo-to-tetris/blob/main/src/asm.2.asm)
+[`src/asm.2.asm`](https://github.com/tczajka/brooklyn/blob/main/src/asm.2.asm)
 
 ```nasm
 ; ELF header

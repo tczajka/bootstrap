@@ -3,7 +3,7 @@
 Now that we have created an (very simple) assembler, let's rewrite our
 first program, ["Hello, world!"](../hello-world.md), in this new language!
 
-[`src/hello.2.asm`](https://github.com/tczajka/echo-to-tetris/blob/main/src/hello.2.asm)
+[`src/hello.2.asm`](https://github.com/tczajka/brooklyn/blob/main/src/hello.2.asm)
 
 ```text
 ; ELF header
