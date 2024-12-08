@@ -1,0 +1,15 @@
+\documentclass{standalone}
+\usepackage{bytefield}
+\begin{document}
+\begin{bytefield}[bitwidth=3em]{8}
+    \bitheader{0-7} \\
+    \bitbox{4}{p\_type}
+    \bitbox{4}{p\_flags} \\
+    \bitbox{8}{p\_offset} \\
+    \bitbox{8}{p\_vaddr} \\
+    \bitbox{8}{p\_paddr} \\
+    \bitbox{8}{p\_filesz} \\
+    \bitbox{8}{p\_memsz} \\
+    \bitbox{8}{p\_align}
+\end{bytefield}
+\end{document}

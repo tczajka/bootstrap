@@ -25,3 +25,8 @@ plugins:
 
 extra_css:
   - style.css
+
+exclude_docs: |
+  /Makefile
+  /diagrams
+  /build

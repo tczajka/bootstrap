@@ -1,0 +1,21 @@
+\documentclass{standalone}
+\usepackage{bytefield}
+\begin{document}
+\begin{bytefield}[bitwidth=3em]{8}
+    \bitheader{0-7} \\
+    \wordbox{2}{e\_ident} \\
+    \bitbox{2}{e\_type}
+    \bitbox{2}{e\_machine}
+    \bitbox{4}{e\_version} \\
+    \wordbox{1}{e\_entry} \\
+    \wordbox{1}{e\_phoff} \\
+    \wordbox{1}{e\_shoff} \\
+    \bitbox{4}{e\_flags}
+    \bitbox{2}{e\_ehsize}
+    \bitbox{2}{e\_phentsize} \\
+    \bitbox{2}{e\_phnum}
+    \bitbox{2}{e\_shentsize}
+    \bitbox{2}{e\_shnum}
+    \bitbox{2}{e\_shstrndx}
+\end{bytefield}
+\end{document}

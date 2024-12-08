@@ -1,0 +1,9 @@
+\documentclass{standalone}
+\usepackage{bytefield}
+\begin{document}
+\begin{bytefield}[endianness=big, bitwidth=1em]{32}
+    \bitheader{0-31} \\
+    \bitboxes*{1}{00000000000000000000000000000}
+    \bitboxes{1}{RWX}
+\end{bytefield}
+\end{document}

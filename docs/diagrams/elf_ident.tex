@@ -1,0 +1,15 @@
+\documentclass{standalone}
+\usepackage{bytefield}
+\begin{document}
+\begin{bytefield}[bitwidth=8em]{4}
+    \bitheader{0-3} \\
+    \bitboxes*{1}{{\#7F}{``E''}{``L''}{``F''}} \\
+    \bitbox{1}{EI\_CLASS}
+    \bitbox{1}{EI\_DATA}
+    \bitbox{1}{EI\_VERSION}
+    \bitbox{1}{EI\_OSABI} \\
+    \bitbox{1}{EI\_ABIVERSION}
+    \bitboxes*{1}{000} \\
+    \bitboxes*{1}{0000}
+\end{bytefield}
+\end{document}
