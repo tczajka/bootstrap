@@ -1,5 +1,7 @@
 # ELF file format
 
+[TOC]
+
 Executable files on Linux follow the ELF file format.
 
 ELF files describe several types of files (executable programs, shared libraries,
@@ -29,7 +31,7 @@ The fields are:
 * `e_machine` = `EM_X86_64` = `#3E`: x86-64 CPU.
 * `e_entry`: Program entry point (virtual address).
 * `e_phoff`: Program header table file location.
-* `e_shoff` = 0: Section header table file offset (none).
+* `e_shoff` = 0: Section header table file location (none).
 * `e_flags` = 0: CPU-specific flags (none).
 * `e_ehsize` = `#40`: ELF header size.
 * `e_phentsize` = `#38`: Program header table entry size.
@@ -55,13 +57,13 @@ The fields are:
     * `R`: Read access.
     * `W`: Write access.
     * `X`: Executable.
-* `p_offset`: Location of the segment in the file.
-* `p_vaddr`: Virtual address where we want to load the segment.
+* `p_offset`: File location.
+* `p_vaddr`: Virtual address.
 * `p_paddr` = 0: Physical address (ignored).
 * `p_filesz`: Size in the file.
 * `p_memsz`: Size in memory. If greater than `p_filesz` the rest is filled with zeros.
 * `p_align` = `#1000`: Alignment of segments in memory, must be a multiple of page
-    size. We must have `p_offset` = `p_vaddr` (mod `p_align`).
+    size. We must have `p_offset` ≡ `p_vaddr` (mod `p_align`).
 
 ## Section header table
 

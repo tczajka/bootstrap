@@ -1,0 +1,16 @@
+\documentclass{standalone}
+\usepackage{bytefield}
+\begin{document}
+\begin{bytefield}[endianness=big, bitwidth=2em, leftcurly=., leftcurlyspace=0pt,
+                  rightcurly=., rightcurlyspace=0pt]{8}
+    \bitheader{0-7} \\
+    \begin{leftwordgroup}{ModRM}
+    \begin{rightwordgroup}{rm can't be 4}
+    \bitboxes*{1}{10}
+    \bitbox{3}{}
+    \bitbox{3}{rm}
+    \end{rightwordgroup}
+    \end{leftwordgroup} \\
+    \wordbox{4}{const.4}
+\end{bytefield}
+\end{document}

@@ -6,15 +6,16 @@ site_author: Tomek Czajka
 nav:
   - Home: index.md
   - Reference:
-    - reference/notation.md
     - reference/ascii.md
     - reference/elf.md
+    - reference/x86-64.md
   - Old:
     - hello-world.md
     - asm/assembler-overview.md
     - asm/first-version.md
     - asm/hello-asm.md
     - asm/asm-asm.md
+    - reference/notation.md
     - reference/x86.md
     - reference/syscalls.md
   - Code repository: https://github.com/tczajka/bootstrap
