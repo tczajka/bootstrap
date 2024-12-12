@@ -1,0 +1,20 @@
+\documentclass{standalone}
+\usepackage{bytefield}
+\begin{document}
+\begin{bytefield}[endianness=big, bitwidth=2em, leftcurly=., leftcurlyspace=0pt,
+                  rightcurly=., rightcurlyspace=0pt]{8}
+    \bitheader{0-7} \\
+    \begin{leftwordgroup}{ModRM}
+    \bitboxes*{1}{00}
+    \bitbox{3}{}
+    \bitboxes*{1}{100}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{SIB}
+    \begin{rightwordgroup}{X index can't be 4}
+    \bitbox{2}{k}
+    \bitbox{3}{index}
+    \bitboxes*{1}{101}
+    \end{rightwordgroup}
+    \end{leftwordgroup}
+\end{bytefield}
+\end{document}

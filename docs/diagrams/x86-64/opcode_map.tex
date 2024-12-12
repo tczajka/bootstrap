@@ -1,0 +1,106 @@
+\documentclass{standalone}
+\usepackage{bytefield}
+\begin{document}
+\begin{bytefield}[bitwidth=4em, bitformatting=\normalsize, leftcurly=., leftcurlyspace=0pt]{8}
+    \bitheader{0-7} \\
+    \begin{leftwordgroup}{00}
+    \wordbox[ltr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{01}
+    \wordbox[lr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{02}
+    \wordbox[lr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{03}
+    \wordbox[lr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{04}
+    \wordbox[lr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{05}
+    \wordbox[lr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{06}
+    \wordbox[lr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{07}
+    \wordbox[lr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{10}
+    \wordbox[ltr]{1}{REX}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{11}
+    \wordbox[lbr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{12}
+    \wordbox[lr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{13}
+    \wordbox[lr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{14}
+    \wordbox[lr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{15}
+    \wordbox[lr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{16}
+    \wordbox[lr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{17}
+    \wordbox[lr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{20}
+    \wordbox[lr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{21}
+    \bitbox{4}{mov register, register/memory}
+    \bitbox{1}{lea}
+    \bitbox[r]{3}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{22}
+    \wordbox[lr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{23}
+    \wordbox[lr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{24}
+    \bitbox{2}{mov rax, [const]}
+    \bitbox[lr]{6}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{25}
+    \wordbox[lr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{26}
+    \wordbox[ltr]{1}{mov register, const}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{27}
+    \wordbox[lbr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{30}
+    \wordbox[lr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{31}
+    \wordbox[lr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{32}
+    \wordbox[lr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{33}
+    \wordbox[lr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{34}
+    \wordbox[lr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{35}
+    \wordbox[lr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{36}
+    \wordbox[lr]{1}{}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{37}
+    \wordbox[lrb]{1}{}
+    \end{leftwordgroup}
+\end{bytefield}
+\end{document}

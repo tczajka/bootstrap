@@ -8,14 +8,14 @@ ELF files describe several types of files (executable programs, shared libraries
 linkable object files, etc) for various architectures and operating systems. We are interested
 in x86-64 executable programs for Linux.
 
-## ELF Header
+# ELF Header
 
 A 64-bit ELF file starts with a header containing `#40` = 64 bytes:
 
-![ELF header](../images/elf.svg)
+![ELF header](../images/elf/elf.svg)
 
 `e_ident`:
-![`e\_ident`](../images/elf_ident.svg)
+![`e\_ident`](../images/elf/elf_ident.svg)
 
 The fields are:
 
@@ -40,15 +40,15 @@ The fields are:
 * `e_shnum` = 0: Number of section header table entries (we don't need those).
 * `e_shstrndx`: Section header table index of the section name string table (0 = none).
 
-## Program header table
+# Program header table
 
 An ELF file contains a number of segments that will be loaded into memory. Each
 must be described in the program header table. Each program header entry contains
 `#38` = 56 bytes that look like this:
 
-![Program header entry](../images/program_header_entry.svg)
+![Program header entry](../images/elf/program_header_entry.svg)
 
-`p_flags`: ![`p_flags`](../images/program_header_entry_flags.svg)
+`p_flags`: ![`p_flags`](../images/elf/program_header_entry_flags.svg)
 
 The fields are:
 
@@ -65,7 +65,7 @@ The fields are:
 * `p_align` = `#1000`: Alignment of segments in memory, must be a multiple of page
     size. We must have `p_offset` ≡ `p_vaddr` (mod `p_align`).
 
-## Section header table
+# Section header table
 
 The section header table is not required for executable programs, so we are going to
 ignore this.
