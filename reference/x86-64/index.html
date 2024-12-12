@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <meta name="author" content="Tomek Czajka">
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>x86-64 machine code - Brooklyn</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <link href="../../style.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">Brooklyn</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">Home</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Reference</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../ascii/" class="dropdown-item">ASCII</a>
+</li>
+                                    
+<li>
+    <a href="../elf/" class="dropdown-item">ELF file format</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">x86-64 machine code</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Old</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../hello-world/" class="dropdown-item">Hello, world!</a>
+</li>
+                                    
+<li>
+    <a href="../../asm/assembler-overview/" class="dropdown-item">Assembler overview</a>
+</li>
+                                    
+<li>
+    <a href="../../asm/first-version/" class="dropdown-item">First version</a>
+</li>
+                                    
+<li>
+    <a href="../../asm/hello-asm/" class="dropdown-item">Rewrite "Hello, world!" in assembly</a>
+</li>
+                                    
+<li>
+    <a href="../../asm/asm-asm/" class="dropdown-item">Rewrite the assembler in assembly</a>
+</li>
+                                    
+<li>
+    <a href="../notation/" class="dropdown-item">Notation</a>
+</li>
+                                    
+<li>
+    <a href="../x86/" class="dropdown-item">x86 machine code</a>
+</li>
+                                    
+<li>
+    <a href="../syscalls/" class="dropdown-item">Linux system calls</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://github.com/tczajka/bootstrap" class="nav-link">Code repository</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                            <li class="nav-item">
+                                <a rel="prev" href="../elf/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../../hello-world/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#x86-64-machine-code" class="nav-link">x86-64 machine code</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#registers" class="nav-link">Registers</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#mov-move-instructions" class="nav-link">mov: Move instructions</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#mov-reg-regmemory-or-mov-regmemory-reg" class="nav-link">mov reg, reg/memory or mov reg/memory, reg</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#mov-rax-const4-or-mov-const4-rax" class="nav-link">mov rax, [const.4] or mov [const.4], rax</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#mov-register-const" class="nav-link">mov register, const</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#move-size" class="nav-link">Move size</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#move-direction" class="nav-link">Move direction</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#memory-addressing-modrm-byte" class="nav-link">Memory addressing: ModRM byte</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#register-addressing" class="nav-link">[register] addressing</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#register-const1-addressing" class="nav-link">[register + const.1] addressing</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#register-const4-addressing" class="nav-link">[register + const.4] addressing</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#two-register-operations" class="nav-link">Two-register operations</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#rip-const4-addressing" class="nav-link">[RIP + const.4] addressing</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#indexed-addressing-sib-byte" class="nav-link">Indexed addressing: SIB byte</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#lea-load-address" class="nav-link">lea: Load address</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#lea-reg-memory" class="nav-link">lea reg, memory</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#opcode-map" class="nav-link">Opcode map</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="x86-64-machine-code">x86-64 machine code</h1>
+<div class="toc">
+<ul>
+<li><a href="#x86-64-machine-code">x86-64 machine code</a></li>
+<li><a href="#registers">Registers</a></li>
+<li><a href="#mov-move-instructions">mov: Move instructions</a><ul>
+<li><a href="#mov-reg-regmemory-or-mov-regmemory-reg">mov reg, reg/memory or mov reg/memory, reg</a></li>
+<li><a href="#mov-rax-const4-or-mov-const4-rax">mov rax, [const.4] or mov [const.4], rax</a></li>
+<li><a href="#mov-register-const">mov register, const</a></li>
+<li><a href="#move-size">Move size</a></li>
+<li><a href="#move-direction">Move direction</a></li>
+</ul>
+</li>
+<li><a href="#memory-addressing-modrm-byte">Memory addressing: ModRM byte</a><ul>
+<li><a href="#register-addressing">[register] addressing</a></li>
+<li><a href="#register-const1-addressing">[register + const.1] addressing</a></li>
+<li><a href="#register-const4-addressing">[register + const.4] addressing</a></li>
+<li><a href="#two-register-operations">Two-register operations</a></li>
+<li><a href="#rip-const4-addressing">[RIP + const.4] addressing</a></li>
+<li><a href="#indexed-addressing-sib-byte">Indexed addressing: SIB byte</a><ul>
+<li><a href="#const4-2k-index">[const.4 + 2^k * index]</a></li>
+<li><a href="#base-2k-index">[base + 2^k * index]</a></li>
+<li><a href="#base-2k-index-const1">[base + 2^k * index + const.1]</a></li>
+<li><a href="#base-2k-index-const4">[base + 2^k * index + const.4]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#lea-load-address">lea: Load address</a><ul>
+<li><a href="#lea-reg-memory">lea reg, memory</a></li>
+</ul>
+</li>
+<li><a href="#opcode-map">Opcode map</a></li>
+</ul>
+</div>
+<p>We write all our code for x86-64 CPUs in 64-bit mode.</p>
+<p>It is a complicated instruction set. But we will deal with it. We only describe some
+common instructions that will be useful to us.</p>
+<h1 id="registers">Registers</h1>
+<p>There are 16 64-bit registers:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">ID</th>
+<th>name</th>
+<th>special uses</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;"><code>0</code></td>
+<td><code>rax</code></td>
+<td>some arithmetic instructions use it implicitly</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>1</code></td>
+<td><code>rcx</code></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>2</code></td>
+<td><code>rdx</code></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>3</code></td>
+<td><code>rbx</code></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>4</code></td>
+<td><code>rsp</code></td>
+<td>stack pointer (stack grows down)</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>5</code></td>
+<td><code>rbp</code></td>
+<td>stack frame pointer</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>6</code></td>
+<td><code>rsi</code></td>
+<td>source for string operations</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>7</code></td>
+<td><code>rdi</code></td>
+<td>destination for string operations</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>8</code></td>
+<td><code>r8</code></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>9</code></td>
+<td><code>r9</code></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>10</code></td>
+<td><code>r10</code></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>11</code></td>
+<td><code>r11</code></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>12</code></td>
+<td><code>r12</code></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>13</code></td>
+<td><code>r13</code></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>14</code></td>
+<td><code>r14</code></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>15</code></td>
+<td><code>r15</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="mov-move-instructions">mov: Move instructions</h1>
+<h2 id="mov-reg-regmemory-or-mov-regmemory-reg">mov reg, reg/memory or mov reg/memory, reg</h2>
+<p><img alt="mov" src="../../images/x86-64/mov.svg" /></p>
+<p>Mov instructions copy data between registers and/or memory. This basic move
+instruction moves data between a register and another register or memory.</p>
+<h2 id="mov-rax-const4-or-mov-const4-rax">mov rax, [const.4] or mov [const.4], rax</h2>
+<p><img alt="mov rax" src="../../images/x86-64/mov_rax.svg" /></p>
+<p>This is a short opcode for moving the <code>rax</code> register to / from memory.</p>
+<h2 id="mov-register-const">mov register, const</h2>
+<p><img alt="mov const" src="../../images/x86-64/mov_const.svg" /></p>
+<p>This loads a constant value into the register number <code>B reg</code>.</p>
+<h2 id="move-size">Move size</h2>
+<p>The size of the move is indicated by the <code>S</code> (size) and <code>W</code> (wide) bits as follows:</p>
+<table>
+<thead>
+<tr>
+<th><code>S</code></th>
+<th><code>W</code></th>
+<th>size</th>
+<th>notation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1 byte</td>
+<td><code>mov.1</code> (don't use <code>rsp</code>, <code>rbp</code>, <code>rsi</code> or <code>rdi</code>)</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>4 bytes</td>
+<td><code>mov.4</code></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>8 bytes</td>
+<td><code>mov.8</code></td>
+</tr>
+</tbody>
+</table>
+<p>There is also a way to specify 2 bytes , but let's ignore that.
+It's <em>not</em> done by setting the bits to <code>0 1</code> (the remaining combination), as you might think!</p>
+<p>Whenever 1 byte is moved to or from a register, it is lowest byte of the register.
+However, for historical reasons there is an exception. If you specify register number
+4-7, and there is no REX byte, it actually means the <em>second lowest</em> byte of a register
+0-3. We will probably not need this functionality. We just have to be careful not to
+try to use the single lowest byte in <code>rsp</code>, <code>rbp</code>, <code>rsi</code> or <code>rdi</code>.</p>
+<p>Whenever 4 bytes are set in a register (via a <code>mov</code> or another operation),
+the upper 4 bytes are zeroed.</p>
+<h2 id="move-direction">Move direction</h2>
+<p>The <code>D</code> (direction) bit specifies the move direction:</p>
+<table>
+<thead>
+<tr>
+<th><code>D</code></th>
+<th>direction</th>
+<th>notation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td><code>mem</code> &lt;- <code>reg</code> (store)</td>
+<td><code>mov mem, reg</code></td>
+</tr>
+<tr>
+<td>1</td>
+<td><code>reg</code> &lt;- <code>mem</code> (load)</td>
+<td><code>mov reg, mem</code></td>
+</tr>
+</tbody>
+</table>
+<h1 id="memory-addressing-modrm-byte">Memory addressing: ModRM byte</h1>
+<p>The purpose of the ModRM byte is to describe which register to use, and which
+location in memory (or another register) to use.</p>
+<p>The register is simpler: it's described by the 4 bits: <code>R reg</code> (where <code>R</code> comes from the
+REX byte). We need the REX.R bit if we want to use registers <code>r8-r15</code>.</p>
+<p>The memory location depends on the <code>mod</code> field.</p>
+<h2 id="register-addressing"><code>[register]</code> addressing</h2>
+<p><img alt="ModRM_00" src="../../images/x86-64/modrm_00.svg" /></p>
+<p><code>mod = 00</code>. This mode specifies that the register number <code>B rm</code>
+(where B comes from the REX byte) contains a memory address.</p>
+<p>A gotcha: we can't use <code>rm = 4</code> or <code>rm = 5</code> in this mode!
+4 is reserved for <a href="#indexed-addressing-sib-byte">indexed addressing</a>.
+5 is reserved for <a href="#rip-const4-addressing">relative addressing</a>.</p>
+<p>This means we can't say <code>[rsp]</code>, <code>[rbp]</code>, <code>[r12]</code> or <code>[r13]</code> using this mode.
+x86-64 is complicated...</p>
+<p>Let's encode an example instruction:</p>
+<pre><code class="language-nasm">    mov.4 rbx, [rcx]
+</code></pre>
+<p>This instruction moves 4 bytes from memory location addressed by <code>rcx</code> to the register <code>rbx</code>,
+filling the top 4 bytes of <code>rbx</code> with 0.</p>
+<p>We don't need the REX byte for this. We set <code>D=1</code> (load from memory), <code>S = 1</code> (4-byte move), 
+<code>mod = 00</code>, <code>reg = 3</code> (<code>rbx</code>), <code>rm = 1</code> (<code>rcx</code>).</p>
+<p><img alt="mov_example1" src="../../images/x86-64/modrm_00_example.svg" /></p>
+<p>This gives us machine code in octal:
+<code>%213 %031</code>.
+Octal is very convenient because we have groups of 3 bits!</p>
+<h2 id="register-const1-addressing"><code>[register + const.1]</code> addressing</h2>
+<p><img alt="ModRM_01" src="../../images/x86-64/modrm_01.svg" /></p>
+<p><code>mod = 01</code>. The register number <code>B rm</code> contains a memory address,
+but we add a 1-byte signed constant to it.</p>
+<p><code>rm = 4</code> is reserved for <a href="#indexed-addressing-sib-byte">indexed addressing</a>, so we can't say <code>[rsp + const.1]</code> or <code>[r12 + const.1]</code> in this mode.</p>
+<h2 id="register-const4-addressing"><code>[register + const.4]</code> addressing</h2>
+<p><img alt="ModRM_10" src="../../images/x86-64/modrm_10.svg" /></p>
+<p><code>mod = 10</code>. The register number <code>B rm</code> contains a memory address,
+but we add a 4-byte signed constant to it. This can be used to address byte arrays,
+or so specify an offset within a data structure.</p>
+<p><code>rm = 4</code> is reserved for <a href="#indexed-addressing-sib-byte">indexed addressing</a>, so we can't say <code>[rsb + const.4]</code>
+or <code>[r12 + const.4]</code> in this mode.</p>
+<h2 id="two-register-operations">Two-register operations</h2>
+<p><img alt="ModRM_11" src="../../images/x86-64/modrm_11.svg" /></p>
+<p><code>mod = 11</code>. This time the second operand is simply the register indexed <code>B rm</code>.
+Note that we can describe such a move instruction in two ways, in either direction (<code>D</code> bit).</p>
+<h2 id="rip-const4-addressing"><code>[RIP + const.4]</code> addressing</h2>
+<p><img alt="relative addressing" src="../../images/x86-64/relative.svg" /></p>
+<p>Relative addresses are specified relative to the address of the next instruction (<code>RIP</code>). The address offset by a given constant from <code>RIP</code>, which allows to reference
+any constant memory location within +- 2GiB of the code.</p>
+<h2 id="indexed-addressing-sib-byte">Indexed addressing: SIB byte</h2>
+<p>Indexed (SIB) addressing is the most complicated form of addressing on x86-64.
+It allows compact array indexing.</p>
+<h3 id="const4-2k-index"><code>[const.4 + 2^k * index]</code></h3>
+<p><img alt="SIB 00 no base" src="../../images/x86-64/sib_00_no_base.svg" /></p>
+<p>This can be used for static array access with <code>2^k</code> bytes per element.</p>
+<p>The array index is the register number <code>X index</code>, where <code>X</code> comes from the optional
+<code>REX</code> byte. But we can't use <code>rsp</code> as the index.</p>
+<h3 id="base-2k-index"><code>[base + 2^k * index]</code></h3>
+<p><img alt="SIB 00 base" src="../../images/x86-64/sib_00_base.svg" /></p>
+<p>This can be used for array access with <code>2^k</code> bytes per element, whose address
+we have in a <code>base</code> register.</p>
+<p>The base is in register number <code>B base</code>, where <code>B</code> comes from the optional REX
+byte. We can't use <code>base = 5</code>, so <code>rbp</code> and <code>r13</code> are not allowed as the base. This
+possibility was taken by the previous addressing mode!</p>
+<p>The array index is the register number <code>X index</code>, where <code>X</code> comes from REX. But we can't use <code>rsp</code> as the index.</p>
+<h3 id="base-2k-index-const1"><code>[base + 2^k * index + const.1]</code></h3>
+<p><img alt="SIB 01" src="../../images/x86-64/sib_01.svg" /></p>
+<p>Same as the previous mode plus a 1 byte offset.</p>
+<p>The base is in register number <code>B base</code>, where <code>B</code> comes from the optional REX
+byte. Every register is allowed.</p>
+<p>The array index is the register number <code>X index</code>, where <code>X</code> comes from REX. But we can't use <code>rsp</code> as the index.</p>
+<h3 id="base-2k-index-const4"><code>[base + 2^k * index + const.4]</code></h3>
+<p><img alt="SIB 10" src="../../images/x86-64/sib_10.svg" /></p>
+<p>Same, but with a 4 byte offset.</p>
+<p>The base is in register number <code>B base</code>, where <code>B</code> comes from the optional REX
+byte. Every register is allowed.</p>
+<p>The array index is the register number <code>X index</code>, where <code>X</code> comes from REX. But we can't use <code>rsp</code> as the index.</p>
+<h1 id="lea-load-address">lea: Load address</h1>
+<h2 id="lea-reg-memory">lea reg, memory</h2>
+<p><img alt="lea" src="../../images/x86-64/lea.svg" /></p>
+<p>This is similar to the <code>mov reg, memory</code> instruction, but instead of moving
+data from memory, we just store the address of the memory location into a register.</p>
+<p>This allows us to reuse the various complicated memory addressing modes to do
+address calculations without actually loading data from memory.</p>
+<p>If the <code>W</code> bit is set, the instruction calculates an 8-byte address, otherwise
+it calculates a 4-byte address.</p>
+<h1 id="opcode-map">Opcode map</h1>
+<p>Here is the map of all the opcodes we have discussed. Rows are indexed by the top
+two octal digits, columns are indexed by the last octal digit.</p>
+<p><img alt="Opcode map" src="../../images/x86-64/opcode_map.svg" /></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+
+        <div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

@@ -43,15 +43,15 @@
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="../notation/" class="dropdown-item">Notation</a>
-</li>
-                                    
-<li>
     <a href="../ascii/" class="dropdown-item">ASCII</a>
 </li>
                                     
 <li>
     <a href="./" class="dropdown-item active" aria-current="page">ELF file format</a>
+</li>
+                                    
+<li>
+    <a href="../x86-64/" class="dropdown-item">x86-64 machine code</a>
 </li>
                                 </ul>
                             </li>
@@ -80,6 +80,10 @@
 </li>
                                     
 <li>
+    <a href="../notation/" class="dropdown-item">Notation</a>
+</li>
+                                    
+<li>
     <a href="../x86/" class="dropdown-item">x86 machine code</a>
 </li>
                                     
@@ -100,7 +104,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../../hello-world/" class="nav-link">
+                                <a rel="next" href="../x86-64/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -124,18 +128,21 @@
             
             <li class="nav-item" data-bs-level="1"><a href="#elf-file-format" class="nav-link">ELF file format</a>
               <ul class="nav flex-column">
-            <li class="nav-item" data-bs-level="2"><a href="#elf-header" class="nav-link">ELF Header</a>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#elf-header" class="nav-link">ELF Header</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-bs-level="2"><a href="#program-header-table" class="nav-link">Program header table</a>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#program-header-table" class="nav-link">Program header table</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-bs-level="2"><a href="#section-header-table" class="nav-link">Section header table</a>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#section-header-table" class="nav-link">Section header table</a>
               <ul class="nav flex-column">
-              </ul>
-            </li>
               </ul>
             </li>
         </ul>
@@ -144,15 +151,23 @@
                     <div class="col-md-9" role="main">
 
 <h1 id="elf-file-format">ELF file format</h1>
+<div class="toc">
+<ul>
+<li><a href="#elf-file-format">ELF file format</a></li>
+<li><a href="#elf-header">ELF Header</a></li>
+<li><a href="#program-header-table">Program header table</a></li>
+<li><a href="#section-header-table">Section header table</a></li>
+</ul>
+</div>
 <p>Executable files on Linux follow the ELF file format.</p>
 <p>ELF files describe several types of files (executable programs, shared libraries,
 linkable object files, etc) for various architectures and operating systems. We are interested
 in x86-64 executable programs for Linux.</p>
-<h2 id="elf-header">ELF Header</h2>
+<h1 id="elf-header">ELF Header</h1>
 <p>A 64-bit ELF file starts with a header containing <code>#40</code> = 64 bytes:</p>
-<p><img alt="ELF header" src="../../images/elf.svg" /></p>
+<p><img alt="ELF header" src="../../images/elf/elf.svg" /></p>
 <p><code>e_ident</code>:
-<img alt="e\_ident" src="../../images/elf_ident.svg" /></p>
+<img alt="e\_ident" src="../../images/elf/elf_ident.svg" /></p>
 <p>The fields are:</p>
 <ul>
 <li><code>e_ident</code>: 16-byte file type identifier:<ul>
@@ -169,7 +184,7 @@ in x86-64 executable programs for Linux.</p>
 <li><code>e_machine</code> = <code>EM_X86_64</code> = <code>#3E</code>: x86-64 CPU.</li>
 <li><code>e_entry</code>: Program entry point (virtual address).</li>
 <li><code>e_phoff</code>: Program header table file location.</li>
-<li><code>e_shoff</code> = 0: Section header table file offset (none).</li>
+<li><code>e_shoff</code> = 0: Section header table file location (none).</li>
 <li><code>e_flags</code> = 0: CPU-specific flags (none).</li>
 <li><code>e_ehsize</code> = <code>#40</code>: ELF header size.</li>
 <li><code>e_phentsize</code> = <code>#38</code>: Program header table entry size.</li>
@@ -178,12 +193,12 @@ in x86-64 executable programs for Linux.</p>
 <li><code>e_shnum</code> = 0: Number of section header table entries (we don't need those).</li>
 <li><code>e_shstrndx</code>: Section header table index of the section name string table (0 = none).</li>
 </ul>
-<h2 id="program-header-table">Program header table</h2>
+<h1 id="program-header-table">Program header table</h1>
 <p>An ELF file contains a number of segments that will be loaded into memory. Each
 must be described in the program header table. Each program header entry contains
 <code>#38</code> = 56 bytes that look like this:</p>
-<p><img alt="Program header entry" src="../../images/program_header_entry.svg" /></p>
-<p><code>p_flags</code>: <img alt="p_flags" src="../../images/program_header_entry_flags.svg" /></p>
+<p><img alt="Program header entry" src="../../images/elf/program_header_entry.svg" /></p>
+<p><code>p_flags</code>: <img alt="p_flags" src="../../images/elf/program_header_entry_flags.svg" /></p>
 <p>The fields are:</p>
 <ul>
 <li><code>p_type</code> = <code>PT_LOAD</code> = 1: Load into memory</li>
@@ -193,15 +208,15 @@ must be described in the program header table. Each program header entry contain
 <li><code>X</code>: Executable.</li>
 </ul>
 </li>
-<li><code>p_offset</code>: Location of the segment in the file.</li>
-<li><code>p_vaddr</code>: Virtual address where we want to load the segment.</li>
+<li><code>p_offset</code>: File location.</li>
+<li><code>p_vaddr</code>: Virtual address.</li>
 <li><code>p_paddr</code> = 0: Physical address (ignored).</li>
 <li><code>p_filesz</code>: Size in the file.</li>
 <li><code>p_memsz</code>: Size in memory. If greater than <code>p_filesz</code> the rest is filled with zeros.</li>
 <li><code>p_align</code> = <code>#1000</code>: Alignment of segments in memory, must be a multiple of page
-    size. We must have <code>p_offset</code> = <code>p_vaddr</code> (mod <code>p_align</code>).</li>
+    size. We must have <code>p_offset</code> ≡ <code>p_vaddr</code> (mod <code>p_align</code>).</li>
 </ul>
-<h2 id="section-header-table">Section header table</h2>
+<h1 id="section-header-table">Section header table</h1>
 <p>The section header table is not required for executable programs, so we are going to
 ignore this.</p></div>
             </div>
