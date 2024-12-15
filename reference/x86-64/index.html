@@ -136,7 +136,7 @@
               </ul>
             </li>
             
-            <li class="nav-item" data-bs-level="1"><a href="#mov-move-instructions" class="nav-link">mov: Move instructions</a>
+            <li class="nav-item" data-bs-level="1"><a href="#moves" class="nav-link">Moves</a>
               <ul class="nav flex-column">
             <li class="nav-item" data-bs-level="2"><a href="#mov-reg-regmemory-or-mov-regmemory-reg" class="nav-link">mov reg, reg/memory or mov reg/memory, reg</a>
               <ul class="nav flex-column">
@@ -150,11 +150,11 @@
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-bs-level="2"><a href="#move-size" class="nav-link">Move size</a>
+            <li class="nav-item" data-bs-level="2"><a href="#operand-size" class="nav-link">Operand size</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-bs-level="2"><a href="#move-direction" class="nav-link">Move direction</a>
+            <li class="nav-item" data-bs-level="2"><a href="#direction" class="nav-link">Direction</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -190,9 +190,43 @@
               </ul>
             </li>
             
-            <li class="nav-item" data-bs-level="1"><a href="#lea-load-address" class="nav-link">lea: Load address</a>
+            <li class="nav-item" data-bs-level="1"><a href="#load-address" class="nav-link">Load address</a>
               <ul class="nav flex-column">
             <li class="nav-item" data-bs-level="2"><a href="#lea-reg-memory" class="nav-link">lea reg, memory</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#auto-increment-operations" class="nav-link">Auto-increment operations</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#stos-mov-rdi-rax-increment-rdi" class="nav-link">stos: mov [rdi], rax, increment rdi</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#lods-mov-rax-rsi-increment-rsi" class="nav-link">lods: mov rax, [rsi], increment rsi</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#arithmetic-and-logic" class="nav-link">Arithmetic and logic</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#op-register-memory-or-op-memory-register" class="nav-link">op register, memory or op memory, register</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#operation-code" class="nav-link">Operation code</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#op-rax-const" class="nav-link">op rax, const</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#op-registermemory-const" class="nav-link">op register/memory, const</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -213,12 +247,12 @@
 <ul>
 <li><a href="#x86-64-machine-code">x86-64 machine code</a></li>
 <li><a href="#registers">Registers</a></li>
-<li><a href="#mov-move-instructions">mov: Move instructions</a><ul>
+<li><a href="#moves">Moves</a><ul>
 <li><a href="#mov-reg-regmemory-or-mov-regmemory-reg">mov reg, reg/memory or mov reg/memory, reg</a></li>
 <li><a href="#mov-rax-const4-or-mov-const4-rax">mov rax, [const.4] or mov [const.4], rax</a></li>
 <li><a href="#mov-register-const">mov register, const</a></li>
-<li><a href="#move-size">Move size</a></li>
-<li><a href="#move-direction">Move direction</a></li>
+<li><a href="#operand-size">Operand size</a></li>
+<li><a href="#direction">Direction</a></li>
 </ul>
 </li>
 <li><a href="#memory-addressing-modrm-byte">Memory addressing: ModRM byte</a><ul>
@@ -236,8 +270,20 @@
 </li>
 </ul>
 </li>
-<li><a href="#lea-load-address">lea: Load address</a><ul>
+<li><a href="#load-address">Load address</a><ul>
 <li><a href="#lea-reg-memory">lea reg, memory</a></li>
+</ul>
+</li>
+<li><a href="#auto-increment-operations">Auto-increment operations</a><ul>
+<li><a href="#stos-mov-rdi-rax-increment-rdi">stos: mov [rdi], rax, increment rdi</a></li>
+<li><a href="#lods-mov-rax-rsi-increment-rsi">lods: mov rax, [rsi], increment rsi</a></li>
+</ul>
+</li>
+<li><a href="#arithmetic-and-logic">Arithmetic and logic</a><ul>
+<li><a href="#op-register-memory-or-op-memory-register">op register, memory or op memory, register</a></li>
+<li><a href="#operation-code">Operation code</a></li>
+<li><a href="#op-rax-const">op rax, const</a></li>
+<li><a href="#op-registermemory-const">op register/memory, const</a></li>
 </ul>
 </li>
 <li><a href="#opcode-map">Opcode map</a></li>
@@ -260,7 +306,7 @@ common instructions that will be useful to us.</p>
 <tr>
 <td style="text-align: right;"><code>0</code></td>
 <td><code>rax</code></td>
-<td>some arithmetic instructions use it implicitly</td>
+<td>some instructions use it implicitly</td>
 </tr>
 <tr>
 <td style="text-align: right;"><code>1</code></td>
@@ -339,7 +385,7 @@ common instructions that will be useful to us.</p>
 </tr>
 </tbody>
 </table>
-<h1 id="mov-move-instructions">mov: Move instructions</h1>
+<h1 id="moves">Moves</h1>
 <h2 id="mov-reg-regmemory-or-mov-regmemory-reg">mov reg, reg/memory or mov reg/memory, reg</h2>
 <p><img alt="mov" src="../../images/x86-64/mov.svg" /></p>
 <p>Mov instructions copy data between registers and/or memory. This basic move
@@ -350,8 +396,8 @@ instruction moves data between a register and another register or memory.</p>
 <h2 id="mov-register-const">mov register, const</h2>
 <p><img alt="mov const" src="../../images/x86-64/mov_const.svg" /></p>
 <p>This loads a constant value into the register number <code>B reg</code>.</p>
-<h2 id="move-size">Move size</h2>
-<p>The size of the move is indicated by the <code>S</code> (size) and <code>W</code> (wide) bits as follows:</p>
+<h2 id="operand-size">Operand size</h2>
+<p>The size of the operands is indicated by the <code>S</code> (size) and <code>W</code> (wide) bits as follows:</p>
 <table>
 <thead>
 <tr>
@@ -384,15 +430,15 @@ instruction moves data between a register and another register or memory.</p>
 </table>
 <p>There is also a way to specify 2 bytes , but let's ignore that.
 It's <em>not</em> done by setting the bits to <code>0 1</code> (the remaining combination), as you might think!</p>
-<p>Whenever 1 byte is moved to or from a register, it is lowest byte of the register.
+<p>Whenever 1 byte is used in a register, it is lowest byte of the register.
 However, for historical reasons there is an exception. If you specify register number
 4-7, and there is no REX byte, it actually means the <em>second lowest</em> byte of a register
 0-3. We will probably not need this functionality. We just have to be careful not to
 try to use the single lowest byte in <code>rsp</code>, <code>rbp</code>, <code>rsi</code> or <code>rdi</code>.</p>
 <p>Whenever 4 bytes are set in a register (via a <code>mov</code> or another operation),
 the upper 4 bytes are zeroed.</p>
-<h2 id="move-direction">Move direction</h2>
-<p>The <code>D</code> (direction) bit specifies the move direction:</p>
+<h2 id="direction">Direction</h2>
+<p>The <code>D</code> (direction) bit specifies the direction of an operation</p>
 <table>
 <thead>
 <tr>
@@ -421,7 +467,7 @@ location in memory (or another register) to use.</p>
 REX byte). We need the REX.R bit if we want to use registers <code>r8-r15</code>.</p>
 <p>The memory location depends on the <code>mod</code> field.</p>
 <h2 id="register-addressing"><code>[register]</code> addressing</h2>
-<p><img alt="ModRM_00" src="../../images/x86-64/modrm_00.svg" /></p>
+<p><img alt="ModRM 00" src="../../images/x86-64/modrm_00.svg" /></p>
 <p><code>mod = 00</code>. This mode specifies that the register number <code>B rm</code>
 (where B comes from the REX byte) contains a memory address.</p>
 <p>A gotcha: we can't use <code>rm = 4</code> or <code>rm = 5</code> in this mode!
@@ -436,24 +482,24 @@ x86-64 is complicated...</p>
 filling the top 4 bytes of <code>rbx</code> with 0.</p>
 <p>We don't need the REX byte for this. We set <code>D=1</code> (load from memory), <code>S = 1</code> (4-byte move), 
 <code>mod = 00</code>, <code>reg = 3</code> (<code>rbx</code>), <code>rm = 1</code> (<code>rcx</code>).</p>
-<p><img alt="mov_example1" src="../../images/x86-64/modrm_00_example.svg" /></p>
+<p><img alt="mov example" src="../../images/x86-64/modrm_00_example.svg" /></p>
 <p>This gives us machine code in octal:
 <code>%213 %031</code>.
 Octal is very convenient because we have groups of 3 bits!</p>
 <h2 id="register-const1-addressing"><code>[register + const.1]</code> addressing</h2>
-<p><img alt="ModRM_01" src="../../images/x86-64/modrm_01.svg" /></p>
+<p><img alt="ModRM 01" src="../../images/x86-64/modrm_01.svg" /></p>
 <p><code>mod = 01</code>. The register number <code>B rm</code> contains a memory address,
 but we add a 1-byte signed constant to it.</p>
 <p><code>rm = 4</code> is reserved for <a href="#indexed-addressing-sib-byte">indexed addressing</a>, so we can't say <code>[rsp + const.1]</code> or <code>[r12 + const.1]</code> in this mode.</p>
 <h2 id="register-const4-addressing"><code>[register + const.4]</code> addressing</h2>
-<p><img alt="ModRM_10" src="../../images/x86-64/modrm_10.svg" /></p>
+<p><img alt="ModRM 10" src="../../images/x86-64/modrm_10.svg" /></p>
 <p><code>mod = 10</code>. The register number <code>B rm</code> contains a memory address,
 but we add a 4-byte signed constant to it. This can be used to address byte arrays,
 or so specify an offset within a data structure.</p>
 <p><code>rm = 4</code> is reserved for <a href="#indexed-addressing-sib-byte">indexed addressing</a>, so we can't say <code>[rsb + const.4]</code>
 or <code>[r12 + const.4]</code> in this mode.</p>
 <h2 id="two-register-operations">Two-register operations</h2>
-<p><img alt="ModRM_11" src="../../images/x86-64/modrm_11.svg" /></p>
+<p><img alt="ModRM 11" src="../../images/x86-64/modrm_11.svg" /></p>
 <p><code>mod = 11</code>. This time the second operand is simply the register indexed <code>B rm</code>.
 Note that we can describe such a move instruction in two ways, in either direction (<code>D</code> bit).</p>
 <h2 id="rip-const4-addressing"><code>[RIP + const.4]</code> addressing</h2>
@@ -488,7 +534,7 @@ byte. Every register is allowed.</p>
 <p>The base is in register number <code>B base</code>, where <code>B</code> comes from the optional REX
 byte. Every register is allowed.</p>
 <p>The array index is the register number <code>X index</code>, where <code>X</code> comes from REX. But we can't use <code>rsp</code> as the index.</p>
-<h1 id="lea-load-address">lea: Load address</h1>
+<h1 id="load-address">Load address</h1>
 <h2 id="lea-reg-memory">lea reg, memory</h2>
 <p><img alt="lea" src="../../images/x86-64/lea.svg" /></p>
 <p>This is similar to the <code>mov reg, memory</code> instruction, but instead of moving
@@ -497,6 +543,112 @@ data from memory, we just store the address of the memory location into a regist
 address calculations without actually loading data from memory.</p>
 <p>If the <code>W</code> bit is set, the instruction calculates an 8-byte address, otherwise
 it calculates a 4-byte address.</p>
+<h1 id="auto-increment-operations">Auto-increment operations</h1>
+<h2 id="stos-mov-rdi-rax-increment-rdi"><code>stos</code>: <code>mov [rdi], rax</code>, increment <code>rdi</code></h2>
+<p><img alt="stos" src="../../images/x86-64/stos.svg" /></p>
+<p>The <code>S</code> and <code>W</code> bits indicate the <a href="#operand-size">move size</a>.</p>
+<h2 id="lods-mov-rax-rsi-increment-rsi"><code>lods</code>: <code>mov rax, [rsi]</code>, increment <code>rsi</code></h2>
+<p><img alt="lods" src="../../images/x86-64/lods.svg" /></p>
+<p>The <code>S</code> and <code>W</code> bits indicate the <a href="#operand-size">move size</a>.</p>
+<h1 id="arithmetic-and-logic">Arithmetic and logic</h1>
+<h2 id="op-register-memory-or-op-memory-register"><code>op register, memory</code> or <code>op memory, register</code></h2>
+<p><img alt="op" src="../../images/x86-64/op.svg" /></p>
+<p>These instructions perform one of 8 arithmetic and logic operations between and
+a register and a register or memory.</p>
+<p>Similar to <code>mov</code>, the source and destination are described by the
+<a href="#memory-addressing-modrm-byte">ModRM byte</a>.</p>
+<p>This <code>D</code> bit indicates the operation <a href="#direction">direction</a>.
+The <code>S</code> and <code>W</code> bits indicate the <a href="#operand-size">operand size</a>.</p>
+<h2 id="operation-code">Operation code</h2>
+<p>The 3 <code>op</code> bits specify the kind of operation performed:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;"><code>op</code></th>
+<th>name</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;"><code>0</code></td>
+<td><code>add</code></td>
+<td>add</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>1</code></td>
+<td><code>or</code></td>
+<td>bitwise or</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>2</code></td>
+<td><code>adc</code></td>
+<td>add with carry from previous operation</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>3</code></td>
+<td><code>sbb</code></td>
+<td>subtract with borrow from previous operation</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>4</code></td>
+<td><code>and</code></td>
+<td>bitwise and</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>5</code></td>
+<td><code>sub</code></td>
+<td>subtract</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>6</code></td>
+<td><code>xor</code></td>
+<td>exclusive or</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>7</code></td>
+<td><code>cmp</code></td>
+<td>compare (sets flags for subsequent conditional instructions)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="op-rax-const"><code>op rax, const</code></h2>
+<p><img alt="op rax const" src="../../images/x86-64/op_rax_const.svg" /></p>
+<p>This performs an operation encoded by <a href="#operation-code"><code>op</code></a> between <code>rax</code> and a constant.</p>
+<p>The <code>S</code> and <code>W</code> bits indicate the <a href="#operand-size">operand size</a>.</p>
+<h2 id="op-registermemory-const"><code>op register/memory, const</code></h2>
+<p><img alt="op rm const" src="../../images/x86-64/op_rm_const.svg" /></p>
+<p>This performs an operation encoded by <a href="#operation-code"><code>op</code></a> between a register
+or memory location described by the <a href="#memory-addressing-modrm-byte">ModRM byte</a>
+and a constant. Note that <code>reg</code> field if the ModRM byte now encodes the operation.</p>
+<p>The <code>S</code> and <code>W</code> bits indicate the <a href="#operand-size">operand size</a>.</p>
+<p>The <code>E</code> bit describes whether the constant is sign-extended from 1 byte:</p>
+<table>
+<thead>
+<tr>
+<th><code>S</code></th>
+<th><code>E</code></th>
+<th>constant size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1 byte</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>4 bytes, sign extended to 8 bytes if necessary</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1 byte, sign-extended to 4 or 8 bytes</td>
+</tr>
+</tbody>
+</table>
 <h1 id="opcode-map">Opcode map</h1>
 <p>Here is the map of all the opcodes we have discussed. Rows are indexed by the top
 two octal digits, columns are indexed by the last octal digit.</p>
