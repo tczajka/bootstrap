@@ -4,28 +4,36 @@
 \begin{bytefield}[bitwidth=4em, bitformatting=\normalsize, leftcurly=., leftcurlyspace=0pt]{8}
     \bitheader{0-7} \\
     \begin{leftwordgroup}{00}
-    \wordbox[ltr]{1}{}
+    \bitbox{4}{add register, register/memory}
+    \bitbox[ltr]{4}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{01}
-    \wordbox[lr]{1}{}
+    \bitbox{4}{or register, register/memory}
+    \bitbox[lr]{4}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{02}
-    \wordbox[lr]{1}{}
+    \bitbox{4}{adc register, register/memory}
+    \bitbox[lr]{4}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{03}
-    \wordbox[lr]{1}{}
+    \bitbox{4}{sbb register, register/memory}
+    \bitbox[lr]{4}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{04}
-    \wordbox[lr]{1}{}
+    \bitbox{4}{and register, register/memory}
+    \bitbox[lr]{4}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{05}
-    \wordbox[lr]{1}{}
+    \bitbox{4}{sub register, register/memory}
+    \bitbox[lr]{4}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{06}
-    \wordbox[lr]{1}{}
+    \bitbox{4}{xor register, register/memory}
+    \bitbox[lr]{4}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{07}
-    \wordbox[lr]{1}{}
+    \bitbox{4}{cmp register, register/memory}
+    \bitbox[lr]{4}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{10}
     \wordbox[ltr]{1}{REX}
@@ -52,12 +60,14 @@
     \wordbox[lr]{1}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{20}
-    \wordbox[lr]{1}{}
+    \bitbox{4}{op register/memory, constant}
+    \bitbox[lr]{4}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{21}
     \bitbox{4}{mov register, register/memory}
+    \bitbox[lr]{1}{}
     \bitbox{1}{lea}
-    \bitbox[r]{3}{}
+    \bitbox[lr]{2}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{22}
     \wordbox[lr]{1}{}
@@ -70,7 +80,10 @@
     \bitbox[lr]{6}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{25}
-    \wordbox[lr]{1}{}
+    \bitbox[lr]{2}{}
+    \bitbox{2}{stos}
+    \bitbox{2}{lods}
+    \bitbox[lr]{2}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{26}
     \wordbox[ltr]{1}{mov register, const}
