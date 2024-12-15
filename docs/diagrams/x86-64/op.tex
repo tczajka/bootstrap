@@ -1,0 +1,26 @@
+\documentclass{standalone}
+\usepackage{bytefield}
+\begin{document}
+\begin{bytefield}[endianness=big, bitwidth=2em, leftcurly=., leftcurlyspace=0pt]{8}
+    \bitheader{0-7} \\
+    \begin{leftwordgroup}{REX (optional)}
+    \bitboxes*{1}{0100}
+    \bitbox{1}{W}
+    \bitbox{1}{R}
+    \bitbox{1}{X}
+    \bitbox{1}{B}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{op}
+    \bitboxes*{1}{00}
+    \bitbox{3}{op}
+    \bitbox{1}{0}
+    \bitbox{1}{D}
+    \bitbox{1}{S}
+    \end{leftwordgroup} \\
+    \begin{leftwordgroup}{ModRM}
+    \bitbox{2}{mod}
+    \bitbox{3}{reg}
+    \bitbox{3}{rm}
+    \end{leftwordgroup}
+\end{bytefield}
+\end{document}

@@ -5,35 +5,43 @@
     \bitheader{0-7} \\
     \begin{leftwordgroup}{00}
     \bitbox{4}{add register, register/memory}
-    \bitbox[ltr]{4}{}
+    \bitbox{2}{add rax, const}
+    \bitbox[ltr]{2}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{01}
     \bitbox{4}{or register, register/memory}
-    \bitbox[lr]{4}{}
+    \bitbox{2}{or rax, const}
+    \bitbox[lr]{2}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{02}
     \bitbox{4}{adc register, register/memory}
-    \bitbox[lr]{4}{}
+    \bitbox{2}{adc rax, const}
+    \bitbox[lr]{2}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{03}
     \bitbox{4}{sbb register, register/memory}
-    \bitbox[lr]{4}{}
+    \bitbox{2}{sbb rax, const}
+    \bitbox[lr]{2}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{04}
     \bitbox{4}{and register, register/memory}
-    \bitbox[lr]{4}{}
+    \bitbox{2}{and rax, const}
+    \bitbox[lr]{2}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{05}
     \bitbox{4}{sub register, register/memory}
-    \bitbox[lr]{4}{}
+    \bitbox{2}{sub rax, const}
+    \bitbox[lr]{2}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{06}
     \bitbox{4}{xor register, register/memory}
-    \bitbox[lr]{4}{}
+    \bitbox{2}{xor rax, const}
+    \bitbox[lr]{2}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{07}
     \bitbox{4}{cmp register, register/memory}
-    \bitbox[lr]{4}{}
+    \bitbox{2}{cmp rax, const}
+    \bitbox[lr]{2}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{10}
     \wordbox[ltr]{1}{REX}
@@ -110,10 +118,12 @@
     \wordbox[lr]{1}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{36}
-    \wordbox[lr]{1}{}
+    \bitbox[lr]{6}{}
+    \bitbox{2}{not/neg}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{37}
-    \wordbox[lrb]{1}{}
+    \bitbox[lrb]{6}{}
+    \bitbox{2}{inc/dec}
     \end{leftwordgroup}
 \end{bytefield}
 \end{document}
