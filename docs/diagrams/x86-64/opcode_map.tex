@@ -100,13 +100,16 @@
     \wordbox[lbr]{1}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{30}
-    \wordbox[lr]{1}{}
+    \bitbox{2}{shift const}
+    \bitbox[lr]{6}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{31}
     \wordbox[lr]{1}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{32}
-    \wordbox[lr]{1}{}
+    \bitbox{2}{shift 1}
+    \bitbox{2}{shift rcx}
+    \bitbox[lr]{4}{}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{33}
     \wordbox[lr]{1}{}
@@ -119,7 +122,7 @@
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{36}
     \bitbox[lr]{6}{}
-    \bitbox{2}{not/neg}
+    \bitbox{2}{not/neg/ mul/div}
     \end{leftwordgroup} \\
     \begin{leftwordgroup}{37}
     \bitbox[lrb]{6}{}
